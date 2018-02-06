@@ -1,7 +1,8 @@
-const API_KEY = `` // Fill this in with your own API key from https://scripture.api.bible/
+const API_KEY = `81f316c5f31960d155555818b8d0a59c` // Fill this in with your own API key from https://scripture.api.bible/
 
 /**
  * Fills in list on page with Bible versions.
+ * @returns {object} containing list of Bible versions
  */
 function loadBibleVersions() {
   const versionList = document.querySelector(`#bible-version-list`);
@@ -43,6 +44,7 @@ function getBibleVersions() {
 
 /**
  * Fills in list on page with books from selected version of the Bible (version specified in query params).
+ * @returns {object} containing list of books of the Bible
  */
 function loadBooks() {
   const bibleBookList = document.querySelector(`#book-list`);
@@ -92,6 +94,7 @@ function getBooks(bibleVersionID) {
 
 /**
  * Fills in list on page with chapters from selected book of the Bible (version and book specified in query params).
+ * @returns {object} containing list of chapters from selected book
  */
 function loadChapters() {
   let bibleChapterList = document.querySelector(`#chapter-list`);
@@ -113,7 +116,7 @@ function loadChapters() {
 }
 
 /**
- * Gets books of the Bible from API.Bible
+ * Gets chapters from API.Bible
  * @param {string} bibleVersionID to get chapters from
  * @param {string} bibleBookID to get chapters from
  * @returns {Promise} containing list of chapters from selected book
@@ -144,6 +147,7 @@ function getChapters(bibleVersionID, bibleBookID) {
 
 /**
  * Fills in list on page with verses from selected chapter (version and chapter specified in query params).
+ * @returns {object} containing list of verses from selected book
  */
 function loadVerses() {
   let bibleVerseList = document.querySelector(`#verse-list`);
@@ -157,7 +161,7 @@ function loadVerses() {
 
   return getVerses(bibleVersionID, bibleChapterID).then((verseList) => {
     for (let verse of verseList) {
-      verseHTML += `<li><a href="verse-selected.html?version=${bibleVersionID}&chapter=${bibleChapterID}&verse=${verse['id']}"> ${verse['id']} </a></li>`
+      verseHTML += `<li><a href="verse-selected.html?version=${bibleVersionID}&verse=${verse['id']}"> ${verse['id']} </a></li>`
     }
     bibleVerseList.innerHTML = verseHTML;
     return verseList;
@@ -165,7 +169,7 @@ function loadVerses() {
 }
 
 /**
- * Gets books of the Bible from API.Bible
+ * Gets verses from API.Bible
  * @param {string} bibleVersionID to get verses from
  * @param {string} bibleChapterID to get verses from
  * @returns {Promise} containing list of verses from selected book
@@ -185,6 +189,77 @@ function getVerses(bibleVersionID, bibleChapterID) {
     });
 
     xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}/verses`);
+    xhr.setRequestHeader(`api-key`, API_KEY);
+
+    xhr.onerror = () => reject(xhr.statusText);
+
+    xhr.send();
+  })
+}
+
+/**
+ * Fills in the selected verse (version and verse specified in query params).
+ * @returns {Object} containing selected verse
+ */
+function loadSelectedVerse() {
+  let bibleVerseList = document.querySelector(`#verse`);
+  const bibleVersionID = getParameterByName(`version`);
+  const bibleVerseID = getParameterByName(`verse`);
+
+  if (!bibleVersionID || !bibleVerseID) {
+    window.location.href = `./index.html`;
+  }
+
+  return getSelectedVerse(bibleVersionID, bibleVerseID).then((verse) => {
+    getBookNameFromID(verse.bibleId, verse.bookId).then((book) => {
+      bibleVerseList.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span> ${verse.content}`;
+    });
+    return verse;
+  })
+}
+
+/**
+ * Gets selected verse from API.Bible
+ * @param {string} bibleVersionID to get verse from
+ * @param {string} bibleVerseID of selected verse
+ * @returns {Promise} containing selected verse
+ */
+function getSelectedVerse(bibleVersionID, bibleVerseID) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+
+    xhr.addEventListener(`readystatechange`, function() {
+      if (this.readyState === this.DONE) {
+        const response = JSON.parse(this.responseText).data;
+        verse = {id: response['id'], content: response['content'], bookId: response['bookId'], bibleId: response['bibleId']}
+
+        resolve(verse);
+      }
+    });
+
+    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/verses/${bibleVerseID}?include-chapter-numbers=false&include-verse-numbers=false`);
+    xhr.setRequestHeader(`api-key`, API_KEY);
+
+    xhr.onerror = () => reject(xhr.statusText);
+
+    xhr.send();
+  })
+}
+
+function getBookNameFromID(bibleVersionID, bibleBookID) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+
+    xhr.addEventListener(`readystatechange`, function() {
+      if (this.readyState === this.DONE) {
+        const response = JSON.parse(this.responseText).data;
+        resolve(response['name']);
+      }
+    });
+
+    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);

@@ -8,3 +8,10 @@
     padding-top: 10px;
     margin: 1px;
 }
+
+.v {
+    font-weight: bold;
+    padding-right: 5px;
+    font-size: .7em;
+    vertical-align: top;
+}
