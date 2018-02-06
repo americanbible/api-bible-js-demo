@@ -1,10 +1,10 @@
-const API_KEY = `81f316c5f31960d155555818b8d0a59c`
+const API_KEY = `` // Fill this in with your own API key from https://scripture.api.bible/
 
 /**
  * Fills in list on page with Bible versions.
  */
 function loadBibleVersions() {
-	let versionList = document.getElementById(`bible-version-list`);
+	const versionList = document.querySelector(`#bible-version-list`);
 	let versionHTML = ``
 	getBibleVersions().then((bibleVersionList) => {
 		for (let version of bibleVersionList) {
@@ -20,13 +20,13 @@ function loadBibleVersions() {
  */
 function getBibleVersions() {
 	return new Promise((resolve, reject) => {
-		var xhr = new XMLHttpRequest();
+		const xhr = new XMLHttpRequest();
 		xhr.withCredentials = false;
 
-		xhr.addEventListener(`readystatechange`, function () {
+		xhr.addEventListener(`readystatechange`, () => {
 		  if (this.readyState === this.DONE) {
-		    let response = JSON.parse(this.responseText)
-		    versions = response.data.map( version => { return {name: version['name'], id: version['id'] } } )
+		    const response = JSON.parse(this.responseText)
+		    versions = response.data.map( version => { return {name: version[`name`], id: version[`id`] } } )
 		    resolve(versions);
 		  }
 		});
@@ -44,7 +44,7 @@ function getBibleVersions() {
  * Fills in list on page with books from selected version of the Bible (version specified in query params).
  */
 function loadBooks() {
-	const bibleBookList = document.getElementById(`book-list`);
+	const bibleBookList = document.querySelector(`#book-list`);
 	const bibleVersionID = getParameterByName(`version`)
 	let bookHTML = ``
 
@@ -67,13 +67,13 @@ function loadBooks() {
  */
 function getBooks(bibleVersionID) {
 	return new Promise((resolve, reject) => {
-		var xhr = new XMLHttpRequest();
+		const xhr = new XMLHttpRequest();
 		xhr.withCredentials = false;
 
-		xhr.addEventListener(`readystatechange`, function () {
+		xhr.addEventListener(`readystatechange`, () => {
 		  if (this.readyState === this.DONE) {
-		    let response = JSON.parse(this.responseText)
-		    books = response.data.map( book => { return {name: book['name'], id: book['id'] } } )
+		    const response = JSON.parse(this.responseText)
+		    books = response.data.map( book => { return {name: book[`name`], id: book[`id`] } } )
 
 		    resolve(books);
 		  }
@@ -92,7 +92,7 @@ function getBooks(bibleVersionID) {
  * Fills in list on page with chapters from selected book of the Bible (version and book specified in query params).
  */
 function loadChapters() {
-	let bibleChapterList = document.getElementById(`chapter-list`);
+	let bibleChapterList = document.querySelector(`#chapter-list`);
 	const bibleVersionID = getParameterByName(`version`)
 	const bibleBookID = getParameterByName(`book`)
 	let chapterHTML = ``
@@ -117,13 +117,13 @@ function loadChapters() {
  */
 function getChapters(bibleVersionID, bibleBookID) {
 	return new Promise((resolve, reject) => {
-		var xhr = new XMLHttpRequest();
+		const xhr = new XMLHttpRequest();
 		xhr.withCredentials = false;
 
-		xhr.addEventListener(`readystatechange`, function () {
+		xhr.addEventListener(`readystatechange`, () => {
 		  if (this.readyState === this.DONE) {
-		    let response = JSON.parse(this.responseText)
-		    chapters = response.data.map( chapter => { return {number: chapter['number'], id: chapter['id'] } } )
+		    const response = JSON.parse(this.responseText)
+		    chapters = response.data.map( chapter => { return {number: chapter[`number`], id: chapter[`id`] } } )
 
 		    resolve(chapters);
 		  }
