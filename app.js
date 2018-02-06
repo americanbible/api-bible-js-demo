@@ -1,18 +1,18 @@
-const API_KEY = `81f316c5f31960d155555818b8d0a59c` // Fill this in with your own API key from https://scripture.api.bible/
+const API_KEY = `` // Fill this in with your own API key from https://scripture.api.bible/
 
 /**
  * Fills in list on page with Bible versions.
  */
 function loadBibleVersions() {
-	const versionList = document.querySelector(`#bible-version-list`);
-	let versionHTML = ``;
-	return getBibleVersions().then((bibleVersionList) => {
-		for (let version of bibleVersionList) {
-			versionHTML += `<li><a href="book.html?version=${version['id']}"> ${version['name']} </a></li>`
-		}
-		versionList.innerHTML = versionHTML;
+  const versionList = document.querySelector(`#bible-version-list`);
+  let versionHTML = ``;
+  return getBibleVersions().then((bibleVersionList) => {
+    for (let version of bibleVersionList) {
+      versionHTML += `<li><a href="book.html?version=${version['id']}"> ${version['name']} </a></li>`
+    }
+    versionList.innerHTML = versionHTML;
     return bibleVersionList;
-	})
+  })
 }
 
 /**
@@ -20,46 +20,46 @@ function loadBibleVersions() {
  * @returns {Promise} containing list of Bible versions
  */
 function getBibleVersions() {
-	return new Promise((resolve, reject) => {
-		const xhr = new XMLHttpRequest();
-		xhr.withCredentials = false;
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
 
-		xhr.addEventListener(`readystatechange`, function() {
-		  if (this.readyState === this.DONE) {
-		    const response = JSON.parse(this.responseText)
-		    versions = response.data.map( version => { return {name: version[`name`], id: version[`id`] } } )
-		    resolve(versions);
-		  }
-		});
+    xhr.addEventListener(`readystatechange`, function() {
+      if (this.readyState === this.DONE) {
+        const response = JSON.parse(this.responseText)
+        versions = response.data.map( version => { return {name: version[`name`], id: version[`id`] } } )
+        resolve(versions);
+      }
+    });
 
-		xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles`);
-		xhr.setRequestHeader(`api-key`, API_KEY);
+    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles`);
+    xhr.setRequestHeader(`api-key`, API_KEY);
 
-		xhr.onerror = () => reject(xhr.statusText)
+    xhr.onerror = () => reject(xhr.statusText)
 
-		xhr.send();
-	})
+    xhr.send();
+  })
 }
 
 /**
  * Fills in list on page with books from selected version of the Bible (version specified in query params).
  */
 function loadBooks() {
-	const bibleBookList = document.querySelector(`#book-list`);
-	const bibleVersionID = getParameterByName(`version`);
-	let bookHTML = ``;
+  const bibleBookList = document.querySelector(`#book-list`);
+  const bibleVersionID = getParameterByName(`version`);
+  let bookHTML = ``;
 
-	if (!bibleVersionID) {
-		window.location.href = `./index.html`
-	}
+  if (!bibleVersionID) {
+    window.location.href = `./index.html`
+  }
 
-	return getBooks(bibleVersionID).then((bookList) => {
-		for (let book of bookList) {
-			bookHTML += `<li><a href="chapter.html?version=${bibleVersionID}&book=${book['id']}"> ${book['name']} </a></li>`
-		}
-		bibleBookList.innerHTML = bookHTML;
+  return getBooks(bibleVersionID).then((bookList) => {
+    for (let book of bookList) {
+      bookHTML += `<li><a href="chapter.html?version=${bibleVersionID}&book=${book['id']}"> ${book['name']} </a></li>`
+    }
+    bibleBookList.innerHTML = bookHTML;
     return bookList;
-	})
+  })
 }
 
 /**
@@ -68,48 +68,48 @@ function loadBooks() {
  * @returns {Promise} containing list of books of the Bible
  */
 function getBooks(bibleVersionID) {
-	return new Promise((resolve, reject) => {
-		const xhr = new XMLHttpRequest();
-		xhr.withCredentials = false;
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
 
-		xhr.addEventListener(`readystatechange`, function() {
-		  if (this.readyState === this.DONE) {
-		    const response = JSON.parse(this.responseText)
-		    books = response.data.map( book => { return {name: book[`name`], id: book[`id`] } } )
+    xhr.addEventListener(`readystatechange`, function() {
+      if (this.readyState === this.DONE) {
+        const response = JSON.parse(this.responseText)
+        books = response.data.map( book => { return {name: book[`name`], id: book[`id`] } } )
 
-		    resolve(books);
-		  }
-		});
+        resolve(books);
+      }
+    });
 
-		xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books`);
-		xhr.setRequestHeader(`api-key`, API_KEY);
+    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books`);
+    xhr.setRequestHeader(`api-key`, API_KEY);
 
-		xhr.onerror = () => reject(xhr.statusText)
+    xhr.onerror = () => reject(xhr.statusText)
 
-		xhr.send();
-	})
+    xhr.send();
+  })
 }
 
 /**
  * Fills in list on page with chapters from selected book of the Bible (version and book specified in query params).
  */
 function loadChapters() {
-	let bibleChapterList = document.querySelector(`#chapter-list`);
-	const bibleVersionID = getParameterByName(`version`);
-	const bibleBookID = getParameterByName(`book`);
-	let chapterHTML = ``;
+  let bibleChapterList = document.querySelector(`#chapter-list`);
+  const bibleVersionID = getParameterByName(`version`);
+  const bibleBookID = getParameterByName(`book`);
+  let chapterHTML = ``;
 
-	if (!bibleVersionID || !bibleBookID) {
-		window.location.href = `./index.html`;
-	}
+  if (!bibleVersionID || !bibleBookID) {
+    window.location.href = `./index.html`;
+  }
 
-	return getChapters(bibleVersionID, bibleBookID).then((chapterList) => {
-		for (let chapter of chapterList) {
-			chapterHTML += `<li><a href="verse.html?version=${bibleVersionID}&chapter=${chapter['id']}"> ${chapter['number']} </a></li>`
-		}
-		bibleChapterList.innerHTML = chapterHTML;
+  return getChapters(bibleVersionID, bibleBookID).then((chapterList) => {
+    for (let chapter of chapterList) {
+      chapterHTML += `<li><a href="verse.html?version=${bibleVersionID}&chapter=${chapter['id']}"> ${chapter['number']} </a></li>`
+    }
+    bibleChapterList.innerHTML = chapterHTML;
     return chapterList;
-	})
+  })
 }
 
 /**
@@ -119,26 +119,26 @@ function loadChapters() {
  * @returns {Promise} containing list of chapters from selected book
  */
 function getChapters(bibleVersionID, bibleBookID) {
-	return new Promise((resolve, reject) => {
-		const xhr = new XMLHttpRequest();
-		xhr.withCredentials = false;
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
 
-		xhr.addEventListener(`readystatechange`, function() {
-		  if (this.readyState === this.DONE) {
-		    const response = JSON.parse(this.responseText);
-		    chapters = response.data.map( chapter => { return {number: chapter[`number`], id: chapter[`id`] } } );
+    xhr.addEventListener(`readystatechange`, function() {
+      if (this.readyState === this.DONE) {
+        const response = JSON.parse(this.responseText);
+        chapters = response.data.map( chapter => { return {number: chapter[`number`], id: chapter[`id`] } } );
 
-		    resolve(chapters);
-		  }
-		});
+        resolve(chapters);
+      }
+    });
 
-		xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}/chapters`);
-		xhr.setRequestHeader(`api-key`, API_KEY);
+    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}/chapters`);
+    xhr.setRequestHeader(`api-key`, API_KEY);
 
-		xhr.onerror = () => reject(xhr.statusText);
+    xhr.onerror = () => reject(xhr.statusText);
 
-		xhr.send();
-	})
+    xhr.send();
+  })
 }
 
 
