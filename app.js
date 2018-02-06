@@ -1,4 +1,4 @@
-const API_KEY = `` // Fill this in with your own API key from https://scripture.api.bible/
+const API_KEY = `81f316c5f31960d155555818b8d0a59c` // Fill this in with your own API key from https://scripture.api.bible/
 
 /**
  * Fills in list on page with Bible versions.
@@ -23,7 +23,7 @@ function getBibleVersions() {
 		const xhr = new XMLHttpRequest();
 		xhr.withCredentials = false;
 
-		xhr.addEventListener(`readystatechange`, () => {
+		xhr.addEventListener(`readystatechange`, function() {
 		  if (this.readyState === this.DONE) {
 		    const response = JSON.parse(this.responseText)
 		    versions = response.data.map( version => { return {name: version[`name`], id: version[`id`] } } )
@@ -70,7 +70,7 @@ function getBooks(bibleVersionID) {
 		const xhr = new XMLHttpRequest();
 		xhr.withCredentials = false;
 
-		xhr.addEventListener(`readystatechange`, () => {
+		xhr.addEventListener(`readystatechange`, function() {
 		  if (this.readyState === this.DONE) {
 		    const response = JSON.parse(this.responseText)
 		    books = response.data.map( book => { return {name: book[`name`], id: book[`id`] } } )
@@ -120,7 +120,7 @@ function getChapters(bibleVersionID, bibleBookID) {
 		const xhr = new XMLHttpRequest();
 		xhr.withCredentials = false;
 
-		xhr.addEventListener(`readystatechange`, () => {
+		xhr.addEventListener(`readystatechange`, function() {
 		  if (this.readyState === this.DONE) {
 		    const response = JSON.parse(this.responseText)
 		    chapters = response.data.map( chapter => { return {number: chapter[`number`], id: chapter[`id`] } } )
