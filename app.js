@@ -27,8 +27,8 @@ function getBibleVersions() {
 
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
-        const response = JSON.parse(this.responseText);
-        const versions = response.data.map( ({name, id}) => { return {name, id}; } );
+        const {data} = JSON.parse(this.responseText);
+        const versions = data.map( ({name, id}) => { return {name, id}; } );
         resolve(versions);
       }
     });
@@ -76,8 +76,8 @@ function getBooks(bibleVersionID) {
 
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
-        const response = JSON.parse(this.responseText)
-        const books = response.data.map( ({name, id}) => { return {name, id}; } );
+        const {data} = JSON.parse(this.responseText)
+        const books = data.map( ({name, id}) => { return {name, id}; } );
 
         resolve(books);
       }
@@ -128,8 +128,8 @@ function getChapters(bibleVersionID, bibleBookID) {
 
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
-        const response = JSON.parse(this.responseText);
-        const chapters = response.data.map( ({number, id}) => { return {number, id} } );
+        const {data} = JSON.parse(this.responseText);
+        const chapters = data.map( ({number, id}) => { return {number, id} } );
 
         resolve(chapters);
       }
@@ -181,8 +181,8 @@ function getVerses(bibleVersionID, bibleChapterID) {
 
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
-        const response = JSON.parse(this.responseText);
-        const verses = response.data.map( ({id}) => { return {id};} );
+        const {data} = JSON.parse(this.responseText);
+        const verses = data.map( ({id}) => { return {id};} );
 
         resolve(verses);
       }
