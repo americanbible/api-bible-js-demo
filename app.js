@@ -103,7 +103,7 @@ function loadChapters() {
 
 	getChapters(bibleVersionID, bibleBookID).then((chapterList) => {
 		for (let chapter of chapterList) {
-			chapterHTML += `<li><a href="verse.html?version=${bibleVersionID}&book=${bibleBookID}&chapter=${chapter['id']}"> ${chapter['number']} </a></li>`
+			chapterHTML += `<li><a href="verse.html?version=${bibleVersionID}&chapter=${chapter['id']}"> ${chapter['number']} </a></li>`
 		}
 		bibleChapterList.innerHTML = chapterHTML;
 	})
@@ -136,6 +136,58 @@ function getChapters(bibleVersionID, bibleBookID) {
 
 		xhr.send();
 	})
+}
+
+
+/**
+ * Fills in list on page with verses from selected chapter (version and chapter specified in query params).
+ */
+function loadVerses() {
+  const bibleVerseList = document.querySelector(`#verse-list`);
+  const bibleVersionID = getParameterByName(`version`)
+  const bibleChapterID = getParameterByName(`chapter`)
+  let verseHTML = ``
+
+  if (!bibleVersionID || !bibleChapterID) {
+    window.location.href = `./index.html`
+  }
+
+  getVerses(bibleVersionID, bibleChapterID).then((verseList) => {
+    for (let verse of verseList) {
+      verseHTML += `<li><a href="verse-selected.html?version=${bibleVersionID}&chapter=${bibleChapterID}&verse=${verse['id']}"> ${verse['id']} </a></li>`
+    }
+    bibleVerseList.innerHTML = verseHTML;
+  })
+}
+
+/**
+ * Gets books of the Bible from API.Bible
+ * @param {string} bibleVersionID to get verses from
+ * @param {string} bibleChapterID to get verses from
+ * @returns {Promise} containing list of verses from selected book
+ */
+function getVerses(bibleVersionID, bibleChapterID) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+
+    xhr.addEventListener(`readystatechange`, function() {
+      if (this.readyState === this.DONE) {
+        const response = JSON.parse(this.responseText)
+        console.log(response)
+        verses = response.data.map( verse => { return { id: verse[`id`] } } )
+
+        resolve(verses);
+      }
+    });
+
+    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}/verses`);
+    xhr.setRequestHeader(`api-key`, API_KEY);
+
+    xhr.onerror = () => reject(xhr.statusText)
+
+    xhr.send();
+  })
 }
 
 /**
