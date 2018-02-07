@@ -96,8 +96,8 @@ describe(`Load a selected verse`, () => {
     done();
   });
   it(`should return a selected verse`, (done) => {
-    loadSelectedVerse().then((result) => {
-      expect(result).to.exist;
+    loadSelectedVerse().then((content) => {
+      expect(content).to.be.a(`string`);
       done();
     });
   })

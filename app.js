@@ -210,11 +210,11 @@ function loadSelectedVerse() {
     window.location.href = `./index.html`;
   }
 
-  return getSelectedVerse(bibleVersionID, bibleVerseID).then((verse) => {
-    getBookNameFromID(verse.bibleId, verse.bookId).then((book) => {
-      bibleVerseList.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span> ${verse.content}`;
+  return getSelectedVerse(bibleVersionID, bibleVerseID).then(({ bibleId, bookId, content }) => {
+    getBookNameFromID(bibleId, bookId).then((book) => {
+      bibleVerseList.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span> ${content}`;
     });
-    return verse;
+    return content;
   })
 }
 
@@ -232,7 +232,7 @@ function getSelectedVerse(bibleVersionID, bibleVerseID) {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const response = JSON.parse(this.responseText).data;
-        verse = {id: response['id'], content: response['content'], bookId: response['bookId'], bibleId: response['bibleId']}
+        verse = {content: response.content, bookId: response.bookId, bibleId: response.bibleId}
 
         resolve(verse);
       }
