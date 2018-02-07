@@ -232,7 +232,7 @@ function getSelectedVerse(bibleVersionID, bibleVerseID) {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const {content, bookId, bibleId} = JSON.parse(this.responseText).data;
-        verse = {content, bookId, bibleId}
+        const verse = {content, bookId, bibleId};
 
         resolve(verse);
       }
