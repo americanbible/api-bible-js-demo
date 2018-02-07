@@ -7,7 +7,7 @@ mocha.setup(`bdd`);
 // Set up query parameters
 var myURL = document.location;
 if (myURL.toString().indexOf(`version`) === -1) {
-  document.location = myURL + `?version=61fd76eafa1577c2-03&book=MAT&chapter=MAT.1`;
+  document.location = myURL + `?version=61fd76eafa1577c2-03&book=MAT&chapter=MAT.1&verse=MAT.1.1`;
 }
 
 describe(`Load a bible version`, () => {
@@ -81,6 +81,23 @@ describe(`Load a verse`, () => {
   it(`should return a verses list`, (done) => {
     loadVerses().then(([{id}]) => {
       expect(id).to.be.a(`string`);
+      done();
+    });
+  })
+});
+
+describe(`Load a selected verse`, () => {
+  it(`should have a function named loadSelectedVerse`, function(done) {
+    loadSelectedVerse.should.be.a(`function`);
+    done();
+  });
+  it(`should have a function named getSelectedVerse`, function(done) {
+    getSelectedVerse.should.be.a(`function`);
+    done();
+  });
+  it(`should return a selected verse`, (done) => {
+    loadSelectedVerse().then((content) => {
+      expect(content).to.be.a(`string`);
       done();
     });
   })
