@@ -11,10 +11,12 @@ if (myURL.toString().indexOf(`version`) === -1) {
 }
 
 describe(`Load a bible version`, () => {
-  it(`should have an API key`, (done) => {
-    assert.isAbove(API_KEY.length, 0, 'API KEY length is more than 0');
+  it(`should have an API KEY set`, function(done) {
+    if(API_KEY.length === 0) {
+       throw Error(`Your api key is not set, please get one from https://scripture.api.bible/`);
+    }
     done();
-  })
+  });
   it(`should have a function named loadBibleVersions`, function(done) {
     loadBibleVersions.should.be.a(`function`);
     done();
@@ -24,8 +26,9 @@ describe(`Load a bible version`, () => {
     done();
   });
   it(`should return a bible version list`, (done) => {
-    loadBibleVersions().then((result) => {
-      expect(result).to.exist;
+    loadBibleVersions().then(([{name, id}]) => {
+      expect(name).to.be.a(`string`);
+      expect(id).to.be.a(`string`);
       done();
     });
   })
@@ -41,8 +44,9 @@ describe(`Load a book`, () => {
     done();
   });
   it(`should return a book list`, (done) => {
-    loadBooks().then((result) => {
-      expect(result).to.exist;
+    loadBooks().then(([{name, id}]) => {
+      expect(name).to.be.a(`string`);
+      expect(id).to.be.a(`string`);
       done();
     });
   })
@@ -58,8 +62,8 @@ describe(`Load a chapter`, () => {
     done();
   });
   it(`should return a chapter list`, (done) => {
-    loadChapters().then((result) => {
-      expect(result).to.exist;
+    loadChapters().then(([{id}]) => {
+      expect(id).to.be.a(`string`);
       done();
     });
   })
@@ -75,8 +79,8 @@ describe(`Load a verse`, () => {
     done();
   });
   it(`should return a verses list`, (done) => {
-    loadVerses().then((result) => {
-      expect(result).to.exist;
+    loadVerses().then(([{id}]) => {
+      expect(id).to.be.a(`string`);
       done();
     });
   })
