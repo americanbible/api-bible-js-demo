@@ -231,8 +231,8 @@ function getSelectedVerse(bibleVersionID, bibleVerseID) {
 
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
-        const response = JSON.parse(this.responseText).data;
-        verse = {content: response.content, bookId: response.bookId, bibleId: response.bibleId}
+        const {content, bookId, bibleId} = JSON.parse(this.responseText).data;
+        verse = {content, bookId, bibleId}
 
         resolve(verse);
       }
@@ -254,8 +254,8 @@ function getBookNameFromID(bibleVersionID, bibleBookID) {
 
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
-        const response = JSON.parse(this.responseText).data;
-        resolve(response['name']);
+        const {name} = JSON.parse(this.responseText).data;
+        resolve(name);
       }
     });
 
