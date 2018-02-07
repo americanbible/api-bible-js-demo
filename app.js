@@ -9,7 +9,7 @@ function loadBibleVersions() {
   let versionHTML = ``;
   return getBibleVersions().then((bibleVersionList) => {
     for (let version of bibleVersionList) {
-      versionHTML += `<li><a href="book.html?version=${version['id']}"> ${version['name']} </a></li>`
+      versionHTML += `<li><a href="book.html?version=${version.id}"> ${version.name} </a></li>`
     }
     versionList.innerHTML = versionHTML;
     return bibleVersionList;
@@ -28,7 +28,7 @@ function getBibleVersions() {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const response = JSON.parse(this.responseText)
-        versions = response.data.map( version => { return {name: version[`name`], id: version[`id`] } } )
+        versions = response.data.map( ({name, id}) => { return {name, id} } );
         resolve(versions);
       }
     });
@@ -57,7 +57,7 @@ function loadBooks() {
 
   return getBooks(bibleVersionID).then((bookList) => {
     for (let book of bookList) {
-      bookHTML += `<li><a href="chapter.html?version=${bibleVersionID}&book=${book['id']}"> ${book['name']} </a></li>`
+      bookHTML += `<li><a href="chapter.html?version=${bibleVersionID}&book=${book.id}"> ${book.name} </a></li>`
     }
     bibleBookList.innerHTML = bookHTML;
     return bookList;
@@ -77,7 +77,7 @@ function getBooks(bibleVersionID) {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const response = JSON.parse(this.responseText)
-        books = response.data.map( book => { return {name: book[`name`], id: book[`id`] } } )
+        books = response.data.map( ({name, id}) => { return {name, id} } );
 
         resolve(books);
       }
@@ -108,7 +108,7 @@ function loadChapters() {
 
   return getChapters(bibleVersionID, bibleBookID).then((chapterList) => {
     for (let chapter of chapterList) {
-      chapterHTML += `<li><a href="verse.html?version=${bibleVersionID}&chapter=${chapter['id']}"> ${chapter['number']} </a></li>`
+      chapterHTML += `<li><a href="verse.html?version=${bibleVersionID}&chapter=${chapter.id}"> ${chapter.number} </a></li>`
     }
     bibleChapterList.innerHTML = chapterHTML;
     return chapterList;
@@ -129,7 +129,7 @@ function getChapters(bibleVersionID, bibleBookID) {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const response = JSON.parse(this.responseText);
-        chapters = response.data.map( chapter => { return {number: chapter[`number`], id: chapter[`id`] } } );
+        chapters = response.data.map( ({number, id}) => { return {number, id} } );
 
         resolve(chapters);
       }
@@ -150,9 +150,9 @@ function getChapters(bibleVersionID, bibleBookID) {
  * @returns {object} containing list of verses from selected book
  */
 function loadVerses() {
-  let bibleVerseList = document.querySelector(`#verse-list`);
-  const bibleVersionID = getParameterByName(`version`);
-  const bibleChapterID = getParameterByName(`chapter`);
+  const bibleVerseList = document.querySelector(`#verse-list`);
+  const bibleVersionID = getParameterByName(`version`)
+  const bibleChapterID = getParameterByName(`chapter`)
   let verseHTML = ``
 
   if (!bibleVersionID || !bibleChapterID) {
@@ -161,7 +161,7 @@ function loadVerses() {
 
   return getVerses(bibleVersionID, bibleChapterID).then((verseList) => {
     for (let verse of verseList) {
-      verseHTML += `<li><a href="verse-selected.html?version=${bibleVersionID}&verse=${verse['id']}"> ${verse['id']} </a></li>`
+      verseHTML += `<li><a href="verse-selected.html?version=${bibleVersionID}&verse=${verse.id}"> ${verse.id} </a></li>`
     }
     bibleVerseList.innerHTML = verseHTML;
     return verseList;
@@ -182,7 +182,7 @@ function getVerses(bibleVersionID, bibleChapterID) {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const response = JSON.parse(this.responseText);
-        verses = response.data.map( verse => { return { id: verse[`id`] } } );
+        verses = response.data.map( ({id}) => { return {id} } );
 
         resolve(verses);
       }
