@@ -146,9 +146,9 @@ function getChapters(bibleVersionID, bibleBookID) {
  * Fills in list on page with verses from selected chapter (version and chapter specified in query params).
  */
 function loadVerses() {
-  let bibleVerseList = document.querySelector(`#verse-list`);
-  const bibleVersionID = getParameterByName(`version`);
-  const bibleChapterID = getParameterByName(`chapter`);
+  const bibleVerseList = document.querySelector(`#verse-list`);
+  const bibleVersionID = getParameterByName(`version`)
+  const bibleChapterID = getParameterByName(`chapter`)
   let verseHTML = ``
 
   if (!bibleVersionID || !bibleChapterID) {
