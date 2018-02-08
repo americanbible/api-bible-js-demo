@@ -13,7 +13,7 @@ if (myURL.toString().indexOf(`version`) === -1) {
 describe(`Load a bible version`, () => {
   it(`should have an API KEY set`, function(done) {
     if(API_KEY.length === 0) {
-       throw Error(`Your api key is not set, please get one from https://scripture.api.bible/`);
+      throw Error(`Your api key is not set, please get one from https://scripture.api.bible/`);
     }
     done();
   });
@@ -31,7 +31,7 @@ describe(`Load a bible version`, () => {
       expect(id).to.be.a(`string`);
       done();
     });
-  })
+  });
 });
 
 describe(`Load a book`, () => {
@@ -49,7 +49,7 @@ describe(`Load a book`, () => {
       expect(id).to.be.a(`string`);
       done();
     });
-  })
+  });
 });
 
 describe(`Load a chapter`, () => {
@@ -66,7 +66,7 @@ describe(`Load a chapter`, () => {
       expect(id).to.be.a(`string`);
       done();
     });
-  })
+  });
 });
 
 describe(`Load a verse`, () => {
@@ -83,7 +83,7 @@ describe(`Load a verse`, () => {
       expect(id).to.be.a(`string`);
       done();
     });
-  })
+  });
 });
 
 describe(`Load a selected verse`, () => {
@@ -100,7 +100,7 @@ describe(`Load a selected verse`, () => {
       expect(content).to.be.a(`string`);
       done();
     });
-  })
+  });
 });
 
 mocha.run();
