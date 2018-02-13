@@ -299,7 +299,7 @@ function getVerseNumber(verseID) {
  */
 function loadBreadcrumbs() {
   const breadcrumbs = document.querySelector(`#breadcrumbs`);
-  let breadcrumbsHTML = ``;
+  let breadcrumbsHTML = `<a href="index.html">home</a> `;
 
   const abbreviation = getParameterByName(`abbr`);
   const version = getParameterByName(`version`);
@@ -307,25 +307,28 @@ function loadBreadcrumbs() {
   const chapter = getParameterByName(`chapter`);
   const verse = getParameterByName(`verse`);
 
-  if (abbreviation) {
-    breadcrumbsHTML += `<a href="index.html">${abbreviation}</a>`;
+  if (abbreviation && !book && !chapter && !verse) {
+    breadcrumbsHTML += ` > ${abbreviation}`;
   }
   if (book) {
-    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${book}</a>`;
+    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${abbreviation}</a>
+                         > ${book}`;
   }
   if (chapter) {
     const [book, chapNum] = chapter.split(`.`);
-    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${book}</a>
-                         > <a href="chapter.html?version=${version}&abbr=${abbreviation}&book=${book}"> ${chapNum} </a>`;
+    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${abbreviation}</a>
+                         > <a href="chapter.html?version=${version}&abbr=${abbreviation}&book=${book}">${book}</a>
+                         > ${chapNum}`;
   }
   if (verse) {
     let [book, chapNum, verseNum] = verse.split(`.`);
     if (verse.includes(`-`)) {
       verseNum = getVerseNumber(verse);
     }
-    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${book}</a>
-                         > <a href="chapter.html?version=${version}&abbr=${abbreviation}&book=${book}"> ${chapNum} </a>
-                         > <a href="verse.html?version=${version}&abbr=${abbreviation}&chapter=${book}.${chapNum}"> ${verseNum} </a>`;
+    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${abbreviation}</a>
+                         > <a href="chapter.html?version=${version}&abbr=${abbreviation}&book=${book}">${book}</a>
+                         > <a href="verse.html?version=${version}&abbr=${abbreviation}&chapter=${book}.${chapNum}"> ${chapNum} </a>
+                         > ${verseNum}`;
   }
 
   breadcrumbs.innerHTML = breadcrumbsHTML;
