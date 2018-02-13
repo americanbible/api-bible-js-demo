@@ -1,4 +1,4 @@
-const API_KEY = ``; // Fill this in with your own API key from https://scripture.api.bible/
+const API_KEY = `81f316c5f31960d155555818b8d0a59c`; // Fill this in with your own API key from https://scripture.api.bible/
 
 /**
  * Fills in list on page with Bible versions.
@@ -9,7 +9,7 @@ function loadBibleVersions() {
   let versionHTML = ``;
   return getBibleVersions().then((bibleVersionList) => {
     for (let version of bibleVersionList) {
-      versionHTML += `<li><a href="book.html?version=${version.id}"> ${version.name} </a></li>`;
+      versionHTML += `<li>(<a href="book.html?version=${version.id}&abbr=${version.abbreviation}">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
     }
     versionList.innerHTML = versionHTML;
     return bibleVersionList;
@@ -28,7 +28,7 @@ function getBibleVersions() {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const {data} = JSON.parse(this.responseText);
-        const versions = data.map( ({name, id}) => { return {name, id}; } );
+        const versions = data.map( ({name, id, abbreviation, description}) => { return {name, id, abbreviation, description}; } );
         resolve(versions);
       }
     });
@@ -49,6 +49,8 @@ function getBibleVersions() {
 function loadBooks() {
   const bibleBookList = document.querySelector(`#book-list`);
   const bibleVersionID = getParameterByName(`version`);
+  const abbreviation = getParameterByName(`abbr`);
+
   let bookHTML = ``;
 
   if (!bibleVersionID) {
@@ -57,7 +59,7 @@ function loadBooks() {
 
   return getBooks(bibleVersionID).then((bookList) => {
     for (let book of bookList) {
-      bookHTML += `<li><a href="chapter.html?version=${bibleVersionID}&book=${book.id}"> ${book.name} </a></li>`;
+      bookHTML += `<li><a href="chapter.html?version=${bibleVersionID}&abbr=${abbreviation}&book=${book.id}"> ${book.name} </a></li>`;
     }
     bibleBookList.innerHTML = bookHTML;
     return bookList;
@@ -76,7 +78,7 @@ function getBooks(bibleVersionID) {
 
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
-        const {data} = JSON.parse(this.responseText)
+        const {data} = JSON.parse(this.responseText);
         const books = data.map( ({name, id}) => { return {name, id}; } );
 
         resolve(books);
@@ -100,6 +102,7 @@ function loadChapters() {
   let bibleChapterList = document.querySelector(`#chapter-list`);
   const bibleVersionID = getParameterByName(`version`);
   const bibleBookID = getParameterByName(`book`);
+  const abbreviation = getParameterByName(`abbr`);
   let chapterHTML = ``;
 
   if (!bibleVersionID || !bibleBookID) {
@@ -108,7 +111,7 @@ function loadChapters() {
 
   return getChapters(bibleVersionID, bibleBookID).then((chapterList) => {
     for (let chapter of chapterList) {
-      chapterHTML += `<li><a href="verse.html?version=${bibleVersionID}&chapter=${chapter.id}"> ${chapter.number} </a></li>`;
+      chapterHTML += `<li class="grid"><a class="grid-link" href="verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${chapter.id}"> ${chapter.number} </a></li>`;
     }
     bibleChapterList.innerHTML = chapterHTML;
     return chapterList;
@@ -129,7 +132,7 @@ function getChapters(bibleVersionID, bibleBookID) {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const {data} = JSON.parse(this.responseText);
-        const chapters = data.map( ({number, id}) => { return {number, id} } );
+        const chapters = data.map( ({number, id}) => { return {number, id}; } );
 
         resolve(chapters);
       }
@@ -153,6 +156,7 @@ function loadVerses() {
   const bibleVerseList = document.querySelector(`#verse-list`);
   const bibleVersionID = getParameterByName(`version`);
   const bibleChapterID = getParameterByName(`chapter`);
+  const abbreviation = getParameterByName(`abbr`);
   let verseHTML = ``;
 
   if (!bibleVersionID || !bibleChapterID) {
@@ -161,7 +165,8 @@ function loadVerses() {
 
   return getVerses(bibleVersionID, bibleChapterID).then((verseList) => {
     for (let verse of verseList) {
-      verseHTML += `<li><a href="verse-selected.html?version=${bibleVersionID}&verse=${verse.id}"> ${verse.id} </a></li>`;
+      const verseNumber = getVerseNumber(verse.id);
+      verseHTML += `<li class="grid"><a class="grid-link" href="verse-selected.html?version=${bibleVersionID}&abbr=${abbreviation}&verse=${verse.id}"> ${verseNumber} </a></li>`;
     }
     bibleVerseList.innerHTML = verseHTML;
     return verseList;
@@ -247,6 +252,12 @@ function getSelectedVerse(bibleVersionID, bibleVerseID) {
   });
 }
 
+/**
+ * Gets book name from book ID
+ * @param {string} bibleVersionID Bible ID
+ * @param {string} bibleBookID book ID
+ * @returns {string} name of book
+ */
 function getBookNameFromID(bibleVersionID, bibleBookID) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -266,6 +277,59 @@ function getBookNameFromID(bibleVersionID, bibleBookID) {
 
     xhr.send();
   });
+}
+
+/**
+ * Parses verse number from verseID
+ * @param {string} verseID verse ID
+ * @returns {string} verse number or numbers
+ */
+function getVerseNumber(verseID) {
+  let verseNumber;
+  if (verseID.includes(`-`)) {
+    verseNumber = verseID.split(`-`).shift().split(`.`).pop() + `-` + verseID.split(`-`).pop().split(`.`).pop();
+  } else {
+    verseNumber = verseID.split(`.`).pop(); 
+  }
+  return verseNumber;
+}
+
+/**
+ * Loads breadcrumb links on page
+ */
+function loadBreadcrumbs() {
+  const breadcrumbs = document.querySelector(`#breadcrumbs`);
+  let breadcrumbsHTML = ``;
+
+  const abbreviation = getParameterByName(`abbr`);
+  const version = getParameterByName(`version`);
+  const book = getParameterByName(`book`);
+  const chapter = getParameterByName(`chapter`);
+  const verse = getParameterByName(`verse`);
+
+  if (abbreviation) {
+    breadcrumbsHTML += `<a href="index.html">${abbreviation}</a>`;
+  }
+  if (book) {
+    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${book}</a>`;
+  }
+  if (chapter) {
+    const [book, chapNum] = chapter.split(`.`);
+    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${book}</a>
+                         > <a href="chapter.html?version=${version}&abbr=${abbreviation}&book=${book}"> ${chapNum} </a>`;
+  }
+  if (verse) {
+    let [book, chapNum, verseNum] = verse.split(`.`);
+    if (verse.includes(`-`)) {
+      verseNum = getVerseNumber(verse);
+    }
+    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${book}</a>
+                         > <a href="chapter.html?version=${version}&abbr=${abbreviation}&book=${book}"> ${chapNum} </a>
+                         > <a href="verse.html?version=${version}&abbr=${abbreviation}&chapter=${book}.${chapNum}"> ${verseNum} </a>`;
+  }
+
+  breadcrumbs.innerHTML = breadcrumbsHTML;
+  return breadcrumbsHTML;
 }
 
 /**

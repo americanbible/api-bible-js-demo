@@ -103,4 +103,16 @@ describe(`Load a selected verse`, () => {
   });
 });
 
+describe(`Load breadcrumbs`, () => {
+  it(`should have a function named loadBreadcrumbs`, function(done) {
+    loadBreadcrumbs.should.be.a(`function`);
+    done();
+  });
+  it(`should return breadcrumbs`, (done) => {
+    const content = loadBreadcrumbs();
+    expect(content).to.be.a(`string`);
+    done();
+  });
+});
+
 mocha.run();
