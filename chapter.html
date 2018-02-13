@@ -12,13 +12,13 @@
   <body>
     <div class="container pt-5">
       <h1>Bible API Example Application</h1>
-      <a href="index.html">Start again</a>
+      <span id="breadcrumbs"></span>
       <h2>Choose a chapter of the Bible:</h2>
       <ul id="chapter-list"></ul>
     </div>
 
     <script src="app.js"></script>
-    <script>loadChapters()</script>
+    <script>loadBreadcrumbs(); loadChapters()</script>
   </body>
 
 </html>

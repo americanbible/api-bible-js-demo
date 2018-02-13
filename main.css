@@ -1,17 +1,27 @@
 .grid {
-    list-style: none;
-    border: 1px solid lightgray;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    display: inline-block;
-    padding-top: 10px;
-    margin: 1px;
+  list-style: none;
+  border: 1px solid lightgray;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  display: inline-block;
+  margin: 1px;
+}
+
+.grid-link {
+  width: 60px;
+  height: 60px;
+  padding-top: 15px;
+  display: inline-block;
+}
+
+.grid-link:hover {
+  background-color: lightblue;
 }
 
 .v {
-    font-weight: bold;
-    padding-right: 5px;
-    font-size: .7em;
-    vertical-align: top;
+  font-weight: bold;
+  padding-right: 5px;
+  font-size: .7em;
+  vertical-align: top;
 }
