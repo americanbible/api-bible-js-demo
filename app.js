@@ -217,7 +217,7 @@ function loadSelectedVerse() {
 
   return getSelectedVerse(bibleVersionID, bibleVerseID).then(({ bibleId, bookId, content }) => {
     getBookNameFromID(bibleId, bookId).then((book) => {
-      bibleVerseList.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span> ${content}`;
+      bibleVerseList.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span><div class="eb-container">${content}</div>`;
     });
     return content;
   });
