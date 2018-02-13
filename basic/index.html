@@ -15,8 +15,44 @@
       <ul id="bible-version-list"></ul>
     </div>
 
-    <script src="app.js"></script>
-    <script>loadBibleVersions()</script>
+    <script src="my_key.js"></script>
+    <script>
+      const versionList = document.querySelector(`#bible-version-list`);
+      let versionHTML = ``;
+      getBibleVersions().then((bibleVersionList) => {
+        for (let version of bibleVersionList) {
+          versionHTML += `<li>(<a href="book.html?version=${version.id}&abbr=${version.abbreviation}">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
+        }
+        versionList.innerHTML = versionHTML;
+      });
+
+
+      /**
+       * Gets Bible versions from API.Bible
+       * @returns {Promise} containing list of Bible versions
+       */
+      function getBibleVersions() {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.withCredentials = false;
+
+          xhr.addEventListener(`readystatechange`, function() {
+            if (this.readyState === this.DONE) {
+              const {data} = JSON.parse(this.responseText);
+              const versions = data.map( ({name, id, abbreviation, description}) => { return {name, id, abbreviation, description}; } );
+              resolve(versions);
+            }
+          });
+
+          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles`);
+          xhr.setRequestHeader(`api-key`, API_KEY);
+
+          xhr.onerror = () => reject(xhr.statusText);
+
+          xhr.send();
+        });
+      }
+    </script>
   </body>
 
 </html>
