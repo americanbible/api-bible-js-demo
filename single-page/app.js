@@ -9,9 +9,7 @@ const searchContainer = document.querySelector(`#search-container`);
 const searchNav = document.querySelector(`#search-nav`);
 
 window.addEventListener(`popstate`, function(e) {
-  console.log('popped state: ', e.state)
   if (e.state) {
-    console.log("!!!!!")
     updatePage(e.state.params, false);
     e.preventDefault();
   }
@@ -372,16 +370,20 @@ function search(searchText, offset = 0, bibleVersionID, abbreviation) {
     if (data.passages) {
       textContent.innerHTML = ``;
       if (!data.passages[0]) {
-        resultsHTML = `☹️ No results. <a href="index.html">changing versions?</a>`;
+        resultsHTML = `☹️ No results. Try <a href="index.html">changing versions?</a>`;
       } else {
         for (let passage of data.passages) {
           resultsHTML += `<li><span class="iot">${passage.reference}</span> (<a href="javascript:void(0);" onclick="updatePage('verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${passage.chapterIds[0]}')">view chapter</a>)<br>${passage.content}<hr></li>`;
         }
       }
     }
+    if (data.error) {
+      textContent.innerHTML = ``;
+      resultsHTML = `❗️ The server responded with an error for that Bible version. Try <a href="index.html">changing versions?</a>`;
+    }
     resultsHTML += `</ul>`;
 
-    content.innerHTML = resultsHTML;
+    textContent.innerHTML = resultsHTML;
     return resultsHTML;
   });
 }
@@ -414,9 +416,13 @@ function getResults(searchText, offset = 0, bibleVersionID) {
 
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
-        const {data, meta} = JSON.parse(this.responseText);
-
-        _BAPI.t(meta.fumsId);
+        let data, meta;
+        if (this.status == 500) {
+          data = {error: this.statusText};
+        } else {
+          ({data, meta} = JSON.parse(this.responseText));
+          _BAPI.t(meta.fumsId);
+        }
         resolve(data);
       }
     });
@@ -536,10 +542,13 @@ function loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapter
   return breadcrumbsHTML;
 }
 
+/**
+ * Updates URL with provided parameters
+ * @param {string} params to update url with
+ */
 function updateParamsInURL(params) {
   if (history.pushState) {
-    var newurl = `index.html` + `?` + params;
-    console.log("pushing...", params)
+    const newurl = `index.html` + `?` + params;
     window.history.pushState({params:params},``,newurl);
   }
 }
