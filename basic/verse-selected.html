@@ -13,11 +13,17 @@
     <div class="container pt-5">
       <h1>Bible API Example Application</h1>
       <span id="breadcrumbs"></span>
+      <span class="search">
+        <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'" 
+          size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
+        <button onclick="searchButton()">Search</button>
+      </span>
       <h2>Selected verse:</h2>
       <span id="verse"></span>
     </div>
 
     <script src="my_key.js"></script>
+    <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
     <script>
       const bibleVerseList = document.querySelector(`#verse`);
       const bibleVersionID = getParameterByName(`version`);
@@ -58,9 +64,12 @@
 
           xhr.addEventListener(`readystatechange`, function() {
             if (this.readyState === this.DONE) {
-              const {content, bookId, bibleId} = JSON.parse(this.responseText).data;
+              const response = JSON.parse(this.responseText);
+              const fumsId = response.meta.fumsId;
+              const {content, bookId, bibleId} = response.data;
               const verse = {content, bookId, bibleId};
 
+              _BAPI.t(fumsId);
               resolve(verse);
             }
           });
@@ -114,6 +123,14 @@
         if (!results) return null;
         if (!results[2]) return ``;
         return decodeURIComponent(results[2].replace(/\+/g, ` `));
+      }
+
+      /**
+       * Loads page for new search
+       */
+      function searchButton(){
+        const searchInput = document.querySelector(`#search-input`);
+        window.location.href = `./search.html?&version=${bibleVersionID}&abbr=${abbreviation}&query=${searchInput.value}`;
       }
     </script>
   </body>

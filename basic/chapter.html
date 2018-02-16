@@ -13,6 +13,11 @@
     <div class="container pt-5">
       <h1>Bible API Example Application</h1>
       <span id="breadcrumbs"></span>
+      <span class="search">
+        <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'" 
+          size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
+        <button onclick="searchButton()">Search</button>
+      </span>
       <h2>Choose a chapter of the Bible:</h2>
       <ul id="chapter-list"></ul>
     </div>
@@ -83,6 +88,14 @@
         if (!results) return null;
         if (!results[2]) return ``;
         return decodeURIComponent(results[2].replace(/\+/g, ` `));
+      }
+
+      /**
+       * Loads page for new search
+       */
+      function searchButton(){
+        const searchInput = document.querySelector(`#search-input`);
+        window.location.href = `./search.html?&version=${bibleVersionID}&abbr=${abbreviation}&query=${searchInput.value}`;
       }
     </script>
   </body>

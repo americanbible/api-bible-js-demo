@@ -25,3 +25,11 @@
   font-size: .7em;
   vertical-align: top;
 }
+
+.right {
+  float: right;
+}
+
+.hidden {
+  display: none;
+}
