@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bible API Example Application</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="scripture.css">
+  </head>
+
+  <body>
+    <div class="container pt-5">
+      <h1>Bible API Example Application</h1>
+      <div><a href="index.html">home</a></div>
+      <h2>Search</h2>
+      <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'" 
+        size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
+      <button onclick="searchButton()">Search</button>
+
+      <div id="search-nav"></div>
+      <hr>
+      <div class="eb-container">
+        <ul id="results-list"></ul>
+      </div>
+    </div>
+
+    <script src="my_key.js"></script>
+    <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
+    <script>
+      const resultsList = document.querySelector(`#results-list`);
+      const searchInput = document.querySelector(`#search-input`);
+      const searchNav = document.querySelector(`#search-nav`);
+      const bibleVersionID = getParameterByName(`version`) || `06125adad2d5898a-01`;
+      const abbreviation = getParameterByName(`abbr`) || 'ASV';
+      const query = getParameterByName(`query`);
+
+      if (query) {
+        search(query);
+      }
+
+      /**
+       * Loads page for new search
+       */
+      function searchButton(){
+        window.location.href = `./search.html?&version=${bibleVersionID}&abbr=${abbreviation}&query=${searchInput.value}`;
+      }
+
+      /**
+       * Loads search results into page
+       */
+      function search(searchText, offset = 0) {
+        searchInput.value = searchText;
+        getResults(searchText, offset).then((data) => {
+          let resultsHTML = ``;
+
+          if (data.verses) {
+            if (!data.verses[0]) {
+              searchNav.innerHTML = ``;
+              resultsHTML = `☹️ No results. Try <a href="index.html">changing versions?</a>`;
+            } else {
+              const searchNavHTML = buildNav(offset, data.total, searchText);
+              searchNav.innerHTML = searchNavHTML;
+
+              for (let verse of data.verses) {
+                resultsHTML += `<li><span class="iot">${verse.reference}</span> (<a href="verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${verse.chapterId}">view chapter</a>)<br>${verse.text}<hr></li>`;
+              }
+            }
+          }
+
+          if (data.passages) {
+            searchNav.innerHTML = ``;
+            if (!data.passages[0]) {
+              resultsHTML = `☹️ No results. Try <a href="index.html">changing versions?</a>`;
+            } else {
+              for (let passage of data.passages) {
+                resultsHTML += `<li><span class="iot">${passage.reference}</span> (<a href="verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${passage.chapterIds[0]}">view chapter</a>)<br>${passage.content}<hr></li>`;
+              }
+            }
+          }
+
+
+          resultsList.innerHTML = resultsHTML;
+        });
+      }
+
+      /**
+       * Builds navigation for search results
+       * @returns {string} HTML to include for navigation
+       */
+      function buildNav(offset, total, searchText) {
+        let searchNavHTML = `<div>Showing <b>${offset*10+1}-${offset*10+10 > total ? total : offset*10+10}</b> of <b>${total}</b> results. Current page: <b>${offset+1}</b></div><div>`;
+        if (offset > 0) {
+          searchNavHTML += `<button onclick="search('${searchText}', ${offset-1})">Previous Page</button>`;
+        }
+
+        if (total / 10 > offset+1) {
+          searchNavHTML += `<button onclick="search('${searchText}', ${offset+1})">Next Page</button>`;
+        }
+
+        return searchNavHTML;
+      }
+
+      /**
+       * Gets verses that match search term from API.Bible
+       * @returns {Promise} containing list of verses
+       */
+      function getResults(searchText, offset = 0) {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.withCredentials = false;
+
+          xhr.addEventListener(`readystatechange`, function() {
+            if (this.readyState === this.DONE) {
+              const {data, meta} = JSON.parse(this.responseText);
+
+              _BAPI.t(meta.fumsId);
+              resolve(data);
+            }
+          });
+
+          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/search?query=${searchText}&offset=${offset}`);
+          xhr.setRequestHeader(`api-key`, API_KEY);
+
+          xhr.onerror = () => reject(xhr.statusText);
+
+          xhr.send();
+        });
+      }
+
+      /**
+       * Gets query parameter from URL based on name
+       * @param {string} name of query parameter
+       * @returns {string} value of query parameter
+       */
+      function getParameterByName(name) {
+        const url = window.location.href;
+        name = name.replace(/[\[\]]/g, `\\$&`);
+        const regex = new RegExp(`[?&]` + name + `(=([^&#]*)|&|#|$)`),
+          results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return ``;
+        return decodeURIComponent(results[2].replace(/\+/g, ` `));
+      }
+    </script>
+  </body>
+
+</html>

@@ -1,4 +1,4 @@
-/* globals chai, */
+/* globals chai */
 const should = chai.should();
 const expect = chai.expect;
 const assert = chai.assert;
@@ -103,6 +103,27 @@ describe(`Load a selected verse`, () => {
   });
   it(`should return a selected verse`, (done) => {
     loadSelectedVerse(bibleVersionID, abbreviation, bibleVerseID).then((content) => {
+      expect(content).to.be.a(`string`);
+      done();
+    });
+  });
+});
+
+describe(`Load search results`, () => {
+  it(`should have a function named search`, function(done) {
+    search.should.be.a(`function`);
+    done();
+  });
+  it(`should have a function named buildNav`, function(done) {
+    buildNav.should.be.a(`function`);
+    done();
+  });
+  it(`should have a function named getResults`, function(done) {
+    getResults.should.be.a(`function`);
+    done();
+  });
+  it(`should return results as a string`, (done) => {
+    search(`cow`, 0, bibleVersionID, abbreviation).then((content) => {
       expect(content).to.be.a(`string`);
       done();
     });

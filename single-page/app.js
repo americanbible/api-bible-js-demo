@@ -4,6 +4,16 @@ const breadcrumbs = document.querySelector(`#breadcrumbs`);
 const title = document.querySelector(`#title`);
 const list = document.querySelector(`#list`);
 const textContent = document.querySelector(`#content`);
+const searchInput = document.querySelector(`#search-input`);
+const searchContainer = document.querySelector(`#search-container`);
+const searchNav = document.querySelector(`#search-nav`);
+
+window.addEventListener(`popstate`, function(e) {
+  if (e.state) {
+    updatePage(e.state.params, false);
+    e.preventDefault();
+  }
+});
 
 updatePage();
 
@@ -11,8 +21,8 @@ updatePage();
  * Updates page pased on parameters.
  * @param {object} param contianing query parameters
  */
-function updatePage(params) {
-  if (params) {
+function updatePage(params, updateParams = true) {
+  if (params && updateParams) {
     updateParamsInURL(params);
   }
 
@@ -21,27 +31,36 @@ function updatePage(params) {
   const bibleBookID = getParameterByName(`book`);
   const bibleChapterID = getParameterByName(`chapter`);
   const bibleVerseID = getParameterByName(`verse`);
+  const query = getParameterByName(`query`);
 
   loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapterID, bibleVerseID);
   textContent.innerHTML = ``;
+  searchNav.innerHTML = ``;
 
   if (!bibleVersionID || ! abbreviation) {
+    window.history.replaceState({params:``},``,`index.html`);
+    searchContainer.className = `hidden`;
     title.innerHTML = `Choose a Bible version:`;
     loadBibleVersions();
-  }
-  if (bibleVersionID && !bibleBookID && !bibleChapterID && !bibleVerseID) {
+  } else if (query) {
+    list.innerHTML = ``;
+    searchContainer.className = `right`;
+    title.innerHTML = `Search Results:`;
+    search(query, 0, bibleVersionID, abbreviation);
+  } else if (bibleVersionID && !bibleBookID && !bibleChapterID && !bibleVerseID) {
+    searchContainer.className = `right`;
     title.innerHTML = `Choose a book of the Bible:`;
     loadBooks(bibleVersionID, abbreviation);
-  }
-  if (bibleVersionID && bibleBookID) {
+  } else if (bibleVersionID && bibleBookID) {
+    searchContainer.className = `right`;
     title.innerHTML = `Choose a chapter of the Bible:`;
     loadChapters(bibleVersionID, abbreviation, bibleBookID);
-  }
-  if (bibleVersionID && bibleChapterID) {
+  } else if (bibleVersionID && bibleChapterID) {
+    searchContainer.className = `right`;
     title.innerHTML = `Choose a verse:`;
     loadVerses(bibleVersionID, abbreviation, bibleChapterID);
-  }
-  if (bibleVersionID && bibleVerseID) {
+  } else if (bibleVersionID && bibleVerseID) {
+    searchContainer.className = `right`;
     title.innerHTML = `Selected verse:`;
     loadSelectedVerse(bibleVersionID, abbreviation, bibleVerseID);
   }
@@ -61,10 +80,11 @@ function loadBibleVersions() {
       versionHTML += `</ul><h4 class="list-heading">${language}</h4><ul>`;
       const versions = sortedVersions[languageGroup];
       for (let version of versions) {
-        versionHTML += `<li>(<a href="book.html?version=${version.id}&abbr=${version.abbreviation}">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
+        versionHTML += `<li>(<a href="javascript:void(0);" onclick="updatePage('version=${version.id}&abbr=${version.abbreviation}')">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
       }
     }
-    return list.innerHTML = versionHTML;
+    list.innerHTML = versionHTML;
+    return bibleVersionList;
   });
 
 
@@ -114,7 +134,7 @@ function loadBooks(bibleVersionID, abbreviation) {
 
   return getBooks(bibleVersionID).then((bookList) => {
     for (let book of bookList) {
-      bookHTML += `<li><a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${book.id}')"> ${book.name} </a></li>`;
+      bookHTML += `<li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${book.id}')"> ${book.name} </a></li>`;
     }
     list.innerHTML = bookHTML;
     return bookList;
@@ -158,7 +178,7 @@ function loadChapters(bibleVersionID, abbreviation, bibleBookID) {
 
   return getChapters(bibleVersionID, bibleBookID).then((chapterList) => {
     for (let chapter of chapterList) {
-      chapterHTML += `<li class="grid"><a class="grid-link" href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${chapter.id}')"> ${chapter.number} </a></li>`;
+      chapterHTML += `<li class="grid"><a class="grid-link" href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${chapter.id}')"> ${chapter.number} </a></li>`;
     }
     list.innerHTML = chapterHTML;
     return chapterList;
@@ -200,14 +220,14 @@ function getChapters(bibleVersionID, bibleBookID) {
  */
 function loadVerses(bibleVersionID, abbreviation, bibleChapterID) {
   let verseHTML = ``;
-  getChapterText(bibleVersionID, bibleChapterID).then((chapterText) => {
-    textContent.innerHTML = chapterText;
+  getChapterText(bibleVersionID, bibleChapterID).then((content) => {
+    textContent.innerHTML = content;
   });
 
   return getVerses(bibleVersionID, bibleChapterID).then((verseList) => {
     for (let verse of verseList) {
       const verseNumber = getVerseNumber(verse.id);
-      verseHTML += `<li class="grid"><a class="grid-link" href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&verse=${verse.id}')"> ${verseNumber} </a></li>`;
+      verseHTML += `<li class="grid"><a class="grid-link" href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&verse=${verse.id}')"> ${verseNumber} </a></li>`;
     }
     list.innerHTML = verseHTML;
     return verseList;
@@ -255,7 +275,9 @@ function getChapterText(bibleVersionID, bibleChapterID) {
 
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
-        const {data} = JSON.parse(this.responseText);
+        const {data, meta} = JSON.parse(this.responseText);
+
+        _BAPI.t(meta.fumsId);
         resolve(data.content);
       }
     });
@@ -297,14 +319,115 @@ function getSelectedVerse(bibleVersionID, bibleVerseID) {
 
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
-        const {content, bookId, bibleId} = JSON.parse(this.responseText).data;
+        const response = JSON.parse(this.responseText);
+        const fumsId = response.meta.fumsId;
+        const {content, bookId, bibleId} = response.data;
         const verse = {content, bookId, bibleId};
 
+        _BAPI.t(fumsId);
         resolve(verse);
       }
     });
 
     xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/verses/${bibleVerseID}?include-chapter-numbers=false&include-verse-numbers=false`);
+    xhr.setRequestHeader(`api-key`, API_KEY);
+
+    xhr.onerror = () => reject(xhr.statusText);
+
+    xhr.send();
+  });
+}
+
+function searchButton() {
+  const abbreviation = getParameterByName(`abbr`);
+  const bibleVersionID = getParameterByName(`version`);
+  updatePage(`version=${bibleVersionID}&abbr=${abbreviation}&query=${searchInput.value}`);
+}
+
+/**
+ * Loads search results into page
+ * @returns {string} containing HTML of results
+ */
+function search(searchText, offset = 0, bibleVersionID, abbreviation) {
+  searchInput.value = searchText;
+  return getResults(searchText, offset, bibleVersionID).then((data) => {
+    let resultsHTML = `<ul>`;
+
+    if (data.verses) {
+      if (!data.verses[0]) {
+        textContent.innerHTML = ``;
+        resultsHTML = `☹️ No results. Try <a href="index.html">changing versions?</a>`;
+      } else {
+        const searchNavHTML = buildNav(offset, data.total, searchText, bibleVersionID, abbreviation);
+        searchNav.innerHTML = searchNavHTML;
+
+        for (let verse of data.verses) {
+          resultsHTML += `<li><span class="iot">${verse.reference}</span> (<a href="javascript:void(0);" onclick="updatePage('verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${verse.chapterId}')">view chapter</a>)<br>${verse.text}<hr></li>`;
+        }
+      }
+    }
+
+    if (data.passages) {
+      textContent.innerHTML = ``;
+      if (!data.passages[0]) {
+        resultsHTML = `☹️ No results. Try <a href="index.html">changing versions?</a>`;
+      } else {
+        for (let passage of data.passages) {
+          resultsHTML += `<li><span class="iot">${passage.reference}</span> (<a href="javascript:void(0);" onclick="updatePage('verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${passage.chapterIds[0]}')">view chapter</a>)<br>${passage.content}<hr></li>`;
+        }
+      }
+    }
+    if (data.error) {
+      textContent.innerHTML = ``;
+      resultsHTML = `❗️ The server responded with an error for that Bible version. Try <a href="index.html">changing versions?</a>`;
+    }
+    resultsHTML += `</ul>`;
+
+    textContent.innerHTML = resultsHTML;
+    return resultsHTML;
+  });
+}
+
+/**
+ * Builds navigation for search results
+ * @returns {string} HTML to include for navigation
+ */
+function buildNav(offset, total, searchText, bibleVersionID, abbreviation) {
+  let searchNavHTML = `<div>Showing <b>${offset*10+1}-${offset*10+10 > total ? total : offset*10+10}</b> of <b>${total}</b> results. Current page: <b>${offset+1}</b></div><div>`;
+  if (offset > 0) {
+    searchNavHTML += `<button onclick="search('${searchText}', ${offset-1}, '${bibleVersionID}', '${abbreviation}')">Previous Page</button>`;
+  }
+
+  if (total / 10 > offset+1) {
+    searchNavHTML += `<button onclick="search('${searchText}', ${offset+1}, '${bibleVersionID}', '${abbreviation}')">Next Page</button><hr>`;
+  }
+
+  return searchNavHTML;
+}
+
+/**
+ * Gets verses that match search term from API.Bible
+ * @returns {Promise} containing list of verses
+ */
+function getResults(searchText, offset = 0, bibleVersionID) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+
+    xhr.addEventListener(`readystatechange`, function() {
+      if (this.readyState === this.DONE) {
+        let data, meta;
+        if (this.status == 500) {
+          data = {error: this.statusText};
+        } else {
+          ({data, meta} = JSON.parse(this.responseText));
+          _BAPI.t(meta.fumsId);
+        }
+        resolve(data);
+      }
+    });
+
+    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/search?query=${searchText}&offset=${offset}`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
@@ -395,13 +518,13 @@ function loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapter
     breadcrumbsHTML += ` > ${abbreviation}`;
   }
   if (bibleBookID) {
-    breadcrumbsHTML += ` > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
+    breadcrumbsHTML += ` > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
                          > ${bibleBookID}`;
   }
   if (bibleChapterID) {
     const [bibleBookID, chapNum] = bibleChapterID.split(`.`);
-    breadcrumbsHTML += ` > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
-                         > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a>
+    breadcrumbsHTML += ` > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
+                         > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a>
                          > ${chapNum}`;
   }
   if (bibleVerseID) {
@@ -409,9 +532,9 @@ function loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapter
     if (bibleVerseID.includes(`-`)) {
       verseNum = getVerseNumber(bibleVerseID);
     }
-    breadcrumbsHTML += ` > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
-                         > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a>
-                         > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${bibleBookID}.${chapNum}')"> ${chapNum} </a>
+    breadcrumbsHTML += ` > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
+                         > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a>
+                         > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${bibleBookID}.${chapNum}')"> ${chapNum} </a>
                          > ${verseNum}`;
   }
 
@@ -419,10 +542,14 @@ function loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapter
   return breadcrumbsHTML;
 }
 
+/**
+ * Updates URL with provided parameters
+ * @param {string} params to update url with
+ */
 function updateParamsInURL(params) {
   if (history.pushState) {
-    var newurl = window.location.protocol + `//` + window.location.host + window.location.pathname.split(`?`)[0] + `?` + params;
-    window.history.pushState({path:newurl},``,newurl);
+    const newurl = `index.html` + `?` + params;
+    window.history.pushState({params:params},``,newurl);
   }
 }
 

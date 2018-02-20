@@ -12,12 +12,19 @@
   <body>
     <div class="container pt-5">
       <h1>Bible API Example Application</h1>
-      <span id="breadcrumbs"></span>
+      <div id="breadcrumbs"></div>
+      <div id="search-container" class="hidden">
+        <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'" 
+          size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
+        <button onclick="searchButton()">Search</button>
+      </div>
       <h2 id="title">Choose a Bible version:</h2>
+      <span id="search-nav"></span>
       <ul id="list"></ul>
       <div class="eb-container" id="content"></div>
     </div>
 
+    <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
     <script src="app.js"></script>
   </body>
 

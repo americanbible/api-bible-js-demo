@@ -25,3 +25,7 @@
   font-size: .7em;
   vertical-align: top;
 }
+
+.search {
+  float: right;
+}

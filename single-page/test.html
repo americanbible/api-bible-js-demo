@@ -13,12 +13,19 @@
 
     <div class="container pt-5">
       <span id="breadcrumbs"></span>
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'" 
+          size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
+        <button onclick="searchButton()">Search</button>
+      </div>
       <h2 id="title">Choose a Bible version:</h2>
+      <span id="search-nav"></span>
       <ul id="list"></ul>
       <div class="eb-container" id="content"></div>
     </div>
   </body>
 
+  <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
   <script src="app.js"></script>
   <script type="text/javascript" src="test.js"></script>
 </html>
