@@ -54,12 +54,20 @@ function updatePage(params) {
 function loadBibleVersions() {
   let versionHTML = ``;
   return getBibleVersions().then((bibleVersionList) => {
-    for (let version of bibleVersionList) {
-      versionHTML += `<li>(<a href="#" onclick="updatePage('version=${version.id}&abbr=${version.abbreviation}')">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
+    const sortedVersions = sortVersionsByLanguage(bibleVersionList);
+
+    for (let languageGroup in sortedVersions) {
+      const language = languageGroup;
+      versionHTML += `</ul><h4 class="list-heading">${language}</h4><ul>`;
+      const versions = sortedVersions[languageGroup];
+      for (let version of versions) {
+        versionHTML += `<li>(<a href="book.html?version=${version.id}&abbr=${version.abbreviation}">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
+      }
     }
-    list.innerHTML = versionHTML;
-    return bibleVersionList;
+    return list.innerHTML = versionHTML;
   });
+
+
 }
 
 /**
@@ -74,7 +82,15 @@ function getBibleVersions() {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const {data} = JSON.parse(this.responseText);
-        const versions = data.map( ({name, id, abbreviation, description}) => { return {name, id, abbreviation, description}; } );
+        const versions = data.map( (data) => { 
+          return {
+            name: data.name, 
+            id: data.id, 
+            abbreviation: data.abbreviation, 
+            description: data.description, 
+            language: data.language.name
+          };
+        });
         resolve(versions);
       }
     });
@@ -337,6 +353,36 @@ function getVerseNumber(verseID) {
     verseNumber = verseID.split(`.`).pop(); 
   }
   return verseNumber;
+}
+
+/**
+ * Sorts Bible versions by language and alphabetically by abbreviation
+ * @params {Object} bibleVersionList list of Bible versions
+ * @returns {Object} sorted list of Bibles
+ */
+function sortVersionsByLanguage(bibleVersionList) {
+  let sortedVersions = {};
+
+  for (const version of bibleVersionList) {
+    if (!sortedVersions[version.language]) {
+      sortedVersions[version.language] = [];
+    }
+    sortedVersions[version.language].push(version);
+  }
+  for (const version in sortedVersions) {
+    sortedVersions[version].sort( (a, b) => {
+      const nameA = a.abbreviation.toUpperCase();
+      const nameB = b.abbreviation.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    } );
+  }
+  return sortedVersions;
 }
 
 /**
