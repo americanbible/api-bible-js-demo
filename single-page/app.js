@@ -1,17 +1,63 @@
 const API_KEY = `81f316c5f31960d155555818b8d0a59c`; // Fill this in with your own API key from https://scripture.api.bible/
 
+const breadcrumbs = document.querySelector(`#breadcrumbs`);
+const title = document.querySelector(`#title`);
+const list = document.querySelector(`#list`);
+const textContent = document.querySelector(`#content`);
+
+updatePage();
+
+/**
+ * Updates page pased on parameters.
+ * @param {object} param contianing query parameters
+ */
+function updatePage(params) {
+  if (params) {
+    updateParamsInURL(params);
+  }
+
+  const abbreviation = getParameterByName(`abbr`);
+  const bibleVersionID = getParameterByName(`version`);
+  const bibleBookID = getParameterByName(`book`);
+  const bibleChapterID = getParameterByName(`chapter`);
+  const bibleVerseID = getParameterByName(`verse`);
+
+  loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapterID, bibleVerseID);
+  textContent.innerHTML = ``;
+
+  if (!bibleVersionID || ! abbreviation) {
+    title.innerHTML = `Choose a Bible version:`;
+    loadBibleVersions();
+  }
+  if (bibleVersionID && !bibleBookID && !bibleChapterID && !bibleVerseID) {
+    title.innerHTML = `Choose a book of the Bible:`;
+    loadBooks(bibleVersionID, abbreviation);
+  }
+  if (bibleVersionID && bibleBookID) {
+    title.innerHTML = `Choose a chapter of the Bible:`;
+    loadChapters(bibleVersionID, abbreviation, bibleBookID);
+  }
+  if (bibleVersionID && bibleChapterID) {
+    title.innerHTML = `Choose a verse:`;
+    loadVerses(bibleVersionID, abbreviation, bibleChapterID);
+  }
+  if (bibleVersionID && bibleVerseID) {
+    title.innerHTML = `Selected verse:`;
+    loadSelectedVerse(bibleVersionID, abbreviation, bibleVerseID);
+  }
+}
+
 /**
  * Fills in list on page with Bible versions.
  * @returns {object} containing list of Bible versions
  */
 function loadBibleVersions() {
-  const versionList = document.querySelector(`#bible-version-list`);
   let versionHTML = ``;
   return getBibleVersions().then((bibleVersionList) => {
     for (let version of bibleVersionList) {
-      versionHTML += `<li>(<a href="book.html?version=${version.id}&abbr=${version.abbreviation}">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
+      versionHTML += `<li>(<a href="#" onclick="updatePage('version=${version.id}&abbr=${version.abbreviation}')">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
     }
-    versionList.innerHTML = versionHTML;
+    list.innerHTML = versionHTML;
     return bibleVersionList;
   });
 }
@@ -46,22 +92,15 @@ function getBibleVersions() {
  * Fills in list on page with books from selected version of the Bible (version specified in query params).
  * @returns {object} containing list of books of the Bible
  */
-function loadBooks() {
-  const bibleBookList = document.querySelector(`#book-list`);
-  const bibleVersionID = getParameterByName(`version`);
-  const abbreviation = getParameterByName(`abbr`);
+function loadBooks(bibleVersionID, abbreviation) {
 
   let bookHTML = ``;
 
-  if (!bibleVersionID) {
-    window.location.href = `./index.html`;
-  }
-
   return getBooks(bibleVersionID).then((bookList) => {
     for (let book of bookList) {
-      bookHTML += `<li><a href="chapter.html?version=${bibleVersionID}&abbr=${abbreviation}&book=${book.id}"> ${book.name} </a></li>`;
+      bookHTML += `<li><a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${book.id}')"> ${book.name} </a></li>`;
     }
-    bibleBookList.innerHTML = bookHTML;
+    list.innerHTML = bookHTML;
     return bookList;
   });
 }
@@ -98,22 +137,14 @@ function getBooks(bibleVersionID) {
  * Fills in list on page with chapters from selected book of the Bible (version and book specified in query params).
  * @returns {object} containing list of chapters from selected book
  */
-function loadChapters() {
-  let bibleChapterList = document.querySelector(`#chapter-list`);
-  const bibleVersionID = getParameterByName(`version`);
-  const bibleBookID = getParameterByName(`book`);
-  const abbreviation = getParameterByName(`abbr`);
+function loadChapters(bibleVersionID, abbreviation, bibleBookID) {
   let chapterHTML = ``;
-
-  if (!bibleVersionID || !bibleBookID) {
-    window.location.href = `./index.html`;
-  }
 
   return getChapters(bibleVersionID, bibleBookID).then((chapterList) => {
     for (let chapter of chapterList) {
-      chapterHTML += `<li class="grid"><a class="grid-link" href="verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${chapter.id}"> ${chapter.number} </a></li>`;
+      chapterHTML += `<li class="grid"><a class="grid-link" href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${chapter.id}')"> ${chapter.number} </a></li>`;
     }
-    bibleChapterList.innerHTML = chapterHTML;
+    list.innerHTML = chapterHTML;
     return chapterList;
   });
 }
@@ -147,28 +178,22 @@ function getChapters(bibleVersionID, bibleBookID) {
   });
 }
 
-
 /**
  * Fills in list on page with verses from selected chapter (version and chapter specified in query params).
  * @returns {object} containing list of verses from selected book
  */
-function loadVerses() {
-  const bibleVerseList = document.querySelector(`#verse-list`);
-  const bibleVersionID = getParameterByName(`version`);
-  const bibleChapterID = getParameterByName(`chapter`);
-  const abbreviation = getParameterByName(`abbr`);
+function loadVerses(bibleVersionID, abbreviation, bibleChapterID) {
   let verseHTML = ``;
-
-  if (!bibleVersionID || !bibleChapterID) {
-    window.location.href = `./index.html`;
-  }
+  getChapterText(bibleVersionID, bibleChapterID).then((chapterText) => {
+    textContent.innerHTML = chapterText;
+  });
 
   return getVerses(bibleVersionID, bibleChapterID).then((verseList) => {
     for (let verse of verseList) {
       const verseNumber = getVerseNumber(verse.id);
-      verseHTML += `<li class="grid"><a class="grid-link" href="verse-selected.html?version=${bibleVersionID}&abbr=${abbreviation}&verse=${verse.id}"> ${verseNumber} </a></li>`;
+      verseHTML += `<li class="grid"><a class="grid-link" href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&verse=${verse.id}')"> ${verseNumber} </a></li>`;
     }
-    bibleVerseList.innerHTML = verseHTML;
+    list.innerHTML = verseHTML;
     return verseList;
   });
 }
@@ -203,21 +228,41 @@ function getVerses(bibleVersionID, bibleChapterID) {
 }
 
 /**
+ * Gets chapter text from API.Bible
+ * @param {string} bibleChapterID to get chapter text from
+ * @returns {Promise} containing text from selected chapter
+ */
+function getChapterText(bibleVersionID, bibleChapterID) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+
+    xhr.addEventListener(`readystatechange`, function() {
+      if (this.readyState === this.DONE) {
+        const {data} = JSON.parse(this.responseText);
+        resolve(data.content);
+      }
+    });
+
+    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}`);
+    xhr.setRequestHeader(`api-key`, API_KEY);
+
+    xhr.onerror = () => reject(xhr.statusText);
+
+    xhr.send();
+  });
+}
+
+/**
  * Fills in the selected verse (version and verse specified in query params).
  * @returns {Object} containing selected verse
  */
-function loadSelectedVerse() {
-  let bibleVerseList = document.querySelector(`#verse`);
-  const bibleVersionID = getParameterByName(`version`);
-  const bibleVerseID = getParameterByName(`verse`);
+function loadSelectedVerse(bibleVersionID, abbreviation, bibleVerseID) {
 
-  if (!bibleVersionID || !bibleVerseID) {
-    window.location.href = `./index.html`;
-  }
-
-  return getSelectedVerse(bibleVersionID, bibleVerseID).then(({ bibleId, bookId, content }) => {
+  return getSelectedVerse(bibleVersionID, bibleVerseID).then(({ content, bookId, bibleId }) => {
     getBookNameFromID(bibleId, bookId).then((book) => {
-      bibleVerseList.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span><div class="eb-container">${content}</div>`;
+      list.innerHTML = ``;
+      textContent.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span>${content}`;
     });
     return content;
   });
@@ -297,42 +342,42 @@ function getVerseNumber(verseID) {
 /**
  * Loads breadcrumb links on page
  */
-function loadBreadcrumbs() {
-  const breadcrumbs = document.querySelector(`#breadcrumbs`);
+function loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapterID, bibleVerseID) {
   let breadcrumbsHTML = `<a href="index.html">home</a> `;
 
-  const abbreviation = getParameterByName(`abbr`);
-  const version = getParameterByName(`version`);
-  const book = getParameterByName(`book`);
-  const chapter = getParameterByName(`chapter`);
-  const verse = getParameterByName(`verse`);
-
-  if (abbreviation && !book && !chapter && !verse) {
+  if (abbreviation && !bibleBookID && !bibleChapterID && !bibleVerseID) {
     breadcrumbsHTML += ` > ${abbreviation}`;
   }
-  if (book) {
-    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${abbreviation}</a>
-                         > ${book}`;
+  if (bibleBookID) {
+    breadcrumbsHTML += ` > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
+                         > ${bibleBookID}`;
   }
-  if (chapter) {
-    const [book, chapNum] = chapter.split(`.`);
-    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${abbreviation}</a>
-                         > <a href="chapter.html?version=${version}&abbr=${abbreviation}&book=${book}">${book}</a>
+  if (bibleChapterID) {
+    const [bibleBookID, chapNum] = bibleChapterID.split(`.`);
+    breadcrumbsHTML += ` > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
+                         > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a>
                          > ${chapNum}`;
   }
-  if (verse) {
-    let [book, chapNum, verseNum] = verse.split(`.`);
-    if (verse.includes(`-`)) {
-      verseNum = getVerseNumber(verse);
+  if (bibleVerseID) {
+    let [bibleBookID, chapNum, verseNum] = bibleVerseID.split(`.`);
+    if (bibleVerseID.includes(`-`)) {
+      verseNum = getVerseNumber(bibleVerseID);
     }
-    breadcrumbsHTML += ` > <a href="book.html?version=${version}&abbr=${abbreviation}">${abbreviation}</a>
-                         > <a href="chapter.html?version=${version}&abbr=${abbreviation}&book=${book}">${book}</a>
-                         > <a href="verse.html?version=${version}&abbr=${abbreviation}&chapter=${book}.${chapNum}"> ${chapNum} </a>
+    breadcrumbsHTML += ` > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
+                         > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a>
+                         > <a href="#" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${bibleBookID}.${chapNum}')"> ${chapNum} </a>
                          > ${verseNum}`;
   }
 
   breadcrumbs.innerHTML = breadcrumbsHTML;
   return breadcrumbsHTML;
+}
+
+function updateParamsInURL(params) {
+  if (history.pushState) {
+    var newurl = window.location.protocol + `//` + window.location.host + window.location.pathname.split(`?`)[0] + `?` + params;
+    window.history.pushState({path:newurl},``,newurl);
+  }
 }
 
 /**

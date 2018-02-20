@@ -9,6 +9,11 @@ var myURL = document.location;
 if (myURL.toString().indexOf(`version`) === -1) {
   document.location = myURL + `?version=61fd76eafa1577c2-03&book=MAT&chapter=MAT.1&verse=MAT.1.1`;
 }
+const abbreviation = `GNTNT`;
+const bibleVersionID = `61fd76eafa1577c2-03`;
+const bibleBookID = `MAT`;
+const bibleChapterID = `MAT.1`;
+const bibleVerseID = `MAT.1.1`;
 
 describe(`Load a bible version`, () => {
   it(`should have an API KEY set`, function(done) {
@@ -44,7 +49,7 @@ describe(`Load a book`, () => {
     done();
   });
   it(`should return a book list`, (done) => {
-    loadBooks().then(([{name, id}]) => {
+    loadBooks(bibleVersionID, abbreviation).then(([{name, id}]) => {
       expect(name).to.be.a(`string`);
       expect(id).to.be.a(`string`);
       done();
@@ -62,7 +67,8 @@ describe(`Load a chapter`, () => {
     done();
   });
   it(`should return a chapter list`, (done) => {
-    loadChapters().then(([{id}]) => {
+    console.log('chapters', bibleVersionID)
+    loadChapters(bibleVersionID, abbreviation, bibleBookID).then(([{id}]) => {
       expect(id).to.be.a(`string`);
       done();
     });
@@ -79,7 +85,7 @@ describe(`Load a verse`, () => {
     done();
   });
   it(`should return a verses list`, (done) => {
-    loadVerses().then(([{id}]) => {
+    loadVerses(bibleVersionID, abbreviation, bibleChapterID).then(([{id}]) => {
       expect(id).to.be.a(`string`);
       done();
     });
@@ -96,7 +102,7 @@ describe(`Load a selected verse`, () => {
     done();
   });
   it(`should return a selected verse`, (done) => {
-    loadSelectedVerse().then((content) => {
+    loadSelectedVerse(bibleVersionID, abbreviation, bibleVerseID).then((content) => {
       expect(content).to.be.a(`string`);
       done();
     });
@@ -109,7 +115,7 @@ describe(`Load breadcrumbs`, () => {
     done();
   });
   it(`should return breadcrumbs`, (done) => {
-    const content = loadBreadcrumbs();
+    const content = loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapterID, bibleVerseID);
     expect(content).to.be.a(`string`);
     done();
   });
