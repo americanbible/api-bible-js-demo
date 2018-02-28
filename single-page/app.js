@@ -77,11 +77,12 @@ function loadBibleVersions() {
 
     for (let languageGroup in sortedVersions) {
       const language = languageGroup;
-      versionHTML += `</ul><h4 class="list-heading">${language}</h4><ul>`;
+      versionHTML += `<h4 class="list-heading">${language}</h4><ul>`;
       const versions = sortedVersions[languageGroup];
       for (let version of versions) {
         versionHTML += `<li>(<a href="javascript:void(0);" onclick="updatePage('version=${version.id}&abbr=${version.abbreviation}')">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
       }
+      versionHTML += `</ul>`;
     }
     list.innerHTML = versionHTML;
     return bibleVersionList;
@@ -102,12 +103,12 @@ function getBibleVersions() {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const {data} = JSON.parse(this.responseText);
-        const versions = data.map( (data) => { 
+        const versions = data.map( (data) => {
           return {
-            name: data.name, 
-            id: data.id, 
-            abbreviation: data.abbreviation, 
-            description: data.description, 
+            name: data.name,
+            id: data.id,
+            abbreviation: data.abbreviation,
+            description: data.description,
             language: data.language.name
           };
         });
@@ -133,9 +134,11 @@ function loadBooks(bibleVersionID, abbreviation) {
   let bookHTML = ``;
 
   return getBooks(bibleVersionID).then((bookList) => {
+    bookHTML += `<ul>`;
     for (let book of bookList) {
       bookHTML += `<li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${book.id}')"> ${book.name} </a></li>`;
     }
+    bookHTML += `</ul>`;
     list.innerHTML = bookHTML;
     return bookList;
   });
@@ -177,9 +180,11 @@ function loadChapters(bibleVersionID, abbreviation, bibleBookID) {
   let chapterHTML = ``;
 
   return getChapters(bibleVersionID, bibleBookID).then((chapterList) => {
+    chapterHTML += `<ul>`;
     for (let chapter of chapterList) {
       chapterHTML += `<li class="grid"><a class="grid-link" href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${chapter.id}')"> ${chapter.number} </a></li>`;
     }
+    chapterHTML += `</ul>`;
     list.innerHTML = chapterHTML;
     return chapterList;
   });
@@ -225,10 +230,12 @@ function loadVerses(bibleVersionID, abbreviation, bibleChapterID) {
   });
 
   return getVerses(bibleVersionID, bibleChapterID).then((verseList) => {
+    verseHTML += `<ul>`;
     for (let verse of verseList) {
       const verseNumber = getVerseNumber(verse.id);
       verseHTML += `<li class="grid"><a class="grid-link" href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&verse=${verse.id}')"> ${verseNumber} </a></li>`;
     }
+    verseHTML += `</ul>`;
     list.innerHTML = verseHTML;
     return verseList;
   });
@@ -473,7 +480,7 @@ function getVerseNumber(verseID) {
   if (verseID.includes(`-`)) {
     verseNumber = verseID.split(`-`).shift().split(`.`).pop() + `-` + verseID.split(`-`).pop().split(`.`).pop();
   } else {
-    verseNumber = verseID.split(`.`).pop(); 
+    verseNumber = verseID.split(`.`).pop();
   }
   return verseNumber;
 }

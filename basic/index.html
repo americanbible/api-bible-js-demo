@@ -12,7 +12,7 @@
     <div class="container pt-5">
       <h1>Bible API Example Application</h1>
       <h2>Choose a Bible version:</h2>
-      <ul id="bible-version-list"></ul>
+      <div id="bible-version-list"></div>
     </div>
 
     <script src="my_key.js"></script>
@@ -24,11 +24,12 @@
 
         for (let languageGroup in sortedVersions) {
           const language = languageGroup;
-          versionHTML += `</ul><h4 class="list-heading">${language}</h4><ul>`;
+          versionHTML += `<h4 class="list-heading">${language}</h4><ul>`;
           const versions = sortedVersions[languageGroup];
           for (let version of versions) {
             versionHTML += `<li>(<a href="book.html?version=${version.id}&abbr=${version.abbreviation}">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
           }
+          versionHTML += `</ul>`;
         }
         versionList.innerHTML = versionHTML;
       });
@@ -46,14 +47,14 @@
           xhr.addEventListener(`readystatechange`, function() {
             if (this.readyState === this.DONE) {
               const {data} = JSON.parse(this.responseText);
-              const versions = data.map( (data) => { 
+              const versions = data.map( (data) => {
                 return {
-                  name: data.name, 
-                  id: data.id, 
-                  abbreviation: data.abbreviation, 
-                  description: data.description, 
+                  name: data.name,
+                  id: data.id,
+                  abbreviation: data.abbreviation,
+                  description: data.description,
                   language: data.language.name
-                }; 
+                };
               });
 
               resolve(versions);
