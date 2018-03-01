@@ -1,3 +1,25 @@
+html,
+body {
+   margin: 0;
+   padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+}
+
+
+.site-container {
+  width: 100%;
+  max-width: 1140px;
+  padding: 0 20px;
+  margin: auto;
+}
+
+
 .grid {
   list-style: none;
   border: 1px solid lightgray;

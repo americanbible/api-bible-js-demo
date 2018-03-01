@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <title>Bible API Example Application</title>
-    <link rel="stylesheet" type="text/css" href="main.css">
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="scripture.css">
+    <title>Bible API Example Application</title>
   </head>
 
   <body>
-    <div class="container pt-5">
+    <div class="site-container pt-5">
       <h1>Bible API Example Application</h1>
       <span id="breadcrumbs"></span>
       <span class="search">
-        <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'" 
+        <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'"
           size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
         <button onclick="searchButton()">Search</button>
       </span>
@@ -51,7 +50,7 @@
       });
 
       const [book, chapter] = bibleChapterID.split(`.`);
-      const breadcrumbsHTML = `<a href="index.html">home</a> 
+      const breadcrumbsHTML = `<a href="index.html">home</a>
                                > <a href="book.html?version=${bibleVersionID}&abbr=${abbreviation}">${abbreviation}</a>
                                > <a href="chapter.html?version=${bibleVersionID}&abbr=${abbreviation}&book=${book}">${book}</a>
                                > ${chapter}`;
@@ -124,7 +123,7 @@
         if (verseID.includes(`-`)) {
           verseNumber = verseID.split(`-`).shift().split(`.`).pop() + `-` + verseID.split(`-`).pop().split(`.`).pop();
         } else {
-          verseNumber = verseID.split(`.`).pop(); 
+          verseNumber = verseID.split(`.`).pop();
         }
         return verseNumber;
       }

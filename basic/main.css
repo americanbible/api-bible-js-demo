@@ -1,3 +1,145 @@
+@import url("https://fonts.googleapis.com/css?family=Libre+Baskerville:700|Roboto:300,400,900");
+html,
+body {
+  margin: 0;
+  padding: 0; }
+
+html {
+  box-sizing: border-box; }
+  html *,
+  html *:before,
+  html *:after {
+    box-sizing: inherit; }
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300; }
+
+a {
+  color: #000;
+  text-decoration: none; }
+
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0; }
+
+.container {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1292px;
+  box-sizing: content-box;
+  padding: 0 16px; }
+  .container:after {
+    content: "";
+    display: table;
+    clear: both; }
+  @media only screen and (min-width: 600px) {
+    .container {
+      padding: 0 28px; } }
+  .container *, .container *:before, .container *:after {
+    box-sizing: border-box; }
+  .container .container {
+    padding-left: 0;
+    padding-right: 0; }
+  .container .full-width .container {
+    padding-left: 16px;
+    padding-right: 16px; }
+    @media only screen and (min-width: 1348px) {
+      .container .full-width .container {
+        padding-left: 0;
+        padding-right: 0; } }
+
+.full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw; }
+
+.content-wrapper {
+  position: relative;
+  z-index: 0; }
+  .content-wrapper:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+header h1 {
+  text-align: right;
+  background: #fff;
+  margin: 0; }
+  header h1 a {
+    /*color: #000;*/
+    /*text-decoration: none;*/
+    display: block;
+    font-size: 24px;
+    line-height: 44px;
+    padding: 0.5em 0; }
+    header h1 a:before {
+      display: block;
+      float: left;
+      width: 44px;
+      height: 44px;
+      content: "";
+      background: #027CFF url("logo.png") center no-repeat;
+      background-size: 21px auto; }
+header .subheader {
+  background: #F6FBFF;
+  padding: 34px 0;
+  position: relative; }
+  header .subheader:before {
+    content: "";
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.15); }
+  header .subheader h2 {
+    font-size: 16px;
+    line-height: 21px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0 0 6px; }
+  header .subheader h3 {
+    font-family: "Libre Baskerville", serif;
+    font-size: 28px;
+    line-height: 36px;
+    font-weight: 700;
+    margin: 0; }
+
+.list-container > ul {
+  margin-bottom: 70px; }
+.list-container .list-heading {
+  border-bottom: solid 1px #ABABAB; }
+  .list-container .list-heading span {
+    display: inline-block;
+    background: #31ACFF;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 18px;
+    line-height: 30px;
+    font-weight: 900;
+    padding: 0 1em;
+    margin-bottom: -1px; }
+.list-container li.bible {
+  font-size: 18px;
+  line-height: 1.4;
+  padding: 0.3em 0; }
+  .list-container li.bible .bible-version-abbr {
+    display: inline-block;
+    white-space: nowrap;
+    font-weight: 900;
+    min-width: 95px;
+    text-align: right;
+    text-decoration: none;
+    margin-right: 1.3em; }
+  .list-container li.bible li.bible .bible-version-desc:before {
+    content: "- "; }
+
 .grid {
   list-style: none;
   border: 1px solid lightgray;
@@ -5,27 +147,24 @@
   height: 60px;
   text-align: center;
   display: inline-block;
-  margin: 1px;
-}
+  margin: 1px; }
 
 .grid-link {
   width: 60px;
   height: 60px;
   padding-top: 15px;
-  display: inline-block;
-}
+  display: inline-block; }
 
 .grid-link:hover {
-  background-color: lightblue;
-}
+  background-color: lightblue; }
 
 .v {
   font-weight: bold;
   padding-right: 5px;
   font-size: .7em;
-  vertical-align: top;
-}
+  vertical-align: top; }
 
 .search {
-  float: right;
-}
+  float: right; }
+
+/*# sourceMappingURL=main.css.map */
