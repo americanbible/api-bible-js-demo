@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/scripture.css" rel="stylesheet">
+    <title>Bible API Example Application</title>
+  </head>
+
+  <body class="single-page single-page_test">
+
+    <header>
+      <div class="container">
+        <a href="index.html" class="logo" title="American Bible Society">ABS</a>
+
+        <div class="crumbs">
+          <div id="breadcrumbs"></div>
+        </div>
+
+        <h1>
+          <a href="index.html">
+            <span>API Demo App</span>
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="subheader">
+      <div class="container flex">
+
+        <div class="subheadings">
+            <h2 id="viewing-label"></h2>
+            <h3 id="viewing"></h3>
+        </div>
+        <div id="search-container" class="search-area flex">
+          <button onclick="searchButton()">🔎</button>
+          <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'"
+            size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
+        </div>
+
+      </div><!-- .container.flex -->
+    </div><!-- .subheader -->
+
+    <main class="container">
+      <h4 id="select-prompt" class="list-heading"><span>&nbsp;</span></h4>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API Example Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.1.0/mocha.min.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.3.0/chai.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.3.3/mocha.min.js"></script>
+  </head>
+  <body>
+    <front-end-tests id="mocha"></front-end-tests>
+
+    <div class="container pt-5">
+      <span id="breadcrumbs"></span>
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'" 
+          size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
+        <button onclick="searchButton()">Search</button>
+      </div>
+      <h2 id="title">Choose a Bible version:</h2>
+      <span id="search-nav"></span>
+      <ul id="list"></ul>
+      <div class="eb-container" id="content"></div>
+    </div>
+  </body>
+
+  <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
+  <script src="app.js"></script>
+  <script type="text/javascript" src="test.js"></script>
+</html>
+    </main>
+
+    <script src="../js/my_key.js"></script>
+    
+
+  </body>
+</html>

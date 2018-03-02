@@ -1,13 +1,15 @@
-const API_KEY = `81f316c5f31960d155555818b8d0a59c`; // Fill this in with your own API key from https://scripture.api.bible/
+// const API_KEY = `81f316c5f31960d155555818b8d0a59c`; // Fill this in with your own API key from https://scripture.api.bible/
 
 const breadcrumbs = document.querySelector(`#breadcrumbs`);
-const title = document.querySelector(`#title`);
+const viewingLabel = document.querySelector(`#viewing-label`);
+const title = document.querySelector(`#viewing`);
 const list = document.querySelector(`#list`);
 const textContent = document.querySelector(`#content`);
 const searchInput = document.querySelector(`#search-input`);
 const searchContainer = document.querySelector(`#search-container`);
 const searchNav = document.querySelector(`#search-nav`);
-
+const searchResults = document.querySelector(`#results-list`);
+const selectPrompt = document.querySelector(`#select-prompt span`);
 window.addEventListener(`popstate`, function(e) {
   if (e.state) {
     updatePage(e.state.params, false);
@@ -37,31 +39,56 @@ function updatePage(params, updateParams = true) {
   textContent.innerHTML = ``;
   searchNav.innerHTML = ``;
 
+  if (!bibleVersionID || !abbreviation) {
+    searchContainer.classList.add(`hidden`);
+  }
+  else {
+    searchContainer.classList.remove(`hidden`);
+  }
+
+  if (query) {
+    searchNav.classList.remove(`hidden`);
+  }
+  else {
+    searchNav.classList.add(`hidden`);
+  }
+
+
+  selectPrompt.classList.remove(`hidden`);
+
   if (!bibleVersionID || ! abbreviation) {
     window.history.replaceState({params:``},``,`index.html`);
-    searchContainer.className = `hidden`;
-    title.innerHTML = `Choose a Bible version:`;
+    viewingLabel.innerHTML = `Select a:`;
+    title.innerHTML = `Bible`;
+    list.className = `list-container bible-list`;
+    selectPrompt.classList.add(`hidden`);
     loadBibleVersions();
   } else if (query) {
     list.innerHTML = ``;
-    searchContainer.className = `right`;
-    title.innerHTML = `Search Results:`;
+    viewingLabel.innerHTML = `Search results for:`;
+    selectPrompt.classList.add(`hidden`);
+    title.innerHTML = query;
+    list.className = `list-container search-results-list`;
     search(query, 0, bibleVersionID, abbreviation);
   } else if (bibleVersionID && !bibleBookID && !bibleChapterID && !bibleVerseID) {
-    searchContainer.className = `right`;
-    title.innerHTML = `Choose a book of the Bible:`;
+    viewingLabel.innerHTML = `Viewing:`;
+    selectPrompt.innerHTML = `Select a Book`;
+    list.className = `list-container`;
     loadBooks(bibleVersionID, abbreviation);
   } else if (bibleVersionID && bibleBookID) {
-    searchContainer.className = `right`;
-    title.innerHTML = `Choose a chapter of the Bible:`;
+    viewingLabel.innerHTML = `Viewing:`;
+    selectPrompt.innerHTML = `Select a Chapter`;
+    list.className = `list-container numeric-list`;
     loadChapters(bibleVersionID, abbreviation, bibleBookID);
   } else if (bibleVersionID && bibleChapterID) {
-    searchContainer.className = `right`;
-    title.innerHTML = `Choose a verse:`;
+    viewingLabel.innerHTML = `Viewing:`;
+    selectPrompt.innerHTML = `Select a Verse`;
+    list.className = `list-container numeric-list`;
     loadVerses(bibleVersionID, abbreviation, bibleChapterID);
   } else if (bibleVersionID && bibleVerseID) {
-    searchContainer.className = `right`;
-    title.innerHTML = `Selected verse:`;
+    viewingLabel.innerHTML = `Selected verse:`;
+    list.className = `list-container`;
+    selectPrompt.classList.add(`hidden`);
     loadSelectedVerse(bibleVersionID, abbreviation, bibleVerseID);
   }
 }
@@ -77,11 +104,20 @@ function loadBibleVersions() {
 
     for (let languageGroup in sortedVersions) {
       const language = languageGroup;
-      versionHTML += `</ul><h4 class="list-heading">${language}</h4><ul>`;
+      versionHTML += `<h4 class="list-heading"><span>${language}</span></h4><ul>`;
       const versions = sortedVersions[languageGroup];
       for (let version of versions) {
-        versionHTML += `<li>(<a href="javascript:void(0);" onclick="updatePage('version=${version.id}&abbr=${version.abbreviation}')">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
+        versionHTML += `<li class="bible">
+          <a href="javascript:void(0);" onclick="updatePage('version=${version.id}&abbr=${version.abbreviation}')">
+            <abbr class="bible-version-abbr" title="${version.name}">${version.abbreviation}</abbr>
+            <span>
+              <span class="bible-version-name">${version.name}</span>
+              ${version.description ? '<span class="bible-version-desc">' + version.description + "</span>" : ''}
+            </span>
+          </a>
+        </li>`;
       }
+      versionHTML += `</ul>`;
     }
     list.innerHTML = versionHTML;
     return bibleVersionList;
@@ -102,12 +138,12 @@ function getBibleVersions() {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const {data} = JSON.parse(this.responseText);
-        const versions = data.map( (data) => { 
+        const versions = data.map( (data) => {
           return {
-            name: data.name, 
-            id: data.id, 
-            abbreviation: data.abbreviation, 
-            description: data.description, 
+            name: data.name,
+            id: data.id,
+            abbreviation: data.abbreviation,
+            description: data.description,
             language: data.language.name
           };
         });
@@ -130,12 +166,16 @@ function getBibleVersions() {
  */
 function loadBooks(bibleVersionID, abbreviation) {
 
+  title.innerHTML = abbreviation;
+
   let bookHTML = ``;
 
   return getBooks(bibleVersionID).then((bookList) => {
+    bookHTML += `<ul>`;
     for (let book of bookList) {
       bookHTML += `<li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${book.id}')"> ${book.name} </a></li>`;
     }
+    bookHTML += `</ul>`;
     list.innerHTML = bookHTML;
     return bookList;
   });
@@ -174,12 +214,17 @@ function getBooks(bibleVersionID) {
  * @returns {object} containing list of chapters from selected book
  */
 function loadChapters(bibleVersionID, abbreviation, bibleBookID) {
+
+  title.innerHTML = bibleBookID;
+
   let chapterHTML = ``;
 
   return getChapters(bibleVersionID, bibleBookID).then((chapterList) => {
+    chapterHTML += `<ol>`;
     for (let chapter of chapterList) {
       chapterHTML += `<li class="grid"><a class="grid-link" href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${chapter.id}')"> ${chapter.number} </a></li>`;
     }
+    chapterHTML += `</ol>`;
     list.innerHTML = chapterHTML;
     return chapterList;
   });
@@ -219,16 +264,21 @@ function getChapters(bibleVersionID, bibleBookID) {
  * @returns {object} containing list of verses from selected book
  */
 function loadVerses(bibleVersionID, abbreviation, bibleChapterID) {
+
+  title.innerHTML = bibleChapterID;
+
   let verseHTML = ``;
   getChapterText(bibleVersionID, bibleChapterID).then((content) => {
     textContent.innerHTML = content;
   });
 
   return getVerses(bibleVersionID, bibleChapterID).then((verseList) => {
+    verseHTML += `<ol>`;
     for (let verse of verseList) {
       const verseNumber = getVerseNumber(verse.id);
       verseHTML += `<li class="grid"><a class="grid-link" href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&verse=${verse.id}')"> ${verseNumber} </a></li>`;
     }
+    verseHTML += `</ol>`;
     list.innerHTML = verseHTML;
     return verseList;
   });
@@ -300,7 +350,8 @@ function loadSelectedVerse(bibleVersionID, abbreviation, bibleVerseID) {
   return getSelectedVerse(bibleVersionID, bibleVerseID).then(({ content, bookId, bibleId }) => {
     getBookNameFromID(bibleId, bookId).then((book) => {
       list.innerHTML = ``;
-      textContent.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span>${content}`;
+      viewing.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span>`;
+      textContent.innerHTML = `${content}`;
     });
     return content;
   });
@@ -356,13 +407,17 @@ function search(searchText, offset = 0, bibleVersionID, abbreviation) {
     if (data.verses) {
       if (!data.verses[0]) {
         textContent.innerHTML = ``;
-        resultsHTML = `☹️ No results. Try <a href="index.html">changing versions?</a>`;
+        resultsHTML = `<div class="no-results">☹️ No results. Try <a href="index.html">changing versions?</a></div>`;
       } else {
         const searchNavHTML = buildNav(offset, data.total, searchText, bibleVersionID, abbreviation);
         searchNav.innerHTML = searchNavHTML;
 
         for (let verse of data.verses) {
-          resultsHTML += `<li><span class="iot">${verse.reference}</span> (<a href="javascript:void(0);" onclick="updatePage('verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${verse.chapterId}')">view chapter</a>)<br>${verse.text}<hr></li>`;
+          resultsHTML += `<li>
+            <h5>${verse.reference}</h5>
+            <div class="text not-eb-container">${verse.text}</div>
+            <a href="javascript:void(0);" onclick="updatePage('verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${verse.chapterId}')">view chapter</a>
+          </li>`
         }
       }
     }
@@ -370,10 +425,14 @@ function search(searchText, offset = 0, bibleVersionID, abbreviation) {
     if (data.passages) {
       textContent.innerHTML = ``;
       if (!data.passages[0]) {
-        resultsHTML = `☹️ No results. Try <a href="index.html">changing versions?</a>`;
+        resultsHTML = `<div class="no-results">☹️ No results. Try <a href="index.html">changing versions?</a></div>`;
       } else {
         for (let passage of data.passages) {
-          resultsHTML += `<li><span class="iot">${passage.reference}</span> (<a href="javascript:void(0);" onclick="updatePage('verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${passage.chapterIds[0]}')">view chapter</a>)<br>${passage.content}<hr></li>`;
+          resultsHTML += `<li>
+            <h5>${passage.reference}</h5>
+            <div class="text not-eb-container">${passage.content}</div>
+            <a href="verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${passage.chapterIds[0]}">view chapter</a>)<br>${passage.content}
+          </li>`;
         }
       }
     }
@@ -383,7 +442,7 @@ function search(searchText, offset = 0, bibleVersionID, abbreviation) {
     }
     resultsHTML += `</ul>`;
 
-    textContent.innerHTML = resultsHTML;
+    searchResults.innerHTML = resultsHTML;
     return resultsHTML;
   });
 }
@@ -473,7 +532,7 @@ function getVerseNumber(verseID) {
   if (verseID.includes(`-`)) {
     verseNumber = verseID.split(`-`).shift().split(`.`).pop() + `-` + verseID.split(`-`).pop().split(`.`).pop();
   } else {
-    verseNumber = verseID.split(`.`).pop(); 
+    verseNumber = verseID.split(`.`).pop();
   }
   return verseNumber;
 }
@@ -512,30 +571,30 @@ function sortVersionsByLanguage(bibleVersionList) {
  * Loads breadcrumb links on page
  */
 function loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapterID, bibleVerseID) {
-  let breadcrumbsHTML = `<a href="index.html">home</a> `;
+  let breadcrumbsHTML = `<ul>`;
 
   if (abbreviation && !bibleBookID && !bibleChapterID && !bibleVerseID) {
-    breadcrumbsHTML += ` > ${abbreviation}`;
+    breadcrumbsHTML += `<li>${abbreviation}</li>`;
   }
   if (bibleBookID) {
-    breadcrumbsHTML += ` > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
-                         > ${bibleBookID}`;
+    breadcrumbsHTML += `<li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a></li>
+                        <li>${bibleBookID}</li>`;
   }
   if (bibleChapterID) {
     const [bibleBookID, chapNum] = bibleChapterID.split(`.`);
-    breadcrumbsHTML += ` > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
-                         > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a>
-                         > ${chapNum}`;
+    breadcrumbsHTML += `<li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a></li>
+                        <li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a></li>
+                        <li>${chapNum}</li>`;
   }
   if (bibleVerseID) {
     let [bibleBookID, chapNum, verseNum] = bibleVerseID.split(`.`);
     if (bibleVerseID.includes(`-`)) {
       verseNum = getVerseNumber(bibleVerseID);
     }
-    breadcrumbsHTML += ` > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a>
-                         > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a>
-                         > <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${bibleBookID}.${chapNum}')"> ${chapNum} </a>
-                         > ${verseNum}`;
+    breadcrumbsHTML += `<li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a></li>
+                        <li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a></li>
+                        <li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${bibleBookID}.${chapNum}')">${chapNum}</a></li>
+                        <li>${verseNum}</li>`;
   }
 
   breadcrumbs.innerHTML = breadcrumbsHTML;

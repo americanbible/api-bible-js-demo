@@ -1,0 +1,362 @@
+@import url("https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700|Roboto:300,400,700");
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 12.8px;
+}
+@media only screen and (min-width: 600px) {
+  html {
+    font-size: 16px;
+  }
+}
+html *,
+html *:before,
+html *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+*:focus {
+  outline: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container {
+  box-sizing: content-box;
+  max-width: 1060px;
+  padding: 0 10px;
+  margin: auto;
+}
+@media only screen and (min-width: 600px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+.container *, .container *:before, .container *:after {
+  box-sizing: border-box;
+}
+
+header {
+  position: relative;
+  z-index: 99;
+  padding: 0.5em 0;
+}
+header:after {
+  content: "";
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.15);
+}
+header .container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+header .logo {
+  text-indent: 99999px;
+  overflow: hidden;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: #027CFF url("../img/logo.png") center no-repeat;
+  background-size: 22px auto;
+}
+header h1 {
+  text-align: right;
+  background: #fff;
+}
+header h1 a {
+  font-family: "Libre Baskerville", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #027CFF;
+  font-size: 1.5rem;
+  line-height: 2.75rem;
+}
+
+.subheader {
+  background: #F6FBFF;
+  padding: 2.125rem 0;
+  position: relative;
+  margin-bottom: 3.125rem;
+}
+.subheader .container {
+  flex-wrap: wrap;
+}
+.subheader .subheadings {
+  margin-right: 2rem;
+}
+.subheader .subheadings h2 {
+  font-size: 1rem;
+  line-height: 1.3125;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.375em;
+}
+.subheader .subheadings h3 {
+  font-family: "Libre Baskerville", serif;
+  font-size: 1.75rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+}
+.subheader .subheadings h3 i {
+  font-style: normal;
+}
+
+.crumbs {
+  flex: 1;
+  margin-left: 1em;
+}
+.crumbs ul:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.crumbs li {
+  float: left;
+}
+.crumbs li:before {
+  float: left;
+  margin: 0 0.5em;
+  content: ">";
+}
+.crumbs li:first-child:before {
+  display: none;
+}
+.crumbs a {
+  float: left;
+  border-bottom: solid 1px;
+  color: #31ACFF;
+  border-color: inherit;
+}
+.crumbs a:hover {
+  border-color: transparent;
+}
+
+.search-area {
+  background: #fff;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 1rem;
+}
+@media only screen and (min-width: 500px) {
+  .search-area {
+    width: auto;
+  }
+}
+.search-area button,
+.search-area input {
+  font-size: 0.875rem;
+  height: 3em;
+  line-height: 3em;
+  border: 0;
+  background: none;
+}
+.search-area button {
+  text-align: center;
+  padding: 0 0.5em 0 1em;
+  cursor: pointer;
+  width: 2.8rem;
+}
+.search-area input {
+  width: calc(100% - 2.8rem);
+  padding: 0 0.5em 0 0;
+}
+body.basic_index .search-area {
+  display: none;
+}
+
+.search-nav {
+  margin-bottom: 2rem;
+}
+.search-nav > * {
+  display: block;
+}
+.search-nav .results-current-page {
+  margin-bottom: 1rem;
+}
+.search-nav .results-nav button {
+  font-size: 1rem;
+  line-height: 2em;
+  cursor: pointer;
+  border: 1px solid lightgray;
+  background: #fff;
+}
+.search-nav .results-nav button:hover {
+  border-color: #31ACFF;
+  color: #31ACFF;
+}
+.search-nav .results-nav button + button {
+  margin-left: 1rem;
+}
+.search-nav.search-nav-top {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 2rem;
+}
+.search-nav.search-nav-top .results-current-page,
+.search-nav.search-nav-top .results-nav {
+  display: none;
+}
+.search-nav.search-nav-bottom .results-count {
+  display: none;
+}
+
+body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
+  display: none;
+}
+
+.list-heading {
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 1em;
+  font-weight: normal;
+}
+.list-heading span {
+  display: inline-block;
+  background: #31ACFF;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1.125rem;
+  line-height: 1.875rem;
+  font-weight: 700;
+  padding: 0 1em;
+  margin-bottom: -1px;
+}
+
+.list-container > ul,
+.list-container > ol {
+  margin-bottom: 4.375rem;
+}
+.list-container li {
+  font-size: 2rem;
+  line-height: 1.5;
+  padding: 0.25em 0;
+}
+.list-container li a:hover {
+  color: #31ACFF;
+}
+.list-container.bible-list li {
+  font-size: 1rem;
+  line-height: 1.5625rem;
+  padding: 0.3em 0;
+}
+.list-container.bible-list li a {
+  display: flex;
+  justify-content: left;
+}
+.list-container.bible-list li .bible-version-abbr {
+  display: inline-block;
+  white-space: nowrap;
+  font-weight: 700;
+  min-width: 5.3em;
+  text-align: right;
+  text-decoration: none;
+  margin-right: 1.3em;
+}
+.list-container.bible-list li .bible-version-desc:before {
+  content: "- ";
+}
+.list-container.search-results-list li {
+  padding: 0 0 2.5rem;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 2.75rem;
+}
+.list-container.search-results-list li:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.list-container.search-results-list li > * {
+  line-height: 1.5rem;
+  margin-bottom: 0.3em;
+}
+.list-container.search-results-list li h5 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.list-container.search-results-list li .text {
+  font-size: 1.125rem;
+  font-weight: 300;
+}
+.list-container.search-results-list li > a {
+  float: left;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #31ACFF;
+  border-bottom: solid 1px #31ACFF;
+}
+.list-container.search-results-list li > a:hover {
+  border-color: transparent;
+}
+.list-container.numeric-list ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+@media only screen and (min-width: 600px) {
+  .list-container.numeric-list ol {
+    justify-content: left;
+  }
+}
+.list-container.numeric-list li {
+  padding: 0;
+  margin: 0 0.15em 0.3em;
+}
+@media only screen and (min-width: 600px) {
+  .list-container.numeric-list li {
+    margin: 0 0.3em 0.3em 0;
+  }
+}
+.list-container.numeric-list li a {
+  display: inline-block;
+  padding: 0 0.25em;
+  border: 1px solid lightgray;
+  white-space: nowrap;
+  font-size: 1rem;
+  line-height: 3.75rem;
+  min-width: 3.75rem;
+  text-align: center;
+}
+.list-container.numeric-list li a:hover {
+  background: #31ACFF;
+  color: #fff;
+}

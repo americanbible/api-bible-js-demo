@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Bible API Example Application</title>
+---
+title: Bible API Example Application
+---
 
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  </head>
+      <div id="bible-version-list" class="list-container bible-list"></div>
 
-  <body>
-    <div class="container pt-5">
-      <h1>Bible API Example Application</h1>
-      <h2>Choose a Bible version:</h2>
-      <ul id="bible-version-list"></ul>
-    </div>
+<% content_for :subheader do %>
+            <h2>Select a:</h2>
+            <h3 id="viewing">Bible</h3>
+<% end %>
 
-    <script src="my_key.js"></script>
-    <script>
+<% content_for :javascript do %>
+<script>
       const versionList = document.querySelector(`#bible-version-list`);
       let versionHTML = ``;
       getBibleVersions().then((bibleVersionList) => {
@@ -24,11 +18,20 @@
 
         for (let languageGroup in sortedVersions) {
           const language = languageGroup;
-          versionHTML += `</ul><h4 class="list-heading">${language}</h4><ul>`;
+          versionHTML += `<h4 class="list-heading"><span>${language}</span></h4><ul>`;
           const versions = sortedVersions[languageGroup];
           for (let version of versions) {
-            versionHTML += `<li>(<a href="book.html?version=${version.id}&abbr=${version.abbreviation}">${version.abbreviation}</a>) ${version.name} ${version.description ? '- ' + version.description : ''}</li>`;
+            versionHTML += `<li class="bible">
+                              <a href="book.html?version=${version.id}&abbr=${version.abbreviation}">
+                                <abbr class="bible-version-abbr" title="${version.name}">${version.abbreviation}</abbr>
+                                <span>
+                                  <span class="bible-version-name">${version.name}</span>
+                                  ${version.description ? '<span class="bible-version-desc">' + version.description + "</span>" : ''}
+                                </span>
+                              </a>
+                            </li>`;
           }
+          versionHTML += `</ul>`;
         }
         versionList.innerHTML = versionHTML;
       });
@@ -46,14 +49,14 @@
           xhr.addEventListener(`readystatechange`, function() {
             if (this.readyState === this.DONE) {
               const {data} = JSON.parse(this.responseText);
-              const versions = data.map( (data) => { 
+              const versions = data.map( (data) => {
                 return {
-                  name: data.name, 
-                  id: data.id, 
-                  abbreviation: data.abbreviation, 
-                  description: data.description, 
+                  name: data.name,
+                  id: data.id,
+                  abbreviation: data.abbreviation,
+                  description: data.description,
                   language: data.language.name
-                }; 
+                };
               });
 
               resolve(versions);
@@ -99,6 +102,5 @@
         return sortedVersions;
       }
     </script>
-  </body>
 
-</html>
+<% end %>

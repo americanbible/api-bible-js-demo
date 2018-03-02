@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/scripture.css" rel="stylesheet">
+    <title>Bible API Example Application</title>
+  </head>
+
+  <body class="basic basic_index">
+
+    <header>
+      <div class="container">
+        <a href="index.html" class="logo" title="American Bible Society">ABS</a>
+
+        <div class="crumbs">
+          <div id="breadcrumbs"></div>
+        </div>
+
+        <h1>
+          <a href="index.html">
+            <span>API Demo App</span>
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="subheader">
+      <div class="container flex">
+
+        <div class="subheadings">
+                        <h2>Select a:</h2>
+            <h3 id="viewing">Bible</h3>
+
+        </div>
+        <div id="search-container" class="search-area flex">
+          <button onclick="searchButton()">🔎</button>
+          <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'"
+            size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
+        </div>
+
+      </div><!-- .container.flex -->
+    </div><!-- .subheader -->
+
+    <main class="container">
+      <h4 id="select-prompt" class="list-heading"><span>&nbsp;</span></h4>
+      <div id="bible-version-list" class="list-container bible-list"></div>
+
+
+
+    </main>
+
+    <script src="../js/my_key.js"></script>
+    <script>
+      const versionList = document.querySelector(`#bible-version-list`);
+      let versionHTML = ``;
+      getBibleVersions().then((bibleVersionList) => {
+        const sortedVersions = sortVersionsByLanguage(bibleVersionList);
+
+        for (let languageGroup in sortedVersions) {
+          const language = languageGroup;
+          versionHTML += `<h4 class="list-heading"><span>${language}</span></h4><ul>`;
+          const versions = sortedVersions[languageGroup];
+          for (let version of versions) {
+            versionHTML += `<li class="bible">
+                              <a href="book.html?version=${version.id}&abbr=${version.abbreviation}">
+                                <abbr class="bible-version-abbr" title="${version.name}">${version.abbreviation}</abbr>
+                                <span>
+                                  <span class="bible-version-name">${version.name}</span>
+                                  ${version.description ? '<span class="bible-version-desc">' + version.description + "</span>" : ''}
+                                </span>
+                              </a>
+                            </li>`;
+          }
+          versionHTML += `</ul>`;
+        }
+        versionList.innerHTML = versionHTML;
+      });
+
+
+      /**
+       * Gets Bible versions from API.Bible
+       * @returns {Promise} containing list of Bible versions
+       */
+      function getBibleVersions() {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.withCredentials = false;
+
+          xhr.addEventListener(`readystatechange`, function() {
+            if (this.readyState === this.DONE) {
+              const {data} = JSON.parse(this.responseText);
+              const versions = data.map( (data) => {
+                return {
+                  name: data.name,
+                  id: data.id,
+                  abbreviation: data.abbreviation,
+                  description: data.description,
+                  language: data.language.name
+                };
+              });
+
+              resolve(versions);
+            }
+          });
+
+          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles`);
+          xhr.setRequestHeader(`api-key`, API_KEY);
+
+          xhr.onerror = () => reject(xhr.statusText);
+
+          xhr.send();
+        });
+      }
+
+      /**
+       * Sorts Bible versions by language and alphabetically by abbreviation
+       * @params {Object} bibleVersionList list of Bible versions
+       * @returns {Object} sorted list of Bibles
+       */
+      function sortVersionsByLanguage(bibleVersionList) {
+        let sortedVersions = {};
+
+        for (const version of bibleVersionList) {
+          if (!sortedVersions[version.language]) {
+            sortedVersions[version.language] = [];
+          }
+          sortedVersions[version.language].push(version);
+        }
+        for (const version in sortedVersions) {
+          sortedVersions[version].sort( (a, b) => {
+            const nameA = a.abbreviation.toUpperCase();
+            const nameB = b.abbreviation.toUpperCase();
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+            return 0;
+          } );
+        }
+        return sortedVersions;
+      }
+    </script>
+
+
+
+  </body>
+</html>

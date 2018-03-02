@@ -1,0 +1,477 @@
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700|Roboto:300,400,700');
+
+$boldest: 700;
+
+// =============================================================================
+// Media query
+// =============================================================================
+@mixin media($query) {
+  @media only screen and ($query) {
+    @content;
+  }
+}
+
+// =============================================================================
+// Clearfix
+// =============================================================================
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+// =============================================================================
+// Outer container
+// =============================================================================
+
+@mixin outer-container($max-width: 100%) {
+  max-width: $max-width;
+  margin-left: auto;
+  margin-right: auto;
+  @include clearfix;
+}
+
+$serif: 'Libre Baskerville', serif;
+$sans:  'Roboto', sans-serif;
+$base-font-size:        16px;
+
+
+$site-max-width:        1060px;
+$grid-gutter:           20px;
+$hgg:                   $grid-gutter / 2; // Half grid gutter
+$container-padding:     $grid-gutter;
+$mobile-padding:        $hgg;
+
+$breakpoint-direction: "min-width";
+$reverse-breakpoint-direction: "max-width";
+
+$bp-shoot: "#{$breakpoint-direction}: 500px";
+$bp-sapling: "#{$breakpoint-direction}: 600px";
+
+$bp-dev: "#{$breakpoint-direction}: 725px";
+
+$logo-blue: #027CFF;
+$app-blue: #31ACFF;
+$app-light-grey: lightgray;
+
+$default-border: 1px solid $app-light-grey;
+
+// ============================================================
+
+
+html,
+body {
+   margin: 0;
+   padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: $base-font-size * 0.8;
+  @include media($bp-sapling) {
+    font-size: $base-font-size;
+  }
+  *,
+  *:before,
+  *:after
+  {
+    box-sizing: inherit;
+  }
+}
+
+body {
+  font-family: $sans;
+  font-weight: 300;
+}
+
+*:focus {
+  outline: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+.hidden {
+  display: none !important; // sob 😢
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.container {
+  box-sizing: content-box;
+  max-width: $site-max-width;
+  padding: 0 $mobile-padding;
+  margin: auto;
+  @include media($bp-sapling) {
+    padding: 0 $container-padding;
+  }
+  * {
+    &,
+    &:before,
+    &:after
+    {
+      box-sizing: border-box;
+    }
+  }
+}
+
+
+
+header {
+  position: relative;
+  z-index: 99;
+  padding: 0.5em 0;
+  &:after {
+    content: "";
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    box-shadow: 0 2px 14px 0 rgba(0,0,0,0.15);
+  }
+
+  .container {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .logo {
+    text-indent: 99999px;
+    overflow: hidden;
+    width: 2.75rem;
+    height: 2.75rem;
+    background: #027CFF url("../img/logo.png") center no-repeat;
+    background-size: 22px auto;
+  }
+  h1 {
+    text-align: right;
+    background: #fff;
+    a {
+      font-family: $serif;
+      font-style: italic;
+      font-weight: 400;
+      color: $logo-blue;
+      font-size: 1.5rem;
+      line-height: 2.75rem;
+    }
+  }
+} // header
+
+
+.subheader {
+  background: #F6FBFF;
+  padding: 2.125rem 0;
+  position: relative;
+  margin-bottom: 3.125rem;
+  .container {
+    flex-wrap: wrap;
+  }
+  .subheadings {
+    margin-right: 2rem;
+    h2 {
+      font-size: 1rem;
+      line-height: 1.3125;
+      font-weight: $boldest;
+      text-transform: uppercase;
+      margin-bottom: 0.375em;
+    }
+    h3 {
+      font-family: $serif;
+      font-size: 1.75rem;
+      line-height: 2.25rem;
+      font-weight: 700;
+      i {
+        font-style: normal; // selected verse title markup contains italic tag
+      }
+    }
+  }
+} // .subheader
+
+
+.crumbs {
+
+  flex: 1;
+  margin-left: 1em;
+
+  ul {
+    @include clearfix;
+  }
+
+  li {
+    float: left;
+    &:before {
+      float: left;
+      margin: 0 0.5em;
+      content: ">";
+    }
+    &:first-child {
+      &:before {
+        display: none;
+      }
+    }
+  }
+
+  a {
+    float: left;
+    border-bottom: solid 1px;
+    color: $app-blue;
+    border-color: inherit;
+    &:hover {
+      border-color: transparent;
+    }
+  }
+
+}
+
+
+
+.search-area { // as opposed to body.search
+
+  background: #fff;
+  border: $default-border;
+  border-radius: 5px;
+
+  width: 100%;
+  margin-top: 1rem;
+  @include media($bp-shoot) {
+    width: auto;
+  }
+
+  button,
+  input
+  {
+    font-size: 0.875rem;
+    height: 3em;
+    line-height: 3em;
+    border: 0;
+    background: none;
+  }
+  button {
+    text-align: center;
+    padding: 0 0.5em 0 1em;
+    cursor: pointer;
+    width: 2.8rem;
+  }
+  input {
+    width: calc(100% - 2.8rem);
+    padding: 0 0.5em 0 0;
+  }
+
+  body.basic_index & {
+    display: none;
+  }
+}
+
+.search-nav {
+  margin-bottom: 2rem;
+  > * {
+    display: block;
+  }
+  .results-current-page {
+    margin-bottom: 1rem;
+  }
+  .results-nav {
+    button {
+      font-size: 1rem;
+      line-height: 2em;
+      cursor: pointer;
+      border: $default-border;
+      background: #fff;
+      &:hover {
+        border-color: $app-blue;
+        color: $app-blue;
+      }
+      & + button {
+        margin-left: 1rem;
+      }
+    }
+  }
+  &.search-nav-top {
+    padding-bottom: 2rem;
+    border-bottom: $default-border;
+    margin-bottom: 2rem;
+    .results-current-page,
+    .results-nav
+    {
+      display: none;
+    }
+  }
+  &.search-nav-bottom {
+    .results-count {
+      display: none;
+    }
+  }
+
+}
+
+
+main {
+}
+
+#select-prompt {
+  body.basic_index &,
+  body.basic_verse-selected &
+  {
+    display: none;
+  }
+}
+
+.list-heading {
+  border-bottom: $default-border;
+  margin-bottom: 1em;
+  font-weight: normal;
+  span {
+    display: inline-block;
+    background: $app-blue;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.125rem;
+    line-height: 1.875rem;
+    font-weight: $boldest;
+    padding: 0 1em;
+    margin-bottom: -1px;
+  }
+}
+
+// .eb-container [class^=list-container] { // undo .eb-container [class^=li] from scripture.css
+//   padding: 0 !important;
+//   margin: 0 !important;
+//   text-indent: 0 !important;
+// }
+
+
+.list-container {
+
+  > ul,
+  > ol
+  {
+    margin-bottom: 4.375rem;
+  }
+  li {
+    font-size: 2rem;
+    line-height: 1.5;
+    padding: 0.25em 0;
+    a {
+      &:hover {
+        color: $app-blue;
+      }
+    }
+  }
+
+  &.bible-list {
+    li {
+      font-size: 1rem;
+      line-height: 1.5625rem;
+      padding: 0.3em 0;
+
+      a {
+        display: flex;
+        justify-content: left;
+      }
+
+      .bible-version-abbr {
+        display: inline-block;
+        white-space: nowrap;
+        font-weight: $boldest;
+        min-width: 5.3em;
+        text-align: right;
+        text-decoration: none;
+        margin-right: 1.3em;
+      }
+      .bible-version-desc {
+        &:before {
+          content: "- ";
+        }
+      }
+    } // li
+  } // &.bible-list
+
+  &.search-results-list {
+    li {
+      padding: 0 0 2.5rem;
+      border-bottom: $default-border;
+      margin-bottom: 2.75rem;
+      @include clearfix;
+      > * {
+        line-height: 1.5rem;
+        margin-bottom: 0.3em;
+      }
+      h5 {
+        font-size: 1.125rem;
+        font-weight: $boldest;
+        text-transform: uppercase;
+      }
+      .text {
+        font-size: 1.125rem;
+        font-weight: 300;
+      }
+      > a {
+        float: left;
+        font-size: 1rem;
+        font-weight: $boldest;
+        text-transform: uppercase;
+        color: $app-blue;
+        border-bottom: solid 1px $app-blue;
+        &:hover {
+          border-color: transparent;
+        }
+      }
+    }
+  }
+
+  &.numeric-list {
+    ol {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      @include media($bp-sapling) {
+        justify-content: left;
+      }
+    }
+    li {
+      padding: 0;
+      margin: 0 0.15em 0.3em;
+      @include media($bp-sapling) {
+        margin: 0 0.3em 0.3em 0;
+      }
+      a {
+        display: inline-block;
+        padding: 0 0.25em;
+        border: $default-border;
+        white-space: nowrap;
+        font-size: 1rem;
+        line-height: 3.75rem;
+        min-width: 3.75rem;
+        text-align: center;
+        &:hover {
+          background: $app-blue;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+} // .list-container

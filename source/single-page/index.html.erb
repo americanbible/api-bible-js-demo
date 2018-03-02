@@ -1,0 +1,16 @@
+---
+title: Bible API Example Application
+---
+      <div id="search-nav" class="search-nav search-nav-top"></div>
+      <div id="list" class="list-container"></div>
+      <div class="eb-container" id="content"></div>
+      <div id="results-list" class="search-results-list list-container"></div>
+      <div id="search-nav-bottom" class="search-nav search-nav-bottom"></div>
+
+      <div id="list" class="list-container"></div>
+      <div class="eb-container" id="content"></div>
+
+<% content_for :javascript do %>
+    <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
+    <script src="../js/app.js"></script>
+<% end %>
