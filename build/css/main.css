@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Libre+Baskerville:700|Roboto:300,400,900");
+@import url("https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700|Roboto:300,400,700");
 html,
 body {
   margin: 0;
@@ -103,6 +103,7 @@ header h1 {
 header h1 a {
   font-family: "Libre Baskerville", serif;
   font-style: italic;
+  font-weight: 400;
   color: #027CFF;
   font-size: 1.5rem;
   line-height: 2.75rem;
@@ -123,7 +124,7 @@ header h1 a {
 .subheader .subheadings h2 {
   font-size: 1rem;
   line-height: 1.3125;
-  font-weight: 900;
+  font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 0.375em;
 }
@@ -244,6 +245,7 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
 .list-heading {
   border-bottom: 1px solid lightgray;
   margin-bottom: 1em;
+  font-weight: normal;
 }
 .list-heading span {
   display: inline-block;
@@ -252,7 +254,7 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
   text-transform: uppercase;
   font-size: 1.125rem;
   line-height: 1.875rem;
-  font-weight: 900;
+  font-weight: 700;
   padding: 0 1em;
   margin-bottom: -1px;
 }
@@ -281,7 +283,7 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
 .list-container.bible-list li .bible-version-abbr {
   display: inline-block;
   white-space: nowrap;
-  font-weight: 900;
+  font-weight: 700;
   min-width: 5.3em;
   text-align: right;
   text-decoration: none;
@@ -306,7 +308,7 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
 }
 .list-container.search-results-list li h5 {
   font-size: 1.125rem;
-  font-weight: 900;
+  font-weight: 700;
   text-transform: uppercase;
 }
 .list-container.search-results-list li .text {
@@ -316,7 +318,7 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
 .list-container.search-results-list li > a {
   float: left;
   font-size: 1rem;
-  font-weight: 900;
+  font-weight: 700;
   text-transform: uppercase;
   color: #31ACFF;
   border-bottom: solid 1px #31ACFF;
@@ -349,7 +351,7 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
   padding: 0 0.25em;
   border: 1px solid lightgray;
   white-space: nowrap;
-  font-size: 2rem;
+  font-size: 1rem;
   line-height: 3.75rem;
   min-width: 3.75rem;
   text-align: center;
