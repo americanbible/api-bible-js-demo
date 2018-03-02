@@ -13,9 +13,14 @@
 
     <header>
       <div class="container">
+        <a href="index.html" class="logo" title="American Bible Society">ABS</a>
+
+        <div class="crumbs">
+          <div id="breadcrumbs"></div>
+        </div>
+
         <h1>
-          <a class="flex" href="/">
-            <span class="logo" title="American Bible Society">ABS</span>
+          <a href="index.html">
             <span>API Demo App</span>
           </a>
         </h1>
@@ -26,9 +31,10 @@
       <div class="container flex">
 
         <div class="subheadings">
-
+            <h2 id="viewing-label"></h2>
+            <h3 id="viewing"></h3>
         </div>
-        <div class="search-area flex">
+        <div id="search-container" class="search-area flex">
           <button onclick="searchButton()">🔎</button>
           <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'"
             size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
@@ -37,11 +43,8 @@
       </div><!-- .container.flex -->
     </div><!-- .subheader -->
 
-    <div class="container crumbs">
-      <div id="breadcrumbs"></div>
-    </div>
-
     <main class="container">
+      <h4 id="select-prompt" class="list-heading"><span>&nbsp;</span></h4>
 <!DOCTYPE html>
 <html>
   <head>

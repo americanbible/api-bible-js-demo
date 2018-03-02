@@ -13,9 +13,14 @@
 
     <header>
       <div class="container">
+        <a href="index.html" class="logo" title="American Bible Society">ABS</a>
+
+        <div class="crumbs">
+          <div id="breadcrumbs"></div>
+        </div>
+
         <h1>
-          <a class="flex" href="/">
-            <span class="logo" title="American Bible Society">ABS</span>
+          <a href="index.html">
             <span>API Demo App</span>
           </a>
         </h1>
@@ -26,9 +31,10 @@
       <div class="container flex">
 
         <div class="subheadings">
-
+            <h2 id="viewing-label"></h2>
+            <h3 id="viewing"></h3>
         </div>
-        <div class="search-area flex">
+        <div id="search-container" class="search-area flex">
           <button onclick="searchButton()">🔎</button>
           <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'"
             size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
@@ -37,24 +43,16 @@
       </div><!-- .container.flex -->
     </div><!-- .subheader -->
 
-    <div class="container crumbs">
-      <div id="breadcrumbs"></div>
-    </div>
-
     <main class="container">
-    <div class="site-container pt-5">
-      <h1>Bible API Example Application</h1>
-      <div id="breadcrumbs"></div>
-      <div id="search-container" class="hidden">
-        <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'"
-          size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
-        <button onclick="searchButton()">Search</button>
-      </div>
-      <h2 id="title">Choose a Bible version:</h2>
-      <span id="search-nav"></span>
-      <div id="list"></div>
+      <h4 id="select-prompt" class="list-heading"><span>&nbsp;</span></h4>
+      <div id="search-nav" class="search-nav search-nav-top"></div>
+      <div id="list" class="list-container"></div>
       <div class="eb-container" id="content"></div>
-    </div>
+      <div id="results-list" class="search-results-list list-container"></div>
+      <div id="search-nav-bottom" class="search-nav search-nav-bottom"></div>
+
+      <div id="list" class="list-container"></div>
+      <div class="eb-container" id="content"></div>
 
 
     </main>

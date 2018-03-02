@@ -13,9 +13,14 @@
 
     <header>
       <div class="container">
+        <a href="index.html" class="logo" title="American Bible Society">ABS</a>
+
+        <div class="crumbs">
+          <div id="breadcrumbs"></div>
+        </div>
+
         <h1>
-          <a class="flex" href="/">
-            <span class="logo" title="American Bible Society">ABS</span>
+          <a href="index.html">
             <span>API Demo App</span>
           </a>
         </h1>
@@ -26,11 +31,11 @@
       <div class="container flex">
 
         <div class="subheadings">
-  <h2>Selected verse:</h2>
+              <h2>Selected verse:</h2>
   <h3 id="viewing"><span id="verse"></span></h3>
 
         </div>
-        <div class="search-area flex">
+        <div id="search-container" class="search-area flex">
           <button onclick="searchButton()">🔎</button>
           <input type="text" id="search-input" placeholder="ex. 'John 3:16-19' OR 'kingdom'"
             size="30" onkeydown = "if (event.keyCode == 13) searchButton()" >
@@ -39,11 +44,8 @@
       </div><!-- .container.flex -->
     </div><!-- .subheader -->
 
-    <div class="container crumbs">
-      <div id="breadcrumbs"></div>
-    </div>
-
     <main class="container">
+      <h4 id="select-prompt" class="list-heading"><span>&nbsp;</span></h4>
 
 <div id="verse-content" class="verse-container"></div>
 
@@ -76,7 +78,6 @@
     }
     const breadcrumbsHTML = `
       <ul>
-        <li><a href="index.html">Home</a></li>
         <li><a href="book.html?version=${bibleVersionID}&abbr=${abbreviation}">${abbreviation}</a></li>
         <li><a href="chapter.html?version=${bibleVersionID}&abbr=${abbreviation}&book=${book}">${book}</a></li>
         <li><a href="verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${book}.${chapter}">${chapter}</a></li>

@@ -34,45 +34,20 @@
 
 $serif: 'Libre Baskerville', serif;
 $sans:  'Roboto', sans-serif;
+$base-font-size:        16px;
 
 
 $site-max-width:        1060px;
-
-$base-font-size:        16px;
-
-// $small-gap:             10px;
-// $large-gap:             50px;
-
-// $default-h-space:       $small-gap;
-// $default-v-space:       $large-gap;
-// $v-space-lg:            2 * $default-v-space;
-// $header-v-space:        125px;
-// $header-height-mobile:  68px;
-// $header-height-desktop: 120px;
-
 $grid-gutter:           20px;
 $hgg:                   $grid-gutter / 2; // Half grid gutter
-
 $container-padding:     $grid-gutter;
 $mobile-padding:        $hgg;
-
-// $default-radius:        4px;
-
 
 $breakpoint-direction: "min-width";
 $reverse-breakpoint-direction: "max-width";
 
-
-// $bp-bud: "#{$breakpoint-direction}: 300px";
-// $bp-acorn: "#{$breakpoint-direction}: 400px";
 $bp-shoot: "#{$breakpoint-direction}: 500px";
 $bp-sapling: "#{$breakpoint-direction}: 600px";
-// $bp-oak: "#{$breakpoint-direction}: 700px";
-// $bp-grove: "#{$breakpoint-direction}: 800px";
-// $bp-forest: "#{$breakpoint-direction}: 900px";
-// $bp-rainforest: "#{$breakpoint-direction}: 1000px";
-// $bp-amazonia: "#{$breakpoint-direction}: #{$site-max-width + ($container-padding*2)}";
-
 
 $bp-dev: "#{$breakpoint-direction}: 725px";
 
@@ -83,7 +58,6 @@ $app-light-grey: lightgray;
 $default-border: 1px solid $app-light-grey;
 
 // ============================================================
-
 
 
 html,
