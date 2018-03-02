@@ -1,5 +1,6 @@
 ---
 title: Bible API Example Application
+selectPrompt: Select a Book
 ---
 
 <% content_for :subheader do %>
@@ -7,7 +8,6 @@ title: Bible API Example Application
   <h3 id="viewing"></h3>
 <% end %>
 
-<h4 class="list-heading"><span>Select a Book</span></h4>
 <div id="book-list" class="list-container"></div>
 
 
@@ -37,7 +37,6 @@ title: Bible API Example Application
     document.querySelector(`#viewing`).innerHTML = `${abbreviation}`;
     const breadcrumbsHTML = `
       <ul>
-        <li><a href="index.html">Home</a></li>
         <li>${abbreviation}</li>
       </ul>
     `;
