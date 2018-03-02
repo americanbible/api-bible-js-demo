@@ -1,4 +1,4 @@
-const API_KEY = `81f316c5f31960d155555818b8d0a59c`; // Fill this in with your own API key from https://scripture.api.bible/
+// const API_KEY = `81f316c5f31960d155555818b8d0a59c`; // Fill this in with your own API key from https://scripture.api.bible/
 
 const breadcrumbs = document.querySelector(`#breadcrumbs`);
 const title = document.querySelector(`#title`);
@@ -574,3 +574,4 @@ function getParameterByName(name) {
   if (!results[2]) return ``;
   return decodeURIComponent(results[2].replace(/\+/g, ` `));
 }
+;
