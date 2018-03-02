@@ -1,12 +1,11 @@
-/* line 1, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container {
   /* HTML5 display-role reset for older browsers */
   font-size: 18px;
   font-family: "CharisSIL", serif;
   line-height: 1.5;
-  color: #333; }
+  color: #333;
+}
 
-/* line 7, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container html, .eb-container body, .eb-container div, .eb-container span, .eb-container applet, .eb-container object, .eb-container iframe,
 .eb-container h1, .eb-container h2, .eb-container h3, .eb-container h4, .eb-container h5, .eb-container h6, .eb-container p, .eb-container blockquote, .eb-container pre,
 .eb-container a, .eb-container abbr, .eb-container acronym, .eb-container address, .eb-container big, .eb-container cite, .eb-container code,
@@ -25,68 +24,68 @@
   border: 0;
   font-size: 100%;
   font: inherit;
-  vertical-align: baseline; }
+  vertical-align: baseline;
+}
 
-/* line 26, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container article, .eb-container aside, .eb-container details, .eb-container figcaption, .eb-container figure,
 .eb-container footer, .eb-container header, .eb-container hgroup, .eb-container menu, .eb-container nav, .eb-container section {
-  display: block; }
+  display: block;
+}
 
-/* line 29, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container ol, .eb-container ul {
-  list-style: none; }
+  list-style: none;
+}
 
-/* line 31, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container blockquote, .eb-container q {
-  quotes: none; }
+  quotes: none;
+}
 
-/* line 33, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container blockquote:before, .eb-container blockquote:after,
 .eb-container q:before, .eb-container q:after {
   content: '';
-  content: none; }
+  content: none;
+}
 
-/* line 37, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container table {
   border-collapse: collapse;
-  border-spacing: 0; }
+  border-spacing: 0;
+}
 
-/* line 40, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container * {
-  background: none; }
+  background: none;
+}
 
-/* line 43, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .c {
   text-align: center;
   font-weight: bold;
-  font-size: 1.3em; }
+  font-size: 1.3em;
+}
 
-/* line 47, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ca {
   font-style: italic;
   font-weight: normal;
-  color: #999999; }
+  color: #999999;
+}
 
-/* line 51, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ca:before {
-  content: "("; }
+  content: "(";
+}
 
-/* line 53, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ca:after {
-  content: ")" !important; }
+  content: ")" !important;
+}
 
-/* line 55, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .cl {
   text-align: center;
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-/* line 58, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .cd {
   margin-left: 1em;
   margin-right: 1em;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 62, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container sup[class^=v] {
   color: black;
   font-size: .7em;
@@ -95,85 +94,85 @@
   line-height: 0;
   font-family: "Helvetica", sans-serif;
   font-weight: bold;
-  top: inherit; }
+  top: inherit;
+}
 
-/* line 71, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container sup[class^=v]:after {
-  content: "\a0"; }
+  content: "\a0";
+}
 
-/* line 73, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container sup + sup:before {
-  content: "\a0"; }
+  content: "\a0";
+}
 
-/* line 75, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .va {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 77, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .va:before {
-  content: "("; }
+  content: "(";
+}
 
-/* line 79, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .va:after {
-  content: ")" !important; }
+  content: ")" !important;
+}
 
-/* line 81, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .xo {
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-/* line 83, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .xk {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 85, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .xq {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 87, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .notelink {
   text-decoration: underline;
-  padding: .1em; }
+  padding: .1em;
+}
 
-/* line 90, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .notelink, .eb-container .notelink:hover, .eb-container .notelink:active, .eb-container .notelink:visited {
-  color: #8c8c8c; }
+  color: #8c8c8c;
+}
 
-/* line 92, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .notelink sup {
   font-size: .7em;
   letter-spacing: -.03em;
   vertical-align: 0.25em;
   line-height: 0;
   font-family: "Helvetica", sans-serif;
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-/* line 99, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .notelink + sup:before {
-  content: "\a0"; }
+  content: "\a0";
+}
 
-/* line 101, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .f {
-  display: block; }
+  display: block;
+}
 
-/* line 103, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .fr {
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-/* line 105, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .fk {
   font-style: italic;
-  font-variant: small-caps; }
+  font-variant: small-caps;
+}
 
-/* line 108, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=fq] {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 110, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .fl {
   font-style: italic;
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-/* line 113, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .fv {
   color: #737373;
   font-size: .75em;
@@ -181,509 +180,510 @@
   vertical-align: 0.25em;
   line-height: 0;
   font-family: "Helvetica", sans-serif;
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-/* line 121, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .fv:after {
-  content: "\a0"; }
+  content: "\a0";
+}
 
-/* line 123, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .h {
   text-align: center;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 126, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=imt] {
   text-align: center;
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-/* line 129, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .imt, .eb-container .imt1,
 .eb-container .imte, .eb-container .imte1 {
-  font-size: 1.4em; }
+  font-size: 1.4em;
+}
 
-/* line 132, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .imt2, .eb-container .imte2 {
-  font-size: 1.3em; }
+  font-size: 1.3em;
+}
 
-/* line 134, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .imt3, .eb-container .imte3 {
-  font-size: 1.2em; }
+  font-size: 1.2em;
+}
 
-/* line 136, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .imt4, .eb-container .imte4 {
-  font-size: 1.1em; }
+  font-size: 1.1em;
+}
 
-/* line 138, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=is] {
   font-size: 1.1em;
   text-align: center;
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-/* line 142, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^="ip"] {
-  text-indent: 1em; }
+  text-indent: 1em;
+}
 
-/* line 144, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ipi {
   padding-left: rhythm(1);
-  padding-right: rhythm(1); }
+  padding-right: rhythm(1);
+}
 
-/* line 147, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .im {
-  text-indent: 0; }
+  text-indent: 0;
+}
 
-/* line 149, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .imi {
   text-indent: 0;
   margin-left: 1em;
-  margin-right: 1em; }
+  margin-right: 1em;
+}
 
-/* line 153, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ipq {
   font-style: italic;
   margin-left: 1em;
-  margin-right: 1em; }
+  margin-right: 1em;
+}
 
-/* line 157, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .imq {
   margin-left: 1em;
-  margin-right: 1em; }
+  margin-right: 1em;
+}
 
-/* line 160, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ipr {
   text-align: right;
-  text-indent: 0; }
+  text-indent: 0;
+}
 
-/* line 163, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=iq] {
   margin-left: 1em;
-  margin-right: 1em; }
+  margin-right: 1em;
+}
 
-/* line 166, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .iq2 {
-  text-indent: 1em; }
+  text-indent: 1em;
+}
 
-/* line 168, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=ili] {
   padding-left: 1em;
-  text-indent: -1em; }
+  text-indent: -1em;
+}
 
-/* line 171, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ili1 {
   margin-left: 1em;
-  margin-right: 1em; }
+  margin-right: 1em;
+}
 
-/* line 174, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ili2 {
   margin-left: 2em;
-  margin-right: 1em; }
+  margin-right: 1em;
+}
 
-/* line 177, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .iot {
   font-weight: bold;
   font-size: 1.1em;
-  margin-top: 1.5em; }
+  margin-top: 1.5em;
+}
 
-/* line 181, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .io, .eb-container .io1 {
   margin-left: 1em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 184, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .io2 {
   margin-left: 2em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 187, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .io3 {
   margin-left: 3em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 190, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .io4 {
   margin-left: 4em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 193, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ior {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 195, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .iex {
-  text-indent: 1em; }
+  text-indent: 1em;
+}
 
-/* line 197, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .iqt {
   text-indent: 1em;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 200, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=p] {
-  text-indent: 1em; }
+  text-indent: 1em;
+}
 
-/* line 202, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .m {
-  text-indent: 0 !important; }
+  text-indent: 0 !important;
+}
 
-/* line 204, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .pmo {
   text-indent: 0;
   margin-left: 1em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 208, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .pm {
   margin-left: 1em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 211, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .pmr {
-  text-align: right; }
+  text-align: right;
+}
 
-/* line 213, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .pmc {
   margin-left: 1em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 216, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .pi {
   margin-left: 1em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 219, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .pi1 {
   margin-left: 2em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 222, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .pi2 {
   margin-left: 3em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 225, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .pi3 {
   margin-left: 4em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 228, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .mi {
   margin-left: 1em;
   margin-right: 0em;
-  text-indent: 0; }
+  text-indent: 0;
+}
 
-/* line 232, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .pc {
   text-align: center;
-  text-indent: 0; }
+  text-indent: 0;
+}
 
-/* line 235, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .cls {
-  text-align: right; }
+  text-align: right;
+}
 
-/* line 237, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=li] {
   padding-left: 1em;
   text-indent: -1em;
   margin-left: 1em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 242, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .li2 {
   margin-left: 2em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 245, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .li3 {
   margin-left: 3em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 248, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .li4 {
   margin-left: 4em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 251, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=q] {
   padding-left: 1em;
   text-indent: -1em;
   margin-left: 1em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 256, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .q2 {
   margin-left: 1.5em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 259, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .q3 {
   margin-left: 2em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 262, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .q4 {
   margin-left: 2.5em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 265, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .qr {
   text-align: right;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 268, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .qc {
-  text-align: center; }
+  text-align: center;
+}
 
-/* line 270, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .qs {
   font-style: italic;
-  text-align: right; }
+  text-align: right;
+}
 
-/* line 273, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .qa {
   text-align: center;
   font-style: italic;
   font-size: 1.1em;
   margin-left: 0em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 279, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .qac {
   margin-left: 0em;
   margin-right: 0em;
   padding: 0;
   text-indent: 0;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 285, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .qm2 {
   margin-left: 1.5em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 288, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .qm3 {
   margin-left: 2em;
-  margin-right: 0em; }
+  margin-right: 0em;
+}
 
-/* line 291, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .bk {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 293, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .nd {
-  font-variant: small-caps; }
+  font-variant: small-caps;
+}
 
-/* line 295, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .add {
   font-weight: bold;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 298, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .dc {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 300, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .k {
   font-weight: bold;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 303, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .lit {
   text-align: right;
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-/* line 306, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .pn {
   font-weight: bold;
-  text-decoration: underline; }
+  text-decoration: underline;
+}
 
-/* line 309, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .sls {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 311, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .tl {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 313, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .wj {
-  color: #CC0000; }
+  color: #CC0000;
+}
 
-/* line 315, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .em {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 317, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .bd {
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-/* line 319, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .it {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 321, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .bdit {
   font-weight: bold;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 324, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .no {
   font-weight: normal;
-  font-style: normal; }
+  font-style: normal;
+}
 
-/* line 327, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .sc {
-  font-variant: small-caps; }
+  font-variant: small-caps;
+}
 
-/* line 329, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .qt {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 331, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .sig {
   font-weight: normal;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 334, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container table {
   width: 100%;
-  display: table; }
+  display: table;
+}
 
-/* line 337, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .tr {
-  display: table-row; }
+  display: table-row;
+}
 
-/* line 339, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=th] {
   font-style: italic;
-  display: table-cell; }
+  display: table-cell;
+}
 
-/* line 342, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=thr] {
   text-align: right;
-  padding-right: 1.5em; }
+  padding-right: 1.5em;
+}
 
-/* line 345, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=tc] {
-  display: table-cell; }
+  display: table-cell;
+}
 
-/* line 347, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=tcr] {
   text-align: right;
-  padding-right: 1.5em; }
+  padding-right: 1.5em;
+}
 
-/* line 350, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=mt] {
   text-align: center;
   font-weight: bold;
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 354, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .mt, .eb-container .mt1 {
-  font-size: 2.8em; }
+  font-size: 2.8em;
+}
 
-/* line 356, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .mt2 {
   font-size: 1.6em;
   font-style: italic;
-  font-weight: normal; }
+  font-weight: normal;
+}
 
-/* line 360, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=ms] {
   text-align: center;
   font-weight: bold;
   line-height: 1.2;
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 365, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ms, .eb-container .ms1 {
-  font-size: 1.6em; }
+  font-size: 1.6em;
+}
 
-/* line 367, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ms2 {
-  font-size: 1.5em; }
+  font-size: 1.5em;
+}
 
-/* line 369, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .ms3 {
-  font-size: 1.4em; }
+  font-size: 1.4em;
+}
 
-/* line 371, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .mr {
   font-size: .9em;
   margin-bottom: 1em;
   text-align: center;
   font-weight: normal;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 377, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .s, .eb-container .s1 {
   text-align: center;
   font-weight: bold;
   font-size: 1.1em;
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 382, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .s2 {
   text-align: center;
   font-weight: bold;
   font-size: inherit;
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 387, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .s3 {
   text-align: center;
   font-weight: bold;
   font-size: inherit;
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 392, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .s4 {
   text-align: center;
   font-weight: bold;
   font-size: inherit;
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 397, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .sr {
   font-weight: normal;
   font-style: italic;
   text-align: center;
   font-size: inherit;
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 403, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .r {
   font-size: .9em;
   font-weight: normal;
   font-style: italic;
   text-align: center;
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 409, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .rq {
   font-size: .85em;
   line-height: 1.9;
   font-style: italic;
   padding-left: rhythm(0.5);
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 415, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .d {
   font-style: italic;
   text-align: center;
   font-size: inherit;
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 420, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container .sp {
   text-align: left;
   font-weight: normal;
   font-style: italic;
   font-size: inherit;
-  letter-spacing: normal; }
+  letter-spacing: normal;
+}
 
-/* line 426, /Users/andy/work/ABS/api-bible-js-demo/source/css/scripture.scss */
 .eb-container [class^=p] + .s, .eb-container [class^=p] + .s1, .eb-container [class^=q] + .s, .eb-container [class^=q] + .s1 {
-  margin-top: 1.5em; }
+  margin-top: 1.5em;
+}
 
 /*# sourceMappingURL=eb-scripture-style.css.map */

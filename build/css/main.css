@@ -1,355 +1,360 @@
 @import url("https://fonts.googleapis.com/css?family=Libre+Baskerville:700|Roboto:300,400,900");
-/* line 63, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 html,
 body {
   margin: 0;
-  padding: 0; }
+  padding: 0;
+}
 
-/* line 69, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 html {
   box-sizing: border-box;
-  font-size: 12.8px; }
-  @media only screen and (min-width: 600px) {
-    /* line 69, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    html {
-      font-size: 16px; } }
-  /* line 75, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  html *,
-  html *:before,
-  html *:after {
-    box-sizing: inherit; }
+  font-size: 12.8px;
+}
+@media only screen and (min-width: 600px) {
+  html {
+    font-size: 16px;
+  }
+}
+html *,
+html *:before,
+html *:after {
+  box-sizing: inherit;
+}
 
-/* line 83, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 body {
   font-family: "Roboto", sans-serif;
-  font-weight: 300; }
+  font-weight: 300;
+}
 
-/* line 88, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 *:focus {
-  outline: none; }
+  outline: none;
+}
 
-/* line 92, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 h1, h2, h3, h4, h5, h6 {
-  margin: 0; }
+  margin: 0;
+}
 
-/* line 96, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 a {
   color: #000;
-  text-decoration: none; }
+  text-decoration: none;
+}
 
-/* line 101, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 ul, ol {
   list-style: none;
   padding: 0;
-  margin: 0; }
+  margin: 0;
+}
 
-/* line 108, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 .hidden {
-  display: none !important; }
+  display: none !important;
+}
 
-/* line 112, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 .flex {
   display: flex;
   justify-content: space-between;
-  align-items: center; }
+  align-items: center;
+}
 
-/* line 119, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 .container {
   box-sizing: content-box;
   max-width: 1060px;
   padding: 0 10px;
-  margin: auto; }
-  @media only screen and (min-width: 600px) {
-    /* line 119, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .container {
-      padding: 0 20px; } }
-  /* line 128, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .container *, .container *:before, .container *:after {
-    box-sizing: border-box; }
+  margin: auto;
+}
+@media only screen and (min-width: 600px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+.container *, .container *:before, .container *:after {
+  box-sizing: border-box;
+}
 
-/* line 139, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 header {
   position: relative;
   z-index: 99;
-  padding: 0.5em 0; }
-  /* line 143, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  header:after {
-    content: "";
-    width: 100%;
-    height: 1px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.15); }
-  /* line 153, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  header .container {
-    display: flex;
-    justify-content: left;
-    align-items: center; }
-  /* line 159, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  header .logo {
-    text-indent: 99999px;
-    overflow: hidden;
-    width: 2.75rem;
-    height: 2.75rem;
-    background: #027CFF url("../img/logo.png") center no-repeat;
-    background-size: 22px auto; }
-  /* line 167, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  header h1 {
-    text-align: right;
-    background: #fff; }
-    /* line 170, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    header h1 a {
-      font-family: "Libre Baskerville", serif;
-      font-style: italic;
-      color: #027CFF;
-      font-size: 1.5rem;
-      line-height: 2.75rem; }
+  padding: 0.5em 0;
+}
+header:after {
+  content: "";
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.15);
+}
+header .container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+header .logo {
+  text-indent: 99999px;
+  overflow: hidden;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: #027CFF url("../img/logo.png") center no-repeat;
+  background-size: 22px auto;
+}
+header h1 {
+  text-align: right;
+  background: #fff;
+}
+header h1 a {
+  font-family: "Libre Baskerville", serif;
+  font-style: italic;
+  color: #027CFF;
+  font-size: 1.5rem;
+  line-height: 2.75rem;
+}
 
-/* line 181, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 .subheader {
   background: #F6FBFF;
   padding: 2.125rem 0;
   position: relative;
-  margin-bottom: 3.125rem; }
-  /* line 186, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .subheader .container {
-    flex-wrap: wrap; }
-  /* line 189, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .subheader .subheadings {
-    margin-right: 2rem; }
-    /* line 191, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .subheader .subheadings h2 {
-      font-size: 1rem;
-      line-height: 1.3125;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin-bottom: 0.375em; }
-    /* line 198, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .subheader .subheadings h3 {
-      font-family: "Libre Baskerville", serif;
-      font-size: 1.75rem;
-      line-height: 2.25rem;
-      font-weight: 700; }
-      /* line 203, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-      .subheader .subheadings h3 i {
-        font-style: normal; }
+  margin-bottom: 3.125rem;
+}
+.subheader .container {
+  flex-wrap: wrap;
+}
+.subheader .subheadings {
+  margin-right: 2rem;
+}
+.subheader .subheadings h2 {
+  font-size: 1rem;
+  line-height: 1.3125;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.375em;
+}
+.subheader .subheadings h3 {
+  font-family: "Libre Baskerville", serif;
+  font-size: 1.75rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+}
+.subheader .subheadings h3 i {
+  font-style: normal;
+}
 
-/* line 211, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 .crumbs {
   flex: 1;
-  margin-left: 1em; }
-  /* line 17, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .crumbs ul:after {
-    content: "";
-    display: table;
-    clear: both; }
-  /* line 220, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .crumbs li {
-    float: left; }
-    /* line 222, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .crumbs li:before {
-      float: left;
-      margin: 0 0.5em;
-      content: ">"; }
-    /* line 228, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .crumbs li:first-child:before {
-      display: none; }
-  /* line 234, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .crumbs a {
-    float: left;
-    border-bottom: solid 1px;
-    color: #31ACFF;
-    border-color: inherit; }
-    /* line 239, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .crumbs a:hover {
-      border-color: transparent; }
+  margin-left: 1em;
+}
+.crumbs ul:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.crumbs li {
+  float: left;
+}
+.crumbs li:before {
+  float: left;
+  margin: 0 0.5em;
+  content: ">";
+}
+.crumbs li:first-child:before {
+  display: none;
+}
+.crumbs a {
+  float: left;
+  border-bottom: solid 1px;
+  color: #31ACFF;
+  border-color: inherit;
+}
+.crumbs a:hover {
+  border-color: transparent;
+}
 
-/* line 248, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 .search-area {
   background: #fff;
   border: 1px solid lightgray;
   border-radius: 5px;
   width: 100%;
-  margin-top: 1rem; }
-  @media only screen and (min-width: 500px) {
-    /* line 248, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .search-area {
-      width: auto; } }
-  /* line 260, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .search-area button,
-  .search-area input {
-    font-size: 0.875rem;
-    height: 3em;
-    line-height: 3em;
-    border: 0;
-    background: none; }
-  /* line 269, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .search-area button {
-    text-align: center;
-    padding: 0 0.5em 0 1em;
-    cursor: pointer;
-    width: 2.8rem; }
-  /* line 275, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .search-area input {
-    width: calc(100% - 2.8rem);
-    padding: 0 0.5em 0 0; }
-  /* line 280, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  body.basic_index .search-area {
-    display: none; }
+  margin-top: 1rem;
+}
+@media only screen and (min-width: 500px) {
+  .search-area {
+    width: auto;
+  }
+}
+.search-area button,
+.search-area input {
+  font-size: 0.875rem;
+  height: 3em;
+  line-height: 3em;
+  border: 0;
+  background: none;
+}
+.search-area button {
+  text-align: center;
+  padding: 0 0.5em 0 1em;
+  cursor: pointer;
+  width: 2.8rem;
+}
+.search-area input {
+  width: calc(100% - 2.8rem);
+  padding: 0 0.5em 0 0;
+}
+body.basic_index .search-area {
+  display: none;
+}
 
-/* line 285, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 .search-nav {
-  margin-bottom: 2rem; }
-  /* line 287, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .search-nav > * {
-    display: block; }
-  /* line 290, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .search-nav .results-current-page {
-    margin-bottom: 1rem; }
-  /* line 294, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .search-nav .results-nav button {
-    font-size: 1rem;
-    line-height: 2em;
-    cursor: pointer;
-    border: 1px solid lightgray;
-    background: #fff; }
-    /* line 300, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .search-nav .results-nav button:hover {
-      border-color: #31ACFF;
-      color: #31ACFF; }
-    /* line 304, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .search-nav .results-nav button + button {
-      margin-left: 1rem; }
-  /* line 309, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .search-nav.search-nav-top {
-    padding-bottom: 2rem;
-    border-bottom: 1px solid lightgray;
-    margin-bottom: 2rem; }
-    /* line 313, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .search-nav.search-nav-top .results-current-page,
-    .search-nav.search-nav-top .results-nav {
-      display: none; }
-  /* line 320, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .search-nav.search-nav-bottom .results-count {
-    display: none; }
+  margin-bottom: 2rem;
+}
+.search-nav > * {
+  display: block;
+}
+.search-nav .results-current-page {
+  margin-bottom: 1rem;
+}
+.search-nav .results-nav button {
+  font-size: 1rem;
+  line-height: 2em;
+  cursor: pointer;
+  border: 1px solid lightgray;
+  background: #fff;
+}
+.search-nav .results-nav button:hover {
+  border-color: #31ACFF;
+  color: #31ACFF;
+}
+.search-nav .results-nav button + button {
+  margin-left: 1rem;
+}
+.search-nav.search-nav-top {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 2rem;
+}
+.search-nav.search-nav-top .results-current-page,
+.search-nav.search-nav-top .results-nav {
+  display: none;
+}
+.search-nav.search-nav-bottom .results-count {
+  display: none;
+}
 
-/* line 332, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
-  display: none; }
+  display: none;
+}
 
-/* line 339, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 .list-heading {
   border-bottom: 1px solid lightgray;
-  margin-bottom: 1em; }
-  /* line 342, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-heading span {
-    display: inline-block;
-    background: #31ACFF;
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 1.125rem;
-    line-height: 1.875rem;
-    font-weight: 900;
-    padding: 0 1em;
-    margin-bottom: -1px; }
+  margin-bottom: 1em;
+}
+.list-heading span {
+  display: inline-block;
+  background: #31ACFF;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1.125rem;
+  line-height: 1.875rem;
+  font-weight: 900;
+  padding: 0 1em;
+  margin-bottom: -1px;
+}
 
-/* line 364, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
 .list-container > ul,
 .list-container > ol {
-  margin-bottom: 4.375rem; }
-/* line 369, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
+  margin-bottom: 4.375rem;
+}
 .list-container li {
   font-size: 2rem;
   line-height: 1.5;
-  padding: 0.25em 0; }
-  /* line 374, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-container li a:hover {
-    color: #31ACFF; }
-/* line 381, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
+  padding: 0.25em 0;
+}
+.list-container li a:hover {
+  color: #31ACFF;
+}
 .list-container.bible-list li {
   font-size: 1rem;
   line-height: 1.5625rem;
-  padding: 0.3em 0; }
-  /* line 386, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-container.bible-list li a {
-    display: flex;
-    justify-content: left; }
-  /* line 391, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-container.bible-list li .bible-version-abbr {
-    display: inline-block;
-    white-space: nowrap;
-    font-weight: 900;
-    min-width: 5.3em;
-    text-align: right;
-    text-decoration: none;
-    margin-right: 1.3em; }
-  /* line 401, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-container.bible-list li .bible-version-desc:before {
-    content: "- "; }
-/* line 409, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
+  padding: 0.3em 0;
+}
+.list-container.bible-list li a {
+  display: flex;
+  justify-content: left;
+}
+.list-container.bible-list li .bible-version-abbr {
+  display: inline-block;
+  white-space: nowrap;
+  font-weight: 900;
+  min-width: 5.3em;
+  text-align: right;
+  text-decoration: none;
+  margin-right: 1.3em;
+}
+.list-container.bible-list li .bible-version-desc:before {
+  content: "- ";
+}
 .list-container.search-results-list li {
   padding: 0 0 2.5rem;
   border-bottom: 1px solid lightgray;
-  margin-bottom: 2.75rem; }
-  /* line 17, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-container.search-results-list li:after {
-    content: "";
-    display: table;
-    clear: both; }
-  /* line 414, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-container.search-results-list li > * {
-    line-height: 1.5rem;
-    margin-bottom: 0.3em; }
-  /* line 418, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-container.search-results-list li h5 {
-    font-size: 1.125rem;
-    font-weight: 900;
-    text-transform: uppercase; }
-  /* line 423, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-container.search-results-list li .text {
-    font-size: 1.125rem;
-    font-weight: 300; }
-  /* line 427, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-container.search-results-list li > a {
-    float: left;
-    font-size: 1rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #31ACFF;
-    border-bottom: solid 1px #31ACFF; }
-    /* line 434, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .list-container.search-results-list li > a:hover {
-      border-color: transparent; }
-/* line 442, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
+  margin-bottom: 2.75rem;
+}
+.list-container.search-results-list li:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.list-container.search-results-list li > * {
+  line-height: 1.5rem;
+  margin-bottom: 0.3em;
+}
+.list-container.search-results-list li h5 {
+  font-size: 1.125rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.list-container.search-results-list li .text {
+  font-size: 1.125rem;
+  font-weight: 300;
+}
+.list-container.search-results-list li > a {
+  float: left;
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #31ACFF;
+  border-bottom: solid 1px #31ACFF;
+}
+.list-container.search-results-list li > a:hover {
+  border-color: transparent;
+}
 .list-container.numeric-list ol {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center; }
-  @media only screen and (min-width: 600px) {
-    /* line 442, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .list-container.numeric-list ol {
-      justify-content: left; } }
-/* line 451, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
+  justify-content: center;
+}
+@media only screen and (min-width: 600px) {
+  .list-container.numeric-list ol {
+    justify-content: left;
+  }
+}
 .list-container.numeric-list li {
   padding: 0;
-  margin: 0 0.15em 0.3em; }
-  @media only screen and (min-width: 600px) {
-    /* line 451, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .list-container.numeric-list li {
-      margin: 0 0.3em 0.3em 0; } }
-  /* line 457, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-  .list-container.numeric-list li a {
-    display: inline-block;
-    padding: 0 0.25em;
-    border: 1px solid lightgray;
-    white-space: nowrap;
-    font-size: 2rem;
-    line-height: 3.75rem;
-    min-width: 3.75rem;
-    text-align: center; }
-    /* line 466, /Users/andy/work/ABS/api-bible-js-demo/source/css/main.scss */
-    .list-container.numeric-list li a:hover {
-      background: #31ACFF;
-      color: #fff; }
+  margin: 0 0.15em 0.3em;
+}
+@media only screen and (min-width: 600px) {
+  .list-container.numeric-list li {
+    margin: 0 0.3em 0.3em 0;
+  }
+}
+.list-container.numeric-list li a {
+  display: inline-block;
+  padding: 0 0.25em;
+  border: 1px solid lightgray;
+  white-space: nowrap;
+  font-size: 2rem;
+  line-height: 3.75rem;
+  min-width: 3.75rem;
+  text-align: center;
+}
+.list-container.numeric-list li a:hover {
+  background: #31ACFF;
+  color: #fff;
+}
