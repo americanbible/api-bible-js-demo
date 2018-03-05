@@ -1,5 +1,3 @@
-// const API_KEY = `81f316c5f31960d155555818b8d0a59c`; // Fill this in with your own API key from https://scripture.api.bible/
-
 const breadcrumbs = document.querySelector(`#breadcrumbs`);
 const viewingLabel = document.querySelector(`#viewing-label`);
 const title = document.querySelector(`#viewing`);
@@ -7,7 +5,8 @@ const list = document.querySelector(`#list`);
 const textContent = document.querySelector(`#content`);
 const searchInput = document.querySelector(`#search-input`);
 const searchContainer = document.querySelector(`#search-container`);
-const searchNav = document.querySelector(`#search-nav`);
+const searchNavTop = document.querySelector(`#search-nav-top`);
+const searchNavBottom = document.querySelector(`#search-nav-bottom`);
 const searchResults = document.querySelector(`#results-list`);
 const selectPrompt = document.querySelector(`#select-prompt span`);
 window.addEventListener(`popstate`, function(e) {
@@ -37,7 +36,9 @@ function updatePage(params, updateParams = true) {
 
   loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapterID, bibleVerseID);
   textContent.innerHTML = ``;
-  searchNav.innerHTML = ``;
+  searchNavTop.innerHTML = ``;
+  searchNavBottom.innerHTML = ``;
+  list.innerHTML = ``;
 
   if (!bibleVersionID || !abbreviation) {
     searchContainer.classList.add(`hidden`);
@@ -45,14 +46,6 @@ function updatePage(params, updateParams = true) {
   else {
     searchContainer.classList.remove(`hidden`);
   }
-
-  if (query) {
-    searchNav.classList.remove(`hidden`);
-  }
-  else {
-    searchNav.classList.add(`hidden`);
-  }
-
 
   selectPrompt.classList.remove(`hidden`);
 
@@ -409,15 +402,17 @@ function search(searchText, offset = 0, bibleVersionID, abbreviation) {
         textContent.innerHTML = ``;
         resultsHTML = `<div class="no-results">☹️ No results. Try <a href="index.html">changing versions?</a></div>`;
       } else {
-        const searchNavHTML = buildNav(offset, data.total, searchText, bibleVersionID, abbreviation);
-        searchNav.innerHTML = searchNavHTML;
+
+        const [topSearchNavHTML, searchNavHTML] = buildNav(offset, data.total, searchText, bibleVersionID, abbreviation);
+        searchNavTop.innerHTML = topSearchNavHTML;
+        searchNavBottom.innerHTML = searchNavHTML;
 
         for (let verse of data.verses) {
           resultsHTML += `<li>
             <h5>${verse.reference}</h5>
             <div class="text not-eb-container">${verse.text}</div>
             <a href="javascript:void(0);" onclick="updatePage('verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${verse.chapterId}')">view chapter</a>
-          </li>`
+          </li>`;
         }
       }
     }
@@ -431,7 +426,7 @@ function search(searchText, offset = 0, bibleVersionID, abbreviation) {
           resultsHTML += `<li>
             <h5>${passage.reference}</h5>
             <div class="text not-eb-container">${passage.content}</div>
-            <a href="verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${passage.chapterIds[0]}">view chapter</a>)<br>${passage.content}
+            <a href="verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${passage.chapterIds[0]}">view chapter</a>
           </li>`;
         }
       }
@@ -452,16 +447,26 @@ function search(searchText, offset = 0, bibleVersionID, abbreviation) {
  * @returns {string} HTML to include for navigation
  */
 function buildNav(offset, total, searchText, bibleVersionID, abbreviation) {
-  let searchNavHTML = `<div>Showing <b>${offset*10+1}-${offset*10+10 > total ? total : offset*10+10}</b> of <b>${total}</b> results. Current page: <b>${offset+1}</b></div><div>`;
+  const topSearchNavHTML = `<span class="results-count">Showing <b>${offset*10+1}-${offset*10+10 > total ? total : offset*10+10}</b> of <b>${total}</b> results.</span>`
+  let searchNavHTML = `<span class="results-current-page"> Current page: <b>${offset+1}</b></span>`;
+
+  if (offset > 0 || total / 10 > offset+1) {
+    searchNavHTML += `<span class="results-nav">`;
+  }
+
   if (offset > 0) {
     searchNavHTML += `<button onclick="search('${searchText}', ${offset-1}, '${bibleVersionID}', '${abbreviation}')">Previous Page</button>`;
   }
 
   if (total / 10 > offset+1) {
-    searchNavHTML += `<button onclick="search('${searchText}', ${offset+1}, '${bibleVersionID}', '${abbreviation}')">Next Page</button><hr>`;
+    searchNavHTML += `<button onclick="search('${searchText}', ${offset+1}, '${bibleVersionID}', '${abbreviation}')">Next Page</button>`;
   }
 
-  return searchNavHTML;
+  if (offset > 0 || total / 10 > offset+1) {
+    searchNavHTML += `</span>`;
+  }
+
+  return [topSearchNavHTML, searchNavHTML];
 }
 
 /**

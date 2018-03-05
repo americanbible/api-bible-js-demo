@@ -4,13 +4,9 @@ selectPrompt: Select a Book
 ---
 
 <% content_for :subheader do %>
-  <h2>Viewing:</h2>
-  <h3 id="viewing"></h3>
-<% end %>
-
-<div id="book-list" class="list-container"></div>
-
-
+          <h2>Viewing:</h2>
+          <h3 id="viewing"></h3><% end %>
+      <div id="book-list" class="list-container"></div>
 <% content_for :javascript do %>
 
   <script>
@@ -93,5 +89,4 @@ selectPrompt: Select a Book
       window.location.href = `./search.html?&version=${bibleVersionID}&abbr=${abbreviation}&query=${searchInput.value}`;
     }
   </script>
-
 <% end %>

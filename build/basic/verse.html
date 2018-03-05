@@ -31,9 +31,8 @@
       <div class="container flex">
 
         <div class="subheadings">
-              <h2>Viewing:</h2>
-  <h3 id="viewing"></h3>
-
+          <h2>Viewing:</h2>
+          <h3 id="viewing"></h3>
         </div>
         <div id="search-container" class="search-area flex">
           <button onclick="searchButton()">🔎</button>
@@ -47,151 +46,147 @@
     <main class="container">
       <h4 id="select-prompt" class="list-heading"><span>Select a Verse</span></h4>
 
-<div id="verse-list" class="list-container numeric-list"></div>
-
-<div class="eb-container" id="chapter-text"></div>
-
+      <div id="verse-list" class="list-container numeric-list"></div>
+      <div class="eb-container" id="chapter-text"></div>
 
     </main>
 
     <script src="../js/my_key.js"></script>
     
-  <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
-  <script>
-    const bibleVerseList = document.querySelector(`#verse-list`);
-    const chapterText = document.querySelector(`#chapter-text`);
-    const bibleVersionID = getParameterByName(`version`);
-    const bibleChapterID = getParameterByName(`chapter`);
-    const abbreviation = getParameterByName(`abbr`);
-    let verseHTML = ``;
+    <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
+    <script>
+      const bibleVerseList = document.querySelector(`#verse-list`);
+      const chapterText = document.querySelector(`#chapter-text`);
+      const bibleVersionID = getParameterByName(`version`);
+      const bibleChapterID = getParameterByName(`chapter`);
+      const abbreviation = getParameterByName(`abbr`);
+      let verseHTML = ``;
 
-    if (!bibleVersionID || !bibleChapterID) {
-      window.location.href = `./index.html`;
-    }
-
-    getVerses(bibleVersionID, bibleChapterID).then((verseList) => {
-      verseHTML += `<ol>`;
-      for (let verse of verseList) {
-        const verseNumber = getVerseNumber(verse.id);
-        verseHTML += `<li class="grid"><a class="grid-link" href="verse-selected.html?version=${bibleVersionID}&abbr=${abbreviation}&verse=${verse.id}"> ${verseNumber} </a></li>`;
+      if (!bibleVersionID || !bibleChapterID) {
+        window.location.href = `./index.html`;
       }
-      verseHTML += `</ol>`;
-      bibleVerseList.innerHTML = verseHTML;
-    });
 
-    getChapterText(bibleChapterID).then((content) => {
-      chapterText.innerHTML = content;
-    });
-
-    const [book, chapter] = bibleChapterID.split(`.`);
-    const breadcrumbsHTML = `
-      <ul>
-        <li><a href="book.html?version=${bibleVersionID}&abbr=${abbreviation}">${abbreviation}</a></li>
-        <li><a href="chapter.html?version=${bibleVersionID}&abbr=${abbreviation}&book=${book}">${book}</a></li>
-        <li>${chapter}</li>
-      </ul>
-    `;
-    breadcrumbs.innerHTML = breadcrumbsHTML;
-
-    document.querySelector(`#viewing`).innerHTML = `${chapter}`;
-
-    /**
-     * Gets verses from API.Bible
-     * @param {string} bibleVersionID to get verses from
-     * @param {string} bibleChapterID to get verses from
-     * @returns {Promise} containing list of verses from selected book
-     */
-    function getVerses(bibleVersionID, bibleChapterID) {
-      return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.withCredentials = false;
-
-        xhr.addEventListener(`readystatechange`, function() {
-          if (this.readyState === this.DONE) {
-            const {data} = JSON.parse(this.responseText);
-            const verses = data.map( ({id}) => { return {id};} );
-
-            resolve(verses);
-          }
-        });
-
-        xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}/verses`);
-        xhr.setRequestHeader(`api-key`, API_KEY);
-
-        xhr.onerror = () => reject(xhr.statusText);
-
-        xhr.send();
+      getVerses(bibleVersionID, bibleChapterID).then((verseList) => {
+        verseHTML += `<ol>`;
+        for (let verse of verseList) {
+          const verseNumber = getVerseNumber(verse.id);
+          verseHTML += `<li class="grid"><a class="grid-link" href="verse-selected.html?version=${bibleVersionID}&abbr=${abbreviation}&verse=${verse.id}"> ${verseNumber} </a></li>`;
+        }
+        verseHTML += `</ol>`;
+        bibleVerseList.innerHTML = verseHTML;
       });
-    }
 
-    /**
-     * Gets chapter text from API.Bible
-     * @param {string} bibleChapterID to get chapter text from
-     * @returns {Promise} containing text from selected chapter
-     */
-    function getChapterText(bibleChapterID) {
-      return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.withCredentials = false;
-
-        xhr.addEventListener(`readystatechange`, function() {
-          if (this.readyState === this.DONE) {
-            const {data, meta} = JSON.parse(this.responseText);
-
-            _BAPI.t(meta.fumsId);
-            resolve(data.content);
-          }
-        });
-
-        xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}`);
-        xhr.setRequestHeader(`api-key`, API_KEY);
-
-        xhr.onerror = () => reject(xhr.statusText);
-
-        xhr.send();
+      getChapterText(bibleChapterID).then((content) => {
+        chapterText.innerHTML = content;
       });
-    }
 
-    /**
-     * Parses verse number from verseID
-     * @param {string} verseID verse ID
-     * @returns {string} verse number or numbers
-     */
-    function getVerseNumber(verseID) {
-      let verseNumber;
-      if (verseID.includes(`-`)) {
-        verseNumber = verseID.split(`-`).shift().split(`.`).pop() + `-` + verseID.split(`-`).pop().split(`.`).pop();
-      } else {
-        verseNumber = verseID.split(`.`).pop();
+      const [book, chapter] = bibleChapterID.split(`.`);
+      const breadcrumbsHTML = `
+        <ul>
+          <li><a href="book.html?version=${bibleVersionID}&abbr=${abbreviation}">${abbreviation}</a></li>
+          <li><a href="chapter.html?version=${bibleVersionID}&abbr=${abbreviation}&book=${book}">${book}</a></li>
+          <li>${chapter}</li>
+        </ul>
+      `;
+      breadcrumbs.innerHTML = breadcrumbsHTML;
+
+      document.querySelector(`#viewing`).innerHTML = `${chapter}`;
+
+      /**
+       * Gets verses from API.Bible
+       * @param {string} bibleVersionID to get verses from
+       * @param {string} bibleChapterID to get verses from
+       * @returns {Promise} containing list of verses from selected book
+       */
+      function getVerses(bibleVersionID, bibleChapterID) {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.withCredentials = false;
+
+          xhr.addEventListener(`readystatechange`, function() {
+            if (this.readyState === this.DONE) {
+              const {data} = JSON.parse(this.responseText);
+              const verses = data.map( ({id}) => { return {id};} );
+
+              resolve(verses);
+            }
+          });
+
+          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}/verses`);
+          xhr.setRequestHeader(`api-key`, API_KEY);
+
+          xhr.onerror = () => reject(xhr.statusText);
+
+          xhr.send();
+        });
       }
-      return verseNumber;
-    }
 
-    /**
-     * Gets query parameter from URL based on name
-     * @param {string} name of query parameter
-     * @returns {string} value of query parameter
-     */
-    function getParameterByName(name) {
-      const url = window.location.href;
-      name = name.replace(/[\[\]]/g, `\\$&`);
-      const regex = new RegExp(`[?&]` + name + `(=([^&#]*)|&|#|$)`),
-        results = regex.exec(url);
-      if (!results) return null;
-      if (!results[2]) return ``;
-      return decodeURIComponent(results[2].replace(/\+/g, ` `));
-    }
+      /**
+       * Gets chapter text from API.Bible
+       * @param {string} bibleChapterID to get chapter text from
+       * @returns {Promise} containing text from selected chapter
+       */
+      function getChapterText(bibleChapterID) {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.withCredentials = false;
 
-    /**
-     * Loads page for new search
-     */
-    function searchButton(){
-      const searchInput = document.querySelector(`#search-input`);
-      window.location.href = `./search.html?&version=${bibleVersionID}&abbr=${abbreviation}&query=${searchInput.value}`;
-    }
-  </script>
+          xhr.addEventListener(`readystatechange`, function() {
+            if (this.readyState === this.DONE) {
+              const {data, meta} = JSON.parse(this.responseText);
 
+              _BAPI.t(meta.fumsId);
+              resolve(data.content);
+            }
+          });
 
+          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}`);
+          xhr.setRequestHeader(`api-key`, API_KEY);
+
+          xhr.onerror = () => reject(xhr.statusText);
+
+          xhr.send();
+        });
+      }
+
+      /**
+       * Parses verse number from verseID
+       * @param {string} verseID verse ID
+       * @returns {string} verse number or numbers
+       */
+      function getVerseNumber(verseID) {
+        let verseNumber;
+        if (verseID.includes(`-`)) {
+          verseNumber = verseID.split(`-`).shift().split(`.`).pop() + `-` + verseID.split(`-`).pop().split(`.`).pop();
+        } else {
+          verseNumber = verseID.split(`.`).pop();
+        }
+        return verseNumber;
+      }
+
+      /**
+       * Gets query parameter from URL based on name
+       * @param {string} name of query parameter
+       * @returns {string} value of query parameter
+       */
+      function getParameterByName(name) {
+        const url = window.location.href;
+        name = name.replace(/[\[\]]/g, `\\$&`);
+        const regex = new RegExp(`[?&]` + name + `(=([^&#]*)|&|#|$)`),
+          results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return ``;
+        return decodeURIComponent(results[2].replace(/\+/g, ` `));
+      }
+
+      /**
+       * Loads page for new search
+       */
+      function searchButton(){
+        const searchInput = document.querySelector(`#search-input`);
+        window.location.href = `./search.html?&version=${bibleVersionID}&abbr=${abbreviation}&query=${searchInput.value}`;
+      }
+    </script>
 
   </body>
 </html>

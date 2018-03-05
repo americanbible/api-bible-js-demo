@@ -32,7 +32,7 @@
 
         <div class="subheadings">
           <% if content_for?(:subheader) %>
-            <%= yield_content :subheader %>
+<%= yield_content :subheader %>
           <% else %>
             <h2 id="viewing-label"></h2>
             <h3 id="viewing"></h3>
@@ -54,6 +54,5 @@
 
     <script src="../js/my_key.js"></script>
     <%= yield_content :javascript %>
-
   </body>
 </html>
