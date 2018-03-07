@@ -39,6 +39,8 @@ function updatePage(params, updateParams = true) {
   searchNavTop.innerHTML = ``;
   searchNavBottom.innerHTML = ``;
   list.innerHTML = ``;
+  textContent.innerHTML = ``;
+  searchResults.innerHTML = ``;
 
   if (!bibleVersionID || !abbreviation) {
     searchContainer.classList.add(`hidden`);
@@ -340,12 +342,10 @@ function getChapterText(bibleVersionID, bibleChapterID) {
  */
 function loadSelectedVerse(bibleVersionID, abbreviation, bibleVerseID) {
 
-  return getSelectedVerse(bibleVersionID, bibleVerseID).then(({ content, bookId, bibleId }) => {
-    getBookNameFromID(bibleId, bookId).then((book) => {
-      list.innerHTML = ``;
-      viewing.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span>`;
-      textContent.innerHTML = `${content}`;
-    });
+  return getSelectedVerse(bibleVersionID, bibleVerseID).then(({ content, reference }) => {
+    list.innerHTML = ``;
+    title.innerHTML = `<span><i>${reference}</i></span>`;
+    textContent.innerHTML = `${content}`;
     return content;
   });
 }
@@ -365,8 +365,8 @@ function getSelectedVerse(bibleVersionID, bibleVerseID) {
       if (this.readyState === this.DONE) {
         const response = JSON.parse(this.responseText);
         const fumsId = response.meta.fumsId;
-        const {content, bookId, bibleId} = response.data;
-        const verse = {content, bookId, bibleId};
+        const {content, reference} = response.data;
+        const verse = {content, reference};
 
         _BAPI.t(fumsId);
         resolve(verse);
@@ -411,7 +411,7 @@ function search(searchText, offset = 0, bibleVersionID, abbreviation) {
           resultsHTML += `<li>
             <h5>${verse.reference}</h5>
             <div class="text not-eb-container">${verse.text}</div>
-            <a href="javascript:void(0);" onclick="updatePage('verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${verse.chapterId}')">view chapter</a>
+            <a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&chapter=${verse.chapterId}')">view chapter</a>
           </li>`;
         }
       }
@@ -426,7 +426,7 @@ function search(searchText, offset = 0, bibleVersionID, abbreviation) {
           resultsHTML += `<li>
             <h5>${passage.reference}</h5>
             <div class="text not-eb-container">${passage.content}</div>
-            <a href="verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${passage.chapterIds[0]}">view chapter</a>
+            <a href="version=${bibleVersionID}&abbr=${abbreviation}&chapter=${passage.chapterIds[0]}">view chapter</a>
           </li>`;
         }
       }
@@ -437,7 +437,11 @@ function search(searchText, offset = 0, bibleVersionID, abbreviation) {
     }
     resultsHTML += `</ul>`;
 
-    searchResults.innerHTML = resultsHTML;
+    if (data.passages) {
+      textContent.innerHTML = resultsHTML;
+    } else {
+      searchResults.innerHTML = resultsHTML;
+    }
     return resultsHTML;
   });
 }
@@ -492,33 +496,6 @@ function getResults(searchText, offset = 0, bibleVersionID) {
     });
 
     xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/search?query=${searchText}&offset=${offset}`);
-    xhr.setRequestHeader(`api-key`, API_KEY);
-
-    xhr.onerror = () => reject(xhr.statusText);
-
-    xhr.send();
-  });
-}
-
-/**
- * Gets book name from book ID
- * @param {string} bibleVersionID Bible ID
- * @param {string} bibleBookID book ID
- * @returns {string} name of book
- */
-function getBookNameFromID(bibleVersionID, bibleBookID) {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.withCredentials = false;
-
-    xhr.addEventListener(`readystatechange`, function() {
-      if (this.readyState === this.DONE) {
-        const {name} = JSON.parse(this.responseText).data;
-        resolve(name);
-      }
-    });
-
-    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);

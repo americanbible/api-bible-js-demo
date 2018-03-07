@@ -63,11 +63,9 @@
         window.location.href = `./index.html`;
       }
 
-      getSelectedVerse(bibleVersionID, bibleVerseID).then(({ bibleId, bookId, content }) => {
-        getBookNameFromID(bibleId, bookId).then((book) => {
-          bibleVerseTitle.innerHTML = `<span><i>${book} ${bibleVerseID.slice(4)}</i></span>`;
-          bibleVerseList.innerHTML = `<div class="eb-container">${content}</div>`;
-        });
+      getSelectedVerse(bibleVersionID, bibleVerseID).then(({ content, reference }) => {
+        bibleVerseTitle.innerHTML = `<span><i>${reference}</i></span>`;
+        bibleVerseList.innerHTML = `<div class="eb-container">${content}</div>`;
       });
 
       let [book, chapter, verse] = bibleVerseID.split(`.`);
@@ -99,8 +97,8 @@
             if (this.readyState === this.DONE) {
               const response = JSON.parse(this.responseText);
               const fumsId = response.meta.fumsId;
-              const {content, bookId, bibleId} = response.data;
-              const verse = {content, bookId, bibleId};
+              const {content, reference} = response.data;
+              const verse = {content, reference};
 
               _BAPI.t(fumsId);
               resolve(verse);

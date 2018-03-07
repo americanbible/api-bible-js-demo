@@ -116,7 +116,7 @@
               for (let passage of data.passages) {
                 resultsHTML += `<li>
                   <h5>${passage.reference}</h5>
-                  <div class="text not-eb-container">${passage.content}</div>
+                  <div class="text eb-container">${passage.content}</div>
                   <a href="verse.html?version=${bibleVersionID}&abbr=${abbreviation}&chapter=${passage.chapterIds[0]}">view chapter</a>
                   <br>
                 </li>`;
