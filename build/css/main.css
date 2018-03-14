@@ -226,9 +226,11 @@ body.basic_index .search-area {
   margin-left: 1rem;
 }
 .search-nav.search-nav-top {
+  margin-bottom: 2rem;
+}
+.search-nav.search-nav-top .results-count {
   padding-bottom: 2rem;
   border-bottom: 1px solid lightgray;
-  margin-bottom: 2rem;
 }
 .search-nav.search-nav-top .results-current-page,
 .search-nav.search-nav-top .results-nav {
