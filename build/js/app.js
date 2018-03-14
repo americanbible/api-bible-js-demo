@@ -9,6 +9,7 @@ const searchNavTop = document.querySelector(`#search-nav-top`);
 const searchNavBottom = document.querySelector(`#search-nav-bottom`);
 const searchResults = document.querySelector(`#results-list`);
 const selectPrompt = document.querySelector(`#select-prompt span`);
+const selectPromptParent = document.querySelector(`#select-prompt`);
 window.addEventListener(`popstate`, function(e) {
   if (e.state) {
     updatePage(e.state.params, false);
@@ -49,19 +50,19 @@ function updatePage(params, updateParams = true) {
     searchContainer.classList.remove(`hidden`);
   }
 
-  selectPrompt.classList.remove(`hidden`);
+  selectPromptParent.classList.remove(`hidden`);
 
   if (!bibleVersionID || ! abbreviation) {
     window.history.replaceState({params:``},``,`index.html`);
     viewingLabel.innerHTML = `Select a:`;
     title.innerHTML = `Bible`;
     list.className = `list-container bible-list`;
-    selectPrompt.classList.add(`hidden`);
+    selectPromptParent.classList.add(`hidden`);
     loadBibleVersions();
   } else if (query) {
     list.innerHTML = ``;
     viewingLabel.innerHTML = `Search results for:`;
-    selectPrompt.classList.add(`hidden`);
+    selectPromptParent.classList.add(`hidden`);
     title.innerHTML = query;
     list.className = `list-container search-results-list`;
     search(query, 0, bibleVersionID, abbreviation);
@@ -83,7 +84,7 @@ function updatePage(params, updateParams = true) {
   } else if (bibleVersionID && bibleVerseID) {
     viewingLabel.innerHTML = `Selected verse:`;
     list.className = `list-container`;
-    selectPrompt.classList.add(`hidden`);
+    selectPromptParent.classList.add(`hidden`);
     loadSelectedVerse(bibleVersionID, abbreviation, bibleVerseID);
   }
 }

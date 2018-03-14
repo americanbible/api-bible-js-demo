@@ -309,9 +309,11 @@ header {
     }
   }
   &.search-nav-top {
-    padding-bottom: 2rem;
-    border-bottom: $default-border;
     margin-bottom: 2rem;
+    .results-count {
+      padding-bottom: 2rem;
+      border-bottom: $default-border;
+    }
     .results-current-page,
     .results-nav
     {
