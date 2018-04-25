@@ -2,6 +2,7 @@ const breadcrumbs = document.querySelector(`#breadcrumbs`);
 const viewingLabel = document.querySelector(`#viewing-label`);
 const title = document.querySelector(`#viewing`);
 const list = document.querySelector(`#list`);
+const list2 = document.querySelector(`#list2`);
 const textContent = document.querySelector(`#content`);
 const searchInput = document.querySelector(`#search-input`);
 const searchContainer = document.querySelector(`#search-container`);
@@ -33,13 +34,15 @@ function updatePage(params, updateParams = true) {
   const bibleBookID = getParameterByName(`book`);
   const bibleChapterID = getParameterByName(`chapter`);
   const bibleVerseID = getParameterByName(`verse`);
+  const bibleSectionID = getParameterByName(`section`);
   const query = getParameterByName(`query`);
 
-  loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapterID, bibleVerseID);
+  loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapterID, bibleVerseID, bibleSectionID);
   textContent.innerHTML = ``;
   searchNavTop.innerHTML = ``;
   searchNavBottom.innerHTML = ``;
   list.innerHTML = ``;
+  list2.innerHTML = ``;
   textContent.innerHTML = ``;
   searchResults.innerHTML = ``;
 
@@ -59,6 +62,11 @@ function updatePage(params, updateParams = true) {
     list.className = `list-container bible-list`;
     selectPromptParent.classList.add(`hidden`);
     loadBibleVersions();
+  } else if (bibleSectionID) {
+    viewingLabel.innerHTML = `Selected section:`;
+    list.className = `list-container`;
+    selectPromptParent.classList.add(`hidden`);
+    loadSelectedSection(bibleVersionID, abbreviation, bibleSectionID);
   } else if (query) {
     list.innerHTML = ``;
     viewingLabel.innerHTML = `Search results for:`;
@@ -76,6 +84,7 @@ function updatePage(params, updateParams = true) {
     selectPrompt.innerHTML = `Select a Chapter`;
     list.className = `list-container numeric-list`;
     loadChapters(bibleVersionID, abbreviation, bibleBookID);
+    loadSections(bibleVersionID, abbreviation, bibleBookID);
   } else if (bibleVersionID && bibleChapterID) {
     viewingLabel.innerHTML = `Viewing:`;
     selectPrompt.innerHTML = `Select a Verse`;
@@ -256,6 +265,60 @@ function getChapters(bibleVersionID, bibleBookID) {
 }
 
 /**
+ * Fills in list on page with sections from selected book of the Bible (version and book specified in query params).
+ * @returns {object} containing list of chapters from selected book
+ */
+function loadSections(bibleVersionID, abbreviation, bibleBookID) {
+
+  title.innerHTML = bibleBookID;
+
+  let sectionHTML = `<h4 id="select-prompt" class="list-heading"><span>Select a Section</span></h4><div id="section-list" class="list-container section-list">`;
+
+  return getSections(bibleVersionID, bibleBookID).then((sectionList) => {
+    if (sectionList) {
+      sectionHTML += `<ol>`;
+      for (let section of sectionList) {
+        sectionHTML += `<li class="section"><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&section=${section.id}')"><abbr class="section-id">${section.id}</abbr><span class="bible-version-name"> ${section.title} </span></a></li>`;
+      }
+      sectionHTML += `</ol></div>`;
+    } else {
+      sectionHTML += `<div>There are no sections for this version and chapter.</div></div>`;
+    }
+    list2.innerHTML = sectionHTML;
+    return sectionList;
+  });
+}
+
+/**
+ * Gets sections from API.Bible
+ * @param {string} bibleVersionID to get sections from
+ * @param {string} bibleBookID to get sections from
+ * @returns {Promise} containing list of sections from selected book
+ */
+function getSections(bibleVersionID, bibleBookID) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+
+    xhr.addEventListener(`readystatechange`, function() {
+      if (this.readyState === this.DONE) {
+        const {data} = JSON.parse(this.responseText);
+        const sections = data ? data.map( ({title, id}) => { return {title, id}; } ) : null;
+
+        resolve(sections);
+      }
+    });
+
+    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}/sections`);
+    xhr.setRequestHeader(`api-key`, API_KEY);
+
+    xhr.onerror = () => reject(xhr.statusText);
+
+    xhr.send();
+  });
+}
+
+/**
  * Fills in list on page with verses from selected chapter (version and chapter specified in query params).
  * @returns {object} containing list of verses from selected book
  */
@@ -375,6 +438,52 @@ function getSelectedVerse(bibleVersionID, bibleVerseID) {
     });
 
     xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/verses/${bibleVerseID}?include-chapter-numbers=false&include-verse-numbers=false`);
+    xhr.setRequestHeader(`api-key`, API_KEY);
+
+    xhr.onerror = () => reject(xhr.statusText);
+
+    xhr.send();
+  });
+}
+
+/**
+ * Fills in the selected section.
+ * @returns {Object} containing selected section
+ */
+function loadSelectedSection(bibleVersionID, abbreviation, bibleVerseID) {
+
+  return getSelectedSection(bibleVersionID, bibleVerseID).then(({ content, sectionTitle }) => {
+    list.innerHTML = ``;
+    title.innerHTML = `<span><i>${sectionTitle}</i></span>`;
+    textContent.innerHTML = `${content}`;
+    return content;
+  });
+}
+
+/**
+ * Gets selected section from API.Bible
+ * @param {string} bibleVersionID to get section from
+ * @param {string} bibleSectionID of selected section
+ * @returns {Promise} containing selected section
+ */
+function getSelectedSection(bibleVersionID, bibleSectionID) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+
+    xhr.addEventListener(`readystatechange`, function() {
+      if (this.readyState === this.DONE) {
+        const response = JSON.parse(this.responseText);
+        const fumsId = response.meta.fumsId;
+        const {content, title} = response.data;
+        const section = {content, sectionTitle: title};
+
+        _BAPI.t(fumsId);
+        resolve(section);
+      }
+    });
+
+    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/sections/${bibleSectionID}?include-chapter-numbers=true&include-verse-spans=true`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
@@ -553,10 +662,10 @@ function sortVersionsByLanguage(bibleVersionList) {
 /**
  * Loads breadcrumb links on page
  */
-function loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapterID, bibleVerseID) {
+function loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapterID, bibleVerseID, bibleSectionID) {
   let breadcrumbsHTML = `<ul>`;
 
-  if (abbreviation && !bibleBookID && !bibleChapterID && !bibleVerseID) {
+  if (abbreviation && !bibleBookID && !bibleChapterID && !bibleVerseID && !bibleSectionID) {
     breadcrumbsHTML += `<li>${abbreviation}</li>`;
   }
   if (bibleBookID) {
@@ -568,6 +677,12 @@ function loadBreadcrumbs(abbreviation, bibleVersionID, bibleBookID, bibleChapter
     breadcrumbsHTML += `<li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a></li>
                         <li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${bibleBookID}')">${bibleBookID}</a></li>
                         <li>${chapNum}</li>`;
+  }
+  if (bibleSectionID) {
+    const [book, section] = bibleSectionID.split(`.`);
+    breadcrumbsHTML += `<li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}')">${abbreviation}</a></li>
+                        <li><a href="javascript:void(0);" onclick="updatePage('version=${bibleVersionID}&abbr=${abbreviation}&book=${book}')">${book}</a></li>
+                        <li>${section}</li>`;
   }
   if (bibleVerseID) {
     let [bibleBookID, chapNum, verseNum] = bibleVerseID.split(`.`);
@@ -609,3 +724,4 @@ function getParameterByName(name) {
   if (!results[2]) return ``;
   return decodeURIComponent(results[2].replace(/\+/g, ` `));
 }
+;

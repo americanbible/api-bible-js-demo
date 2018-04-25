@@ -7,15 +7,19 @@ selectPrompt: Select a Chapter
           <h2>Viewing:</h2>
           <h3 id="viewing"></h3><% end %>
       <div id="chapter-list" class="list-container numeric-list"></div>
+      <h4 id="select-prompt" class="list-heading"><span>Select a Section</span></h4>
+      <div id="section-list" class="list-container section-list"></div>
 <% content_for :javascript do %>
 
     <script>
       const bibleChapterList = document.querySelector(`#chapter-list`);
+      const bibleSectionList = document.querySelector(`#section-list`);
       const bibleVersionID = getParameterByName(`version`);
       const bibleBookID = getParameterByName(`book`);
       const abbreviation = getParameterByName(`abbr`);
 
       let chapterHTML = ``;
+      let sectionHTML = ``;
 
       if (!bibleVersionID || !bibleBookID) {
         window.location.href = `./index.html`;
@@ -28,6 +32,20 @@ selectPrompt: Select a Chapter
         }
         chapterHTML += `</ol>`;
         bibleChapterList.innerHTML = chapterHTML;
+      });
+
+      getSections(bibleVersionID, bibleBookID).then((sectionList) => {
+        if (sectionList) {
+          sectionHTML += `<ol>`;
+          for (let section of sectionList) {
+            sectionHTML += `<li class="section"><a href="section.html?version=${bibleVersionID}&abbr=${abbreviation}&section=${section.id}"><abbr class="section-id">${section.id}</abbr><span class="bible-version-name"> ${section.title} </span></a></li>`;
+          }
+          sectionHTML += `</ol>`;
+        } else {
+          sectionHTML += `<div>There are no sections for this version and chapter.</div>`;
+        }
+
+        bibleSectionList.innerHTML = sectionHTML;
       });
 
       document.querySelector(`#viewing`).innerHTML = `${bibleBookID}`;
@@ -60,6 +78,35 @@ selectPrompt: Select a Chapter
           });
 
           xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}/chapters`);
+          xhr.setRequestHeader(`api-key`, API_KEY);
+
+          xhr.onerror = () => reject(xhr.statusText);
+
+          xhr.send();
+        });
+      }
+
+      /**
+       * Gets sections from API.Bible
+       * @param {string} bibleVersionID to get sections from
+       * @param {string} bibleBookID to get sections from
+       * @returns {Promise} containing list of sections from selected book
+       */
+      function getSections(bibleVersionID, bibleBookID) {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.withCredentials = false;
+
+          xhr.addEventListener(`readystatechange`, function() {
+            if (this.readyState === this.DONE) {
+              const {data} = JSON.parse(this.responseText);
+              const sections = data ? data.map( ({title, id}) => { return {title, id}; } ) : null;
+
+              resolve(sections);
+            }
+          });
+
+          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}/sections`);
           xhr.setRequestHeader(`api-key`, API_KEY);
 
           xhr.onerror = () => reject(xhr.statusText);
