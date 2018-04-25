@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/scripture.css" rel="stylesheet">
+    <title>Bible API Example Application</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a href="index.html" class="logo" title="American Bible Society">ABS</a>
+      </div>
+    </header>
+
+    <div class="subheader">
+      <div class="container flex">
+
+        <div class="subheadings">
+          <h2>Verse of the Day:</h2>
+          <h3 id="viewing"><span id="verse"></span></h3>
+        </div>
+      </div>
+    </div>
+
+    <main class="container">
+      <div id="verse-content" class="verse-container"></div>
+    </main>
+
+    <script src="../js/my_key.js"></script>
+    <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
+    <script>
+      const verse = document.querySelector(`#verse-content`);
+      const verseRef = document.querySelector(`#verse`);
+
+      const BIBLE_ID = `61fd76eafa1577c2-02`;
+      const VERSES = [ 
+        `JER.29.11`,
+        `PSA.23`,
+        `1COR.4.4-8`,
+        `PHP.4.13`,
+        `JHN.3.16`,
+        `ROM.8.28`,
+        `ISA.41.10`,
+        `PSA.46.1`,
+        `GAL.5.22-23`,
+        `HEB.11.1`,
+        `2TI.1.7`,
+        `1COR.10.13`,
+        `PRO.22.6`,
+        `ISA.40.31`,
+        `JOS.1.9`,
+        `HEB.12.2`,
+        `MAT.11.28`,
+        `ROM.10.9-10`,
+        `PHP.2.3-4`,
+        `MAT.5.43-44`
+      ];
+
+      const randomIndex = Math.floor(Math.random() * VERSES.length);
+      const verseID = VERSES[randomIndex];
+
+      getResults(verseID).then((data) => {
+        const passage = data.passages[0];
+        verseRef.innerHTML = `<span><i>${passage.reference}</i></span>`;
+        verse.innerHTML = `<div class="text eb-container">${passage.content}</div>`;
+      });
+
+      /**
+       * Gets verse(s) that matches verseID from API.Bible
+       * @returns {Promise} containing verse
+       */
+      function getResults(verseID) {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.withCredentials = false;
+
+          xhr.addEventListener(`readystatechange`, function() {
+            if (this.readyState === this.DONE) {
+              const {data, meta} = JSON.parse(this.responseText);
+
+              _BAPI.t(meta.fumsId);
+              resolve(data);
+            }
+          });
+
+          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${BIBLE_ID}/search?query=${verseID}`);
+          xhr.setRequestHeader(`api-key`, API_KEY);
+
+          xhr.onerror = () => reject(xhr.statusText);
+
+          xhr.send();
+        });
+      }
+    </script>
+  </body>
+</html>
