@@ -2,7 +2,7 @@ const breadcrumbs = document.querySelector(`#breadcrumbs`);
 const viewingLabel = document.querySelector(`#viewing-label`);
 const title = document.querySelector(`#viewing`);
 const list = document.querySelector(`#list`);
-const list2 = document.querySelector(`#list2`);
+const listSections = document.querySelector(`#list-sections`);
 const textContent = document.querySelector(`#content`);
 const searchInput = document.querySelector(`#search-input`);
 const searchContainer = document.querySelector(`#search-container`);
@@ -42,7 +42,7 @@ function updatePage(params, updateParams = true) {
   searchNavTop.innerHTML = ``;
   searchNavBottom.innerHTML = ``;
   list.innerHTML = ``;
-  list2.innerHTML = ``;
+  listSections.innerHTML = ``;
   textContent.innerHTML = ``;
   searchResults.innerHTML = ``;
 
@@ -284,7 +284,7 @@ function loadSections(bibleVersionID, abbreviation, bibleBookID) {
     } else {
       sectionHTML += `<div>There are no sections for this version and chapter.</div></div>`;
     }
-    list2.innerHTML = sectionHTML;
+    listSections.innerHTML = sectionHTML;
     return sectionList;
   });
 }
