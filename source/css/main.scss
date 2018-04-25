@@ -334,7 +334,8 @@ main {
 
 #select-prompt {
   body.basic_index &,
-  body.basic_verse-selected &
+  body.basic_verse-selected &,
+  body.basic_section &
   {
     display: none;
   }
@@ -382,7 +383,8 @@ main {
     }
   }
 
-  &.bible-list {
+  &.bible-list, 
+  &.section-list {
     li {
       font-size: 1rem;
       line-height: 1.5625rem;
@@ -393,7 +395,8 @@ main {
         justify-content: left;
       }
 
-      .bible-version-abbr {
+      .bible-version-abbr, 
+      .section-id {
         display: inline-block;
         white-space: nowrap;
         font-weight: $boldest;

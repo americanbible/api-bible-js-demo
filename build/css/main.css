@@ -240,7 +240,7 @@ body.basic_index .search-area {
   display: none;
 }
 
-body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
+body.basic_index #select-prompt, body.basic_verse-selected #select-prompt, body.basic_section #select-prompt {
   display: none;
 }
 
@@ -273,16 +273,16 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
 .list-container li a:hover {
   color: #31ACFF;
 }
-.list-container.bible-list li {
+.list-container.bible-list li, .list-container.section-list li {
   font-size: 1rem;
   line-height: 1.5625rem;
   padding: 0.3em 0;
 }
-.list-container.bible-list li a {
+.list-container.bible-list li a, .list-container.section-list li a {
   display: flex;
   justify-content: left;
 }
-.list-container.bible-list li .bible-version-abbr {
+.list-container.bible-list li .bible-version-abbr, .list-container.bible-list li .section-id, .list-container.section-list li .bible-version-abbr, .list-container.section-list li .section-id {
   display: inline-block;
   white-space: nowrap;
   font-weight: 700;
@@ -291,7 +291,7 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt {
   text-decoration: none;
   margin-right: 1.3em;
 }
-.list-container.bible-list li .bible-version-desc:before {
+.list-container.bible-list li .bible-version-desc:before, .list-container.section-list li .bible-version-desc:before {
   content: "- ";
 }
 .list-container.search-results-list li {
