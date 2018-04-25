@@ -383,7 +383,8 @@ main {
     }
   }
 
-  &.bible-list, &.section-list {
+  &.bible-list, 
+  &.section-list {
     li {
       font-size: 1rem;
       line-height: 1.5625rem;
@@ -394,7 +395,8 @@ main {
         justify-content: left;
       }
 
-      .bible-version-abbr, .section-id {
+      .bible-version-abbr, 
+      .section-id {
         display: inline-block;
         white-space: nowrap;
         font-weight: $boldest;
