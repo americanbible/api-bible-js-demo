@@ -282,7 +282,9 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt, body.
   display: flex;
   justify-content: left;
 }
-.list-container.bible-list li .bible-version-abbr, .list-container.bible-list li .section-id, .list-container.section-list li .bible-version-abbr, .list-container.section-list li .section-id {
+.list-container.bible-list li .bible-version-abbr,
+.list-container.bible-list li .section-id, .list-container.section-list li .bible-version-abbr,
+.list-container.section-list li .section-id {
   display: inline-block;
   white-space: nowrap;
   font-weight: 700;
