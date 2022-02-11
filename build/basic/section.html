@@ -51,7 +51,14 @@
     </main>
 
     <script src="../js/my_key.js"></script>
-    <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
+    <script type="text/javascript" src="https://pkg.api.bible/fumsV3.min.js"></script>
+    <script>
+      /* This code ensures that FUMS will be reported correctly even if fumsV3.min.js has not finished loading before an attempt is made. */
+      window.fumsData = window.fumsData || [];
+      window.fums = window.fums || function () {
+        window.fumsData.push(arguments);
+      };
+    </script>
     <script>
       const bibleSectionTitle = document.querySelector(`#section`);
       const bibleSectionList = document.querySelector(`#section-content`);
@@ -92,16 +99,16 @@
           xhr.addEventListener(`readystatechange`, function() {
             if (this.readyState === this.DONE) {
               const response = JSON.parse(this.responseText);
-              const fumsId = response.meta.fumsId;
+              const fumsToken = response.meta.fumsToken;
               const {content, title} = response.data;
               const section = {content, title};
 
-              _BAPI.t(fumsId);
+              fums(`trackview`,fumsToken);
               resolve(section);
             }
           });
 
-          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/sections/${bibleSectionID}?include-chapter-numbers=true&include-verse-spans=true`);
+          xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/sections/${bibleSectionID}?include-chapter-numbers=true&include-verse-spans=true`);
           xhr.setRequestHeader(`api-key`, API_KEY);
 
           xhr.onerror = () => reject(xhr.statusText);

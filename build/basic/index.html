@@ -104,7 +104,7 @@
             }
           });
 
-          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles`);
+          xhr.open(`GET`, `https://v2.api.bible/bibles`);
           xhr.setRequestHeader(`api-key`, API_KEY);
 
           xhr.onerror = () => reject(xhr.statusText);
