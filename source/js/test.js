@@ -18,7 +18,7 @@ const bibleVerseID = `MAT.1.1`;
 describe(`Load a bible version`, () => {
   it(`should have an API KEY set`, function(done) {
     if(API_KEY.length === 0) {
-      throw Error(`Your api key is not set, please get one from https://portal.api.bible/`);
+      throw Error(`Your api key is not set, please get one from https://scripture.api.bible/`);
     }
     done();
   });

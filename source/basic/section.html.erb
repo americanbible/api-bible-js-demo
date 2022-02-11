@@ -7,14 +7,7 @@ title: Bible API Example Application
           <h3 id="viewing"><span id="section"></span></h3><% end %>
       <div id="section-content" class="section-container"></div>
 <% content_for :javascript do %>
-    <script type="text/javascript" src="https://pkg.api.bible/fumsV3.min.js"></script>
-    <script>
-      /* This code ensures that FUMS will be reported correctly even if fumsV3.min.js has not finished loading before an attempt is made. */
-      window.fumsData = window.fumsData || [];
-      window.fums = window.fums || function () {
-        window.fumsData.push(arguments);
-      };
-    </script>
+<script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
     <script>
       const bibleSectionTitle = document.querySelector(`#section`);
       const bibleSectionList = document.querySelector(`#section-content`);
@@ -55,16 +48,16 @@ title: Bible API Example Application
           xhr.addEventListener(`readystatechange`, function() {
             if (this.readyState === this.DONE) {
               const response = JSON.parse(this.responseText);
-              const fumsToken = response.meta.fumsToken;
+              const fumsId = response.meta.fumsId;
               const {content, title} = response.data;
               const section = {content, title};
 
-              fums(`trackview`,fumsToken);
+              _BAPI.t(fumsId);
               resolve(section);
             }
           });
 
-          xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/sections/${bibleSectionID}?include-chapter-numbers=true&include-verse-spans=true`);
+          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/sections/${bibleSectionID}?include-chapter-numbers=true&include-verse-spans=true`);
           xhr.setRequestHeader(`api-key`, API_KEY);
 
           xhr.onerror = () => reject(xhr.statusText);

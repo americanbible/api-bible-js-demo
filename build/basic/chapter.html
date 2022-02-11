@@ -120,7 +120,7 @@
             }
           });
 
-          xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/books/${bibleBookID}/chapters`);
+          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}/chapters`);
           xhr.setRequestHeader(`api-key`, API_KEY);
 
           xhr.onerror = () => reject(xhr.statusText);
@@ -149,7 +149,7 @@
             }
           });
 
-          xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/books/${bibleBookID}/sections`);
+          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}/sections`);
           xhr.setRequestHeader(`api-key`, API_KEY);
 
           xhr.onerror = () => reject(xhr.statusText);
