@@ -53,7 +53,14 @@
 
     <script src="../js/my_key.js"></script>
     
-    <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
+    <script type="text/javascript" src="https://pkg.api.bible/fumsV3.min.js"></script>
+    <script>
+      /* This code ensures that FUMS will be reported correctly even if fumsV3.min.js has not finished loading before an attempt is made. */
+      window.fumsData = window.fumsData || [];
+      window.fums = window.fums || function () {
+        window.fumsData.push(arguments);
+      };
+    </script>
     <script>
       const bibleVerseList = document.querySelector(`#verse-list`);
       const chapterText = document.querySelector(`#chapter-text`);
@@ -112,7 +119,7 @@
             }
           });
 
-          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}/verses`);
+          xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/chapters/${bibleChapterID}/verses`);
           xhr.setRequestHeader(`api-key`, API_KEY);
 
           xhr.onerror = () => reject(xhr.statusText);
@@ -135,12 +142,12 @@
             if (this.readyState === this.DONE) {
               const {data, meta} = JSON.parse(this.responseText);
 
-              _BAPI.t(meta.fumsId);
+              fums(`trackview`,meta.fumsToken);
               resolve(data.content);
             }
           });
 
-          xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}`);
+          xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/chapters/${bibleChapterID}`);
           xhr.setRequestHeader(`api-key`, API_KEY);
 
           xhr.onerror = () => reject(xhr.statusText);
