@@ -72,7 +72,14 @@
     </div>
   </body>
 
-  <script src="http://cdn.scripture.api.bible/fums/fumsv2.min.js"></script>
+  <script type="text/javascript" src="https://pkg.api.bible/fumsV3.min.js"></script>
+  <script>
+    /* This code ensures that FUMS will be reported correctly even if fumsV3.min.js has not finished loading before an attempt is made. */
+    window.fumsData = window.fumsData || [];
+    window.fums = window.fums || function () {
+      window.fumsData.push(arguments);
+    };
+  </script>
   <script src="app.js"></script>
   <script type="text/javascript" src="test.js"></script>
 </html>

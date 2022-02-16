@@ -156,7 +156,7 @@ function getBibleVersions() {
       }
     });
 
-    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles`);
+    xhr.open(`GET`, `https://v2.api.bible/bibles`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
@@ -205,7 +205,7 @@ function getBooks(bibleVersionID) {
       }
     });
 
-    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books`);
+    xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/books`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
@@ -255,7 +255,7 @@ function getChapters(bibleVersionID, bibleBookID) {
       }
     });
 
-    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}/chapters`);
+    xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/books/${bibleBookID}/chapters`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
@@ -309,7 +309,7 @@ function getSections(bibleVersionID, bibleBookID) {
       }
     });
 
-    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books/${bibleBookID}/sections`);
+    xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/books/${bibleBookID}/sections`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
@@ -363,7 +363,7 @@ function getVerses(bibleVersionID, bibleChapterID) {
       }
     });
 
-    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}/verses`);
+    xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/chapters/${bibleChapterID}/verses`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
@@ -386,12 +386,12 @@ function getChapterText(bibleVersionID, bibleChapterID) {
       if (this.readyState === this.DONE) {
         const {data, meta} = JSON.parse(this.responseText);
 
-        _BAPI.t(meta.fumsId);
+        fums(`trackview`,meta.fumsToken);
         resolve(data.content);
       }
     });
 
-    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/chapters/${bibleChapterID}`);
+    xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/chapters/${bibleChapterID}`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
@@ -428,16 +428,16 @@ function getSelectedVerse(bibleVersionID, bibleVerseID) {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const response = JSON.parse(this.responseText);
-        const fumsId = response.meta.fumsId;
+        const fumsToken = response.meta.fumsToken;
         const {content, reference} = response.data;
         const verse = {content, reference};
 
-        _BAPI.t(fumsId);
+        fums(`trackview`,fumsToken);
         resolve(verse);
       }
     });
 
-    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/verses/${bibleVerseID}?include-chapter-numbers=false&include-verse-numbers=false`);
+    xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/verses/${bibleVerseID}?include-chapter-numbers=false&include-verse-numbers=false`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
@@ -474,16 +474,16 @@ function getSelectedSection(bibleVersionID, bibleSectionID) {
     xhr.addEventListener(`readystatechange`, function() {
       if (this.readyState === this.DONE) {
         const response = JSON.parse(this.responseText);
-        const fumsId = response.meta.fumsId;
+        const fumsToken = response.meta.fumsToken;
         const {content, title} = response.data;
         const section = {content, sectionTitle: title};
 
-        _BAPI.t(fumsId);
+        fums(`trackview`,fumsToken);
         resolve(section);
       }
     });
 
-    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/sections/${bibleSectionID}?include-chapter-numbers=true&include-verse-spans=true`);
+    xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/sections/${bibleSectionID}?include-chapter-numbers=true&include-verse-spans=true`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
@@ -599,13 +599,13 @@ function getResults(searchText, offset = 0, bibleVersionID) {
           data = {error: this.statusText};
         } else {
           ({data, meta} = JSON.parse(this.responseText));
-          _BAPI.t(meta.fumsId);
+          fums(`trackview`,meta.fumsToken);
         }
         resolve(data);
       }
     });
 
-    xhr.open(`GET`, `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/search?query=${searchText}&offset=${offset}`);
+    xhr.open(`GET`, `https://v2.api.bible/bibles/${bibleVersionID}/search?query=${searchText}&offset=${offset}`);
     xhr.setRequestHeader(`api-key`, API_KEY);
 
     xhr.onerror = () => reject(xhr.statusText);
